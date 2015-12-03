@@ -1,0 +1,6 @@
+1) implement neural networks
+  - on program start NN reads file and learns
+2) implement fuzzy inference
+  - define rules that will work for nn outputs and given emergencies
+3) test opc data read in 315
+4) implement program that a) reads data from opc b) runs NeuroFuzzyKnowledgeBase every second
