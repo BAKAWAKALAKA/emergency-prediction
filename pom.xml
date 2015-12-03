@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>ru.spbstu.dis</groupId>
+    <artifactId>emergency-prediction</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+    <repositories>
+        <repository>
+            <id>utgard</id>
+            <name>utgard releases</name>
+            <url>http://repo.openscada.org/maven/releases</url>
+        </repository>
+        <repository>
+            <id>neuroph.sourceforge.net</id>
+            <url>http://neuroph.sourceforge.net/maven2/</url>
+        </repository>
+    </repositories>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>com.fuzzylite</groupId>
+            <artifactId>jfuzzylite</artifactId>
+            <version>5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.neuroph</groupId>
+            <artifactId>neuroph-core</artifactId>
+            <version>2.9</version>
+        </dependency>
+        <dependency>
+            <groupId>org.neuroph</groupId>
+            <artifactId>neuroph-contrib</artifactId>
+            <version>2.9</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openscada.utgard</groupId>
+            <artifactId>org.openscada.opc.lib</artifactId>
+            <version>1.1.0.v20130529</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openscada.utgard</groupId>
+            <artifactId>org.openscada.opc.dcom</artifactId>
+            <version>1.1.0.v20130529</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openscada.jinterop</groupId>
+            <artifactId>org.openscada.jinterop.core</artifactId>
+            <version>1.1.0.v20130529</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openscada.jinterop</groupId>
+            <artifactId>org.openscada.jinterop.deps</artifactId>
+            <version>1.1.0.v20130529</version>
+        </dependency>
+        <dependency>
+            <groupId>jcifs</groupId>
+            <artifactId>jcifs</artifactId>
+            <version>1.3.17</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.1.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>18.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.0.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>
