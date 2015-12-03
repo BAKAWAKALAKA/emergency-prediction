@@ -1,11 +1,11 @@
 package ru.spbstu.dis.kb;
 
-public class KnowledgeBaseInput {
+public class DataInput {
   private double pressure;
 
   private double lowerPressure;
 
-  public KnowledgeBaseInput(final double pressure, final double lowerPressure) {
+  public DataInput(final double pressure, final double lowerPressure) {
     this.pressure = pressure;
     this.lowerPressure = lowerPressure;
   }
@@ -19,7 +19,7 @@ public class KnowledgeBaseInput {
       return false;
     }
 
-    final KnowledgeBaseInput that = (KnowledgeBaseInput) o;
+    final DataInput that = (DataInput) o;
 
     if (Double.compare(that.pressure, pressure) != 0) {
       return false;

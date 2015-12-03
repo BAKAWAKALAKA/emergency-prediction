@@ -1,9 +1,9 @@
 package ru.spbstu.dis.kb;
 
-public class KnowledgeBaseOutput {
-  String action;
+public class ChosenAction {
+  private String action;
 
-  public KnowledgeBaseOutput(final String action) {
+  public ChosenAction(final String action) {
     this.action = action;
   }
 
@@ -16,7 +16,7 @@ public class KnowledgeBaseOutput {
       return false;
     }
 
-    final KnowledgeBaseOutput that = (KnowledgeBaseOutput) o;
+    final ChosenAction that = (ChosenAction) o;
 
     return !(action != null ? !action.equals(that.action) : that.action != null);
   }
@@ -32,5 +32,13 @@ public class KnowledgeBaseOutput {
     sb.append("action='").append(action).append('\'');
     sb.append('}');
     return sb.toString();
+  }
+
+  public String getAction() {
+    return action;
+  }
+
+  public void setAction(String action) {
+    this.action = action;
   }
 }
