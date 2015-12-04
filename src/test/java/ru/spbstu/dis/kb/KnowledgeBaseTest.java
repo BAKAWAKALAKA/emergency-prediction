@@ -12,7 +12,7 @@ public class KnowledgeBaseTest {
 
     // when
     final ChosenAction chosenAction = simpleKnowledgeBase
-        .inferOutput(new DataInput(5, 1));
+        .inferOutput(DataInput.withPressureAndLowerPressure(5, 1));
 
     // then
     assertThat(chosenAction).isEqualTo(new ChosenAction("Action2"));
@@ -26,7 +26,7 @@ public class KnowledgeBaseTest {
 
     // when
     final ChosenAction chosenAction = simpleKnowledgeBase
-        .inferOutput(new DataInput(1235, 1));
+        .inferOutput(DataInput.withPressureAndLowerPressure(1235, 1));
 
     // then
     assertThat(chosenAction).isEqualTo(new ChosenAction("Action1"));
@@ -36,7 +36,7 @@ public class KnowledgeBaseTest {
 class SimpleKnowledgeBase implements KnowledgeBase {
   @Override
   public ChosenAction inferOutput(final DataInput input) {
-    if (input.getPressure() > 10) {
+    if (input.getDataForTag(Tag.PRESSURE) > 10) {
       return new ChosenAction("Action1");
     } else {
       return new ChosenAction("Action2");

@@ -11,7 +11,7 @@ public class EmergencyPredictorTest {
     // given
     AtomicReference<ChosenAction> actionHolder = new AtomicReference<>();
     final EmergencyPredictor emergencyPredictor = new EmergencyPredictor(
-        () -> new DataInput(1, 2),
+        () -> DataInput.withPressureAndLowerPressure(1, 2),
         new KnowledgeBase() {
           @Override
           public ChosenAction inferOutput(final DataInput input) {

@@ -1,13 +1,19 @@
 package ru.spbstu.dis.kb;
 
+import com.google.common.base.Preconditions;
+import java.util.HashMap;
+import java.util.Map;
+
 public class DataInput {
-  private double pressure;
+  private Map<Tag, Double> data;
 
-  private double lowerPressure;
+  public DataInput(Map<Tag, Double> data) {
+    this.data = data;
+  }
 
-  public DataInput(final double pressure, final double lowerPressure) {
-    this.pressure = pressure;
-    this.lowerPressure = lowerPressure;
+  public double getDataForTag(Tag tag) {
+    Preconditions.checkArgument(data.containsKey(tag));
+    return data.get(tag);
   }
 
   @Override
@@ -18,48 +24,29 @@ public class DataInput {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-
-    final DataInput that = (DataInput) o;
-
-    if (Double.compare(that.pressure, pressure) != 0) {
-      return false;
-    }
-    return Double.compare(that.lowerPressure, lowerPressure) == 0;
+    final DataInput dataInput = (DataInput) o;
+    return !(data != null ? !data.equals(dataInput.data) : dataInput.data != null);
   }
 
   @Override
   public int hashCode() {
-    int result;
-    long temp;
-    temp = Double.doubleToLongBits(pressure);
-    result = (int) (temp ^ (temp >>> 32));
-    temp = Double.doubleToLongBits(lowerPressure);
-    result = 31 * result + (int) (temp ^ (temp >>> 32));
-    return result;
+    return data != null ? data.hashCode() : 0;
   }
 
   @Override
   public String toString() {
-    final StringBuffer sb = new StringBuffer("KnowledgeBaseInput{");
-    sb.append("pressure=").append(pressure);
-    sb.append(", lowerPressure=").append(lowerPressure);
+    final StringBuffer sb = new StringBuffer("DataInput{");
+    sb.append("data=").append(data);
     sb.append('}');
     return sb.toString();
   }
 
-  public double getPressure() {
-    return pressure;
-  }
-
-  public void setPressure(double pressure) {
-    this.pressure = pressure;
-  }
-
-  public double getLowerPressure() {
-    return lowerPressure;
-  }
-
-  public void setLowerPressure(double lowerPressure) {
-    this.lowerPressure = lowerPressure;
+  public static DataInput withPressureAndLowerPressure(
+      final double pressure,
+      final double lowerPressure) {
+    final HashMap<Tag, Double> data = new HashMap<>();
+    data.put(Tag.PRESSURE, pressure);
+    data.put(Tag.LOWER_PRESSURE, lowerPressure);
+    return new DataInput(data);
   }
 }

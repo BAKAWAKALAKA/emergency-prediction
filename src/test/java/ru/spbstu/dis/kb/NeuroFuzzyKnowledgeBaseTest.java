@@ -20,7 +20,7 @@ public class NeuroFuzzyKnowledgeBaseTest {
         new StupidFuzzyInferenceEngine();
     final NeuroFuzzyKnowledgeBase neuroFuzzyKnowledgeBase = new NeuroFuzzyKnowledgeBase(networks,
         stupidFuzzyInferenceEngine);
-    final DataInput dataInput = new DataInput(10, 5);
+    final DataInput dataInput = DataInput.withPressureAndLowerPressure(10, 5);
 
     // when
     final ChosenAction chosenAction = neuroFuzzyKnowledgeBase.inferOutput(dataInput);
@@ -34,7 +34,7 @@ public class NeuroFuzzyKnowledgeBaseTest {
 class StupidNeuralNetwork implements NeuralNetwork {
   @Override
   public NeuralNetworkOutput inferOutput(final DataInput input) {
-    if (input.getPressure() > 5) {
+    if (input.getDataForTag(Tag.PRESSURE) > 5) {
       return new NeuralNetworkOutput("emergency", 1);
     } else {
       return new NeuralNetworkOutput("emergency", 0);
@@ -45,7 +45,7 @@ class StupidNeuralNetwork implements NeuralNetwork {
 class OtherStupidNeuralNetwork implements NeuralNetwork {
   @Override
   public NeuralNetworkOutput inferOutput(final DataInput input) {
-    if (input.getPressure() > 50) {
+    if (input.getDataForTag(Tag.PRESSURE) > 50) {
       return new NeuralNetworkOutput("emergency", 1);
     } else {
       return new NeuralNetworkOutput("emergency", 0);
