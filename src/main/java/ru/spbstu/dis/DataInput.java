@@ -1,4 +1,4 @@
-package ru.spbstu.dis.kb;
+package ru.spbstu.dis;
 
 import com.google.common.base.Preconditions;
 import java.util.HashMap;

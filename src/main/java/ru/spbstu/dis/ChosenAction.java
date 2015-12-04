@@ -1,4 +1,4 @@
-package ru.spbstu.dis.kb;
+package ru.spbstu.dis;
 
 public class ChosenAction {
   private String action;

@@ -3,7 +3,3 @@
 2) implement fuzzy inference
   - define rules that will work for nn outputs and given emergencies
 3) test opc data read in 315
-4) implement program that a) reads data from opc b) runs NeuroFuzzyKnowledgeBase every second
-5) implemet opc writer to csv
-6) implement application that runs the stuff
-7) class that supplies data to knowledge base

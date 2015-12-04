@@ -14,33 +14,28 @@ import org.openscada.opc.lib.da.Item;
 import org.openscada.opc.lib.da.ItemState;
 import org.openscada.opc.lib.da.Server;
 import org.openscada.opc.lib.da.SyncAccess;
+import ru.spbstu.dis.Tag;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 public class OPCDataReader {
-  static {
-    try {
-      JISystem.setAutoRegisteration(true);
-      JISystem.setInBuiltLogHandler(false);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
+  private final HashMap<Tag, String> tagsToRead;
 
-  private final List<String> tagsToRead;
-
-  private final Map<String, Double> actualValues = Maps.newHashMap();
+  private final Map<Tag, Double> actualValues = Maps.newHashMap();
 
   private AccessBase opcDataAccess;
 
-  public OPCDataReader(List<String> tagsToRead) {
-    this.tagsToRead = tagsToRead;
+  public OPCDataReader(HashMap<Tag, String> tagToOpcIdMapping) {
+    this.tagsToRead = tagToOpcIdMapping;
   }
 
-  public Map<String, Double> getActualValues() {
+  public Map<Tag, Double> getActualValues() {
     return actualValues;
   }
 
@@ -62,7 +57,7 @@ public class OPCDataReader {
     return this;
   }
 
-  private void registerRequestedTags(final List<String> tagsToRead)
+  private void registerRequestedTags(final HashMap<Tag, String> tagsToRead)
   throws UnknownHostException, JIException, AlreadyConnectedException, NotConnectedException,
       DuplicateGroupException {
 
@@ -70,18 +65,23 @@ public class OPCDataReader {
     ci.setHost("seal-machine1");
     ci.setUser("Administrator");
     ci.setPassword("seal");
-    ci.setClsid("6F17505C-4351-46AC-BC1E-CDE34BB53FAA");
+    //    ci.setClsid("6F17505C-4351-46AC-BC1E-CDE34BB53FAA");
+    ci.setClsid("2E565242-B238-11D3-842D-0008C779D775");
+
     final Server server = new Server(ci, Executors.newSingleThreadScheduledExecutor());
     server.connect();
     opcDataAccess = new SyncAccess(server, 200);
-    tagsToRead.forEach(s -> {
+
+
+    tagsToRead.forEach((tag, opcId) -> {
       try {
-        opcDataAccess.addItem(s, new DataCallback() {
+        opcDataAccess.addItem(opcId, new DataCallback() {
           public void changed(Item item, ItemState state) {
             try {
               final double doubleValuue = state.getValue().getObjectAsDouble();
-              actualValues.put(item.getId(), doubleValuue);
+              actualValues.put(tag, doubleValuue);
             } catch (JIException e) {
+              e.printStackTrace();
             }
           }
         });
@@ -97,6 +97,15 @@ public class OPCDataReader {
     try {
       opcDataAccess.unbind();
     } catch (JIException e) {
+      e.printStackTrace();
+    }
+  }
+
+  static {
+    try {
+      JISystem.setAutoRegisteration(true);
+      JISystem.setInBuiltLogHandler(false);
+    } catch (IOException e) {
       e.printStackTrace();
     }
   }

@@ -2,6 +2,9 @@ package ru.spbstu.dis.kb;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
+import ru.spbstu.dis.ChosenAction;
+import ru.spbstu.dis.DataInput;
+import ru.spbstu.dis.Tag;
 
 public class KnowledgeBaseTest {
   @Test

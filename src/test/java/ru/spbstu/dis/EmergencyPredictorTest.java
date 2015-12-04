@@ -1,8 +1,6 @@
 package ru.spbstu.dis;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import ru.spbstu.dis.kb.ChosenAction;
-import ru.spbstu.dis.kb.DataInput;
 import ru.spbstu.dis.kb.KnowledgeBase;
 import java.util.concurrent.atomic.AtomicReference;
 
