@@ -36,7 +36,7 @@ public class EmergencyPredictor {
     final DataInput integerDoubleHashMap = dataProvider.nextDataPortion();
     LOGGER.info("Data portion is " + integerDoubleHashMap);
     final ChosenAction chosenAction = knowledgeBase.inferOutput(integerDoubleHashMap);
-    LOGGER.info("Chosen action is " + integerDoubleHashMap);
+    LOGGER.info("Chosen action is " + chosenAction);
     chosenActionListener.accept(chosenAction);
   }
 }
