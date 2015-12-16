@@ -1,4 +1,4 @@
-package ru.spbstu.dis.kb.neural.networks;
+package ru.spbstu.dis.kb.classification.neural.networks;
 
 import ru.spbstu.dis.DataInput;
 

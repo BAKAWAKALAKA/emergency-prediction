@@ -7,8 +7,8 @@ import ru.spbstu.dis.ChosenAction;
 import ru.spbstu.dis.DataInput;
 import ru.spbstu.dis.Tag;
 import ru.spbstu.dis.kb.fuzzy.inference.FuzzyInferenceEngine;
-import ru.spbstu.dis.kb.neural.networks.NeuralNetwork;
-import ru.spbstu.dis.kb.neural.networks.NeuralNetworkOutput;
+import ru.spbstu.dis.kb.classification.neural.networks.NeuralNetwork;
+import ru.spbstu.dis.kb.classification.neural.networks.NeuralNetworkOutput;
 import java.util.ArrayList;
 import java.util.List;
 

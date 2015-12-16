@@ -23,9 +23,7 @@ public enum Tag {
 
   public static HashMap<Tag, String> TAG_TO_ID_MAPPING = Maps.newHashMap();
   static {
-//    TAG_TO_ID_MAPPING.put(Tag.PRESSURE, "maths.sin");
-//    TAG_TO_ID_MAPPING.put(Tag.LOWER_PRESSURE, "maths.cos");
-
+    // real OPC server tags
     TAG_TO_ID_MAPPING.put(TEST_TEMP1, "ReactorConnection/M/Temp1");
     TAG_TO_ID_MAPPING.put(TEST_TEMP2, "ReactorConnection/M/Temp2");
     TAG_TO_ID_MAPPING.put(TEST_TEMP3, "ReactorConnection/M/Temp3");
@@ -37,13 +35,12 @@ public enum Tag {
     TAG_TO_ID_MAPPING.put(TEST_3B1, "ReactorConnection/E/3B1");
     TAG_TO_ID_MAPPING.put(TEST_3B2, "ReactorConnection/E/3B2");
     TAG_TO_ID_MAPPING.put(TEST_3B3, "ReactorConnection/E/3B3");
-
     TAG_TO_ID_MAPPING.put(MIX_2B6, "MixingConnection/E/2B6");
     TAG_TO_ID_MAPPING.put(MIX_2B7, "MixingConnection/E/2B7");
     TAG_TO_ID_MAPPING.put(MIX_2M2, "MixingConnection/M/TP_2M2");
 
-
-
-
+    // demo OPC server tags
+    TAG_TO_ID_MAPPING.put(Tag.PRESSURE, "maths.sin");
+    TAG_TO_ID_MAPPING.put(Tag.LOWER_PRESSURE, "maths.cos");
   }
 }

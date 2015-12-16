@@ -3,9 +3,9 @@ package ru.spbstu.dis;
 import com.google.common.collect.Lists;
 import ru.spbstu.dis.kb.NeuroFuzzyKnowledgeBase;
 import ru.spbstu.dis.kb.fuzzy.inference.FuzzyInferenceEngine;
-import ru.spbstu.dis.kb.neural.networks.NeuralNetwork;
-import ru.spbstu.dis.kb.neural.networks.NeuralNetworkOutput;
-import ru.spbstu.dis.opc.OpcDataProvider;
+import ru.spbstu.dis.kb.classification.neural.networks.NeuralNetwork;
+import ru.spbstu.dis.kb.classification.neural.networks.NeuralNetworkOutput;
+import ru.spbstu.dis.opc.SoftingOpcDataProvider;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -13,13 +13,13 @@ import java.util.concurrent.TimeUnit;
 
 public class EmergencyPredictionApplication {
   public static void main(String[] args) {
-    final OpcDataProvider opcDataProvider = new OpcDataProvider();
+    final SoftingOpcDataProvider softingOpcDataProvider = new SoftingOpcDataProvider();
     final NeuroFuzzyKnowledgeBase neuroFuzzyKnowledgeBase = new NeuroFuzzyKnowledgeBase(
         getNeuralNetworks(), getFuzzyEngine());
 
     final EmergencyPredictor emergencyPredictor =
         new EmergencyPredictor(
-            opcDataProvider,
+            softingOpcDataProvider,
             neuroFuzzyKnowledgeBase,
             chosenAction -> {
               System.out.println("EMERGENCY PREDICTOR GENERATED ACTION " + chosenAction);

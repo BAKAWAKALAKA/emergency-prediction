@@ -4,11 +4,11 @@ import ru.spbstu.dis.DataInput;
 import ru.spbstu.dis.DataProvider;
 import ru.spbstu.dis.Tag;
 
-public class OpcDataProvider implements DataProvider{
+public class SoftingOpcDataProvider implements DataProvider{
   OPCDataReader opcDataReader;
 
 
-  public OpcDataProvider(){
+  public SoftingOpcDataProvider(){
     opcDataReader = new OPCDataReader(Tag.TAG_TO_ID_MAPPING).startReading();
   }
 
