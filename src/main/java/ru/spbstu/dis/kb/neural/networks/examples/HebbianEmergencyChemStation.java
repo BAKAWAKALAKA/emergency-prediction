@@ -60,6 +60,7 @@ public class HebbianEmergencyChemStation{
       trainingSet.addRow(new DataSetRow(new double[]{0.10, 0.114}, new double[]{1}));
     }
     if(numberOfNNToCreate==3) {
+
       trainingSet.addRow(new DataSetRow(new double[]{0, 1,1}, new double[]{0}));
       trainingSet.addRow(new DataSetRow(new double[]{1, 1,0}, new double[]{0}));
       trainingSet.addRow(new DataSetRow(new double[]{1, 1,1}, new double[]{1}));
