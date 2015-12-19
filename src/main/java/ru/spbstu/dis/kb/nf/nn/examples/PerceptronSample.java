@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ru.spbstu.dis.kb.classification.neural.networks.examples;
+package ru.spbstu.dis.kb.nf.nn.examples;
 
 import java.util.Arrays;
 import org.neuroph.core.NeuralNetwork;

@@ -1,12 +1,11 @@
-package ru.spbstu.dis.kb.classification.neural.networks.examples;
+package ru.spbstu.dis.kb.nf.nn.examples;
 
 import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
-import org.neuroph.core.learning.error.MeanSquaredError;
 import org.neuroph.nnet.MultiLayerPerceptron;
 import org.neuroph.nnet.learning.BackPropagation;
 import org.neuroph.nnet.learning.MomentumBackpropagation;
-import org.neuroph.util.data.sample.SubSampling;
+
 import java.util.Arrays;
 
 public class MultiLayerPerceptronExample {

@@ -6,9 +6,10 @@ import org.junit.Test;
 import ru.spbstu.dis.ChosenAction;
 import ru.spbstu.dis.DataInput;
 import ru.spbstu.dis.Tag;
-import ru.spbstu.dis.kb.fuzzy.inference.FuzzyInferenceEngine;
-import ru.spbstu.dis.kb.classification.neural.networks.NeuralNetwork;
-import ru.spbstu.dis.kb.classification.neural.networks.NeuralNetworkOutput;
+import ru.spbstu.dis.kb.nf.NeuroFuzzyKnowledgeBase;
+import ru.spbstu.dis.kb.nf.fuzzy.FuzzyInferenceEngine;
+import ru.spbstu.dis.kb.nf.nn.NeuralNetwork;
+import ru.spbstu.dis.kb.nf.nn.NeuralNetworkOutput;
 import java.util.ArrayList;
 import java.util.List;
 

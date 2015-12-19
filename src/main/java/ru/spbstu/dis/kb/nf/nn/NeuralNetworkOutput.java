@@ -1,4 +1,4 @@
-package ru.spbstu.dis.kb.classification.neural.networks;
+package ru.spbstu.dis.kb.nf.nn;
 
 public class NeuralNetworkOutput {
 

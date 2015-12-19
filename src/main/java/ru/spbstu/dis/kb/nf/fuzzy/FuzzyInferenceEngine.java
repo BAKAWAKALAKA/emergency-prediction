@@ -1,7 +1,7 @@
-package ru.spbstu.dis.kb.fuzzy.inference;
+package ru.spbstu.dis.kb.nf.fuzzy;
 
 import ru.spbstu.dis.ChosenAction;
-import ru.spbstu.dis.kb.classification.neural.networks.NeuralNetworkOutput;
+import ru.spbstu.dis.kb.nf.nn.NeuralNetworkOutput;
 import java.util.List;
 
 public interface FuzzyInferenceEngine {

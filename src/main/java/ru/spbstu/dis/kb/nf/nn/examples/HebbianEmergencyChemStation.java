@@ -1,4 +1,4 @@
-package ru.spbstu.dis.kb.classification.neural.networks.examples;
+package ru.spbstu.dis.kb.nf.nn.examples;
 
 import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.data.*;

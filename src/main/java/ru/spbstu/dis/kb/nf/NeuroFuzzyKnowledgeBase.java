@@ -1,11 +1,12 @@
-package ru.spbstu.dis.kb;
+package ru.spbstu.dis.kb.nf;
 
 import com.google.common.collect.Lists;
 import ru.spbstu.dis.ChosenAction;
 import ru.spbstu.dis.DataInput;
-import ru.spbstu.dis.kb.fuzzy.inference.FuzzyInferenceEngine;
-import ru.spbstu.dis.kb.classification.neural.networks.NeuralNetwork;
-import ru.spbstu.dis.kb.classification.neural.networks.NeuralNetworkOutput;
+import ru.spbstu.dis.kb.KnowledgeBase;
+import ru.spbstu.dis.kb.nf.fuzzy.FuzzyInferenceEngine;
+import ru.spbstu.dis.kb.nf.nn.NeuralNetwork;
+import ru.spbstu.dis.kb.nf.nn.NeuralNetworkOutput;
 import java.util.LinkedList;
 import java.util.List;
 

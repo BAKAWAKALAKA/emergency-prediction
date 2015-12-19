@@ -1,4 +1,4 @@
-package ru.spbstu.dis.kb.fuzzy.inference.examples;
+package ru.spbstu.dis.kb.nf.fuzzy.examples;
 
 import com.fuzzylite.Engine;
 import com.fuzzylite.FuzzyLite;
