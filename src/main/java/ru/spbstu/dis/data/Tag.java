@@ -1,4 +1,4 @@
-package ru.spbstu.dis;
+package ru.spbstu.dis.data;
 
 import com.google.common.collect.Maps;
 import java.util.HashMap;

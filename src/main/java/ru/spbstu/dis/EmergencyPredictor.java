@@ -2,6 +2,10 @@ package ru.spbstu.dis;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.spbstu.dis.data.DataInput;
+import ru.spbstu.dis.data.DataProvider;
+import ru.spbstu.dis.kb.ChosenAction;
+import ru.spbstu.dis.kb.ChosenActionListener;
 import ru.spbstu.dis.kb.KnowledgeBase;
 
 public class EmergencyPredictor {

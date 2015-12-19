@@ -1,9 +1,9 @@
-package ru.spbstu.dis.opc;
+package ru.spbstu.dis.data.opc;
 
 import org.jinterop.dcom.common.JIException;
 import org.openscada.opc.lib.common.*;
 import org.openscada.opc.lib.da.*;
-import ru.spbstu.dis.Tag;
+import ru.spbstu.dis.data.Tag;
 import java.net.UnknownHostException;
 import java.util.Map;
 

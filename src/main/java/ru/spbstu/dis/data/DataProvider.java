@@ -1,4 +1,4 @@
-package ru.spbstu.dis;
+package ru.spbstu.dis.data;
 
 import java.util.function.Supplier;
 

@@ -1,8 +1,8 @@
 package ru.spbstu.dis.kb.nf;
 
 import com.google.common.collect.Lists;
-import ru.spbstu.dis.ChosenAction;
-import ru.spbstu.dis.DataInput;
+import ru.spbstu.dis.kb.ChosenAction;
+import ru.spbstu.dis.data.DataInput;
 import ru.spbstu.dis.kb.KnowledgeBase;
 import ru.spbstu.dis.kb.nf.fuzzy.FuzzyInferenceEngine;
 import ru.spbstu.dis.kb.nf.nn.NeuralNetwork;

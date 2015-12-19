@@ -1,11 +1,14 @@
 package ru.spbstu.dis;
 
 import com.google.common.collect.Lists;
-import ru.spbstu.dis.kb.nf.NeuroFuzzyKnowledgeBase;
+import ru.spbstu.dis.data.DataProvider;
+import ru.spbstu.dis.data.random.RandomDataProvider;
+import ru.spbstu.dis.kb.KnowledgeBase;
+import ru.spbstu.dis.kb.dcep.DCepKnowledgeBase;
 import ru.spbstu.dis.kb.nf.fuzzy.FuzzyInferenceEngine;
 import ru.spbstu.dis.kb.nf.nn.NeuralNetwork;
 import ru.spbstu.dis.kb.nf.nn.NeuralNetworkOutput;
-import ru.spbstu.dis.opc.SoftingOpcDataProvider;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -13,14 +16,15 @@ import java.util.concurrent.TimeUnit;
 
 public class EmergencyPredictionApplication {
   public static void main(String[] args) {
-    final SoftingOpcDataProvider softingOpcDataProvider = new SoftingOpcDataProvider();
-    final NeuroFuzzyKnowledgeBase neuroFuzzyKnowledgeBase = new NeuroFuzzyKnowledgeBase(
-        getNeuralNetworks(), getFuzzyEngine());
+//    final DataProvider dataProvider = new SoftingOpcDataProvider();
+//    final KnowledgeBase kb = new NeuroFuzzyKnowledgeBase(getNeuralNetworks(), getFuzzyEngine());
+    DataProvider dataProvider = new RandomDataProvider();
+    KnowledgeBase kb = new DCepKnowledgeBase();
 
     final EmergencyPredictor emergencyPredictor =
         new EmergencyPredictor(
-            softingOpcDataProvider,
-            neuroFuzzyKnowledgeBase,
+            dataProvider,
+            kb,
             chosenAction -> {
               System.out.println("EMERGENCY PREDICTOR GENERATED ACTION " + chosenAction);
             });
@@ -34,24 +38,5 @@ public class EmergencyPredictionApplication {
           }
         },
         0L, 1000L, TimeUnit.MILLISECONDS);
-  }
-
-  private static ArrayList<NeuralNetwork> getNeuralNetworks() {
-    return Lists.newArrayList(new NeuralNetwork() {
-      @Override
-      public NeuralNetworkOutput inferOutput(final DataInput input) {
-        return new NeuralNetworkOutput("s1", 1.0);
-      }
-    });
-  }
-
-  private static FuzzyInferenceEngine getFuzzyEngine() {
-    return new FuzzyInferenceEngine() {
-      @Override
-      public ChosenAction generateAction(
-          final List<NeuralNetworkOutput> listOfNeuralNetworkOutputs) {
-        return new ChosenAction("test");
-      }
-    };
   }
 }

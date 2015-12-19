@@ -1,8 +1,8 @@
-package ru.spbstu.dis.opc;
+package ru.spbstu.dis.data.opc;
 
-import ru.spbstu.dis.DataInput;
-import ru.spbstu.dis.DataProvider;
-import ru.spbstu.dis.Tag;
+import ru.spbstu.dis.data.DataInput;
+import ru.spbstu.dis.data.DataProvider;
+import ru.spbstu.dis.data.Tag;
 
 public class SoftingOpcDataProvider implements DataProvider{
   OPCDataReader opcDataReader;

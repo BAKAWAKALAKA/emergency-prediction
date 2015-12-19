@@ -1,7 +1,6 @@
 package ru.spbstu.dis.kb;
 
-import ru.spbstu.dis.ChosenAction;
-import ru.spbstu.dis.DataInput;
+import ru.spbstu.dis.data.DataInput;
 
 public interface KnowledgeBase {
   ChosenAction inferOutput(DataInput input);

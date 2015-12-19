@@ -1,6 +1,8 @@
-package ru.spbstu.dis;
+package ru.spbstu.dis.kb;
 
-public class ChosenAction {
+import java.io.Serializable;
+
+public class ChosenAction implements Serializable{
   private String action;
 
   public ChosenAction(final String action) {

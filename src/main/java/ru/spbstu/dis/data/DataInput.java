@@ -1,10 +1,12 @@
-package ru.spbstu.dis;
+package ru.spbstu.dis.data;
 
 import com.google.common.base.Preconditions;
+
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DataInput {
+public class DataInput implements Serializable{
   private Map<Tag, Double> data;
 
   public DataInput(Map<Tag, Double> data) {
