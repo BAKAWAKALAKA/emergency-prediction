@@ -36,6 +36,10 @@
             <id>neuroph.sourceforge.net</id>
             <url>http://neuroph.sourceforge.net/maven2/</url>
         </repository>
+        <repository>
+            <id>WSO2</id>
+            <url>http://maven.wso2.org/nexus/content/repositories/releases/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -64,6 +68,21 @@
             <groupId>nz.ac.waikato.cms.weka</groupId>
             <artifactId>weka-stable</artifactId>
             <version>3.6.13</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-core</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-query-api</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.siddhi</groupId>
+            <artifactId>siddhi-query-compiler</artifactId>
+            <version>3.0.2</version>
         </dependency>
 
         <dependency>
