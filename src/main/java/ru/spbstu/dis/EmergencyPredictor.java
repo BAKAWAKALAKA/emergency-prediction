@@ -38,9 +38,9 @@ public class EmergencyPredictor {
 
   public void execute() {
     final DataInput integerDoubleHashMap = dataProvider.nextDataPortion();
-    LOGGER.info("Data portion is " + integerDoubleHashMap);
+    LOGGER.warn("Data portion is " + integerDoubleHashMap);
     final ChosenAction chosenAction = knowledgeBase.inferOutput(integerDoubleHashMap);
-    LOGGER.info("Chosen action is " + chosenAction);
+    LOGGER.warn("Chosen action is " + chosenAction);
     chosenActionListener.accept(chosenAction);
   }
 }

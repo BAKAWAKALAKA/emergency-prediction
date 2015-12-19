@@ -10,6 +10,7 @@ import org.apache.spark.streaming.api.java.JavaDStream;
 import org.apache.spark.streaming.api.java.JavaReceiverInputDStream;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
 import org.apache.spark.streaming.receiver.Receiver;
+import ru.spbstu.dis.data.Tag;
 import ru.spbstu.dis.kb.ChosenAction;
 import ru.spbstu.dis.data.DataInput;
 import ru.spbstu.dis.kb.KnowledgeBase;
@@ -54,7 +55,10 @@ public class DCepKnowledgeBase implements KnowledgeBase, Serializable{
       });
 
       JavaDStream<ChosenAction> actionStream = dataInputReceiver.map(dataInput -> {
-        return new ChosenAction("Action");
+        StaticBlockingSiddhi.supplyData(
+            dataInput.getDataForTag(Tag.PRESSURE),
+            dataInput.getDataForTag(Tag.LOWER_PRESSURE));
+        return StaticBlockingSiddhi.getAction();
       });
 
       actionStream.foreachRDD((Function2<JavaRDD<ChosenAction>, Time, Void>) (chosenActionJavaRDD, time) -> {

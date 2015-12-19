@@ -14,11 +14,10 @@ public class SiddhiExample {
     SiddhiManager siddhiManager = new SiddhiManager();
 
     String executionPlan = "" +
-        "define stream cseEventStream (symbol string, price float, volume long); " +
-        "" +
+        "define stream dataStream (pressure double, lowerPressure double); " +
         "@info(name = 'query1') " +
-        "from cseEventStream[volume < 150] " +
-        "select symbol,price " +
+        "from dataStream[pressure < 0.5] " +
+        "select * " +
         "insert into outputStream ;";
 
     //Generating runtime
@@ -33,7 +32,7 @@ public class SiddhiExample {
     });
 
     //Retrieving InputHandler to push events into Siddhi
-    InputHandler inputHandler = executionPlanRuntime.getInputHandler("cseEventStream");
+    InputHandler inputHandler = executionPlanRuntime.getInputHandler("dataStream");
 
     //Starting event processing
     executionPlanRuntime.start();
@@ -41,12 +40,8 @@ public class SiddhiExample {
     Thread.sleep(500);
 
     //Sending events to Siddhi
-    inputHandler.send(new Object[]{"IBM", 700f, 100l});
-    inputHandler.send(new Object[]{"WSO2", 60.5f, 200l});
-    inputHandler.send(new Object[]{"GOOG", 50f, 30l});
-    inputHandler.send(new Object[]{"IBM", 76.6f, 400l});
-    inputHandler.send(new Object[]{"WSO2", 45.6f, 50l});
-    inputHandler.send(new Object[]{"TEST", 45.6f, 40l});
+    inputHandler.send(new Object[]{0.8, 0.5,});
+    inputHandler.send(new Object[]{0.1, 0.5,});
 
     Thread.sleep(500);
 
