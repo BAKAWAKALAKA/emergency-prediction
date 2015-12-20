@@ -2,9 +2,10 @@ package ru.spbstu.dis;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ru.spbstu.dis.data.DataInput;
-import ru.spbstu.dis.kb.ChosenAction;
-import ru.spbstu.dis.kb.KnowledgeBase;
+import ru.spbstu.dis.ep.EmergencyPredictor;
+import ru.spbstu.dis.ep.data.DataInput;
+import ru.spbstu.dis.ep.kb.ChosenAction;
+import ru.spbstu.dis.ep.kb.KnowledgeBase;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class EmergencyPredictorTest {
