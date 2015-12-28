@@ -1,17 +1,12 @@
 package ru.spbstu.dis.ep.kb.nf.fuzzy.examples;
 
-import com.fuzzylite.Engine;
-import com.fuzzylite.FuzzyLite;
-import com.fuzzylite.Op;
-import com.fuzzylite.defuzzifier.Defuzzifier;
-import com.fuzzylite.factory.TNormFactory;
+import com.fuzzylite.*;
+import com.fuzzylite.defuzzifier.*;
 import com.fuzzylite.norm.s.Maximum;
-import com.fuzzylite.norm.t.Minimum;
-import com.fuzzylite.rule.Rule;
-import com.fuzzylite.rule.RuleBlock;
+import com.fuzzylite.norm.t.*;
+import com.fuzzylite.rule.*;
 import com.fuzzylite.term.Triangle;
-import com.fuzzylite.variable.InputVariable;
-import com.fuzzylite.variable.OutputVariable;
+import com.fuzzylite.variable.*;
 
 public class EmergencyPredictionFuzzyLogicExample {
   public static void main(String[] args) {
@@ -98,7 +93,10 @@ public class EmergencyPredictionFuzzyLogicExample {
         engine));
     engine.addRuleBlock(ruleBlock);
 
-    engine.configure("Minimum", "Maximum", "Minimum", "Maximum", "MeanOfMaximum");
+//    engine.configure("Minimum", "Maximum", "Minimum", "Maximum", "MeanOfMaximum");
+
+    engine.configure(new AlgebraicProduct(), new Maximum(), new Minimum(),
+                     new Maximum(), new Bisector());
 
     StringBuilder status = new StringBuilder();
     if (!engine.isReady(status)) {
