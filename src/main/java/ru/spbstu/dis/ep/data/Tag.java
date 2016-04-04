@@ -19,7 +19,13 @@ public enum Tag {
   TEST_Pump3m1,
   MIX_2B6,
   MIX_2B7,
-  MIX_2M2;
+  MIX_2M2,
+  MIX_PUMP_2M3,
+  MIX_PUMP_2M4,
+  MIX_PUMP_2M5,
+  MIX_FLOW_SPEED,
+  MIX_MAIN_PUMP,
+  MIX_WATER_HIGH_LVL_SENSOR;
 
   public static HashMap<Tag, String> TAG_TO_ID_MAPPING = Maps.newHashMap();
   static {
@@ -38,6 +44,12 @@ public enum Tag {
     TAG_TO_ID_MAPPING.put(MIX_2B6, "MixingConnection/E/2B6");
     TAG_TO_ID_MAPPING.put(MIX_2B7, "MixingConnection/E/2B7");
     TAG_TO_ID_MAPPING.put(MIX_2M2, "MixingConnection/M/TP_2M2");
+    TAG_TO_ID_MAPPING.put(MIX_PUMP_2M3, "0.2/A/2M3");
+    TAG_TO_ID_MAPPING.put(MIX_PUMP_2M4, "0.2/A/2M4");
+    TAG_TO_ID_MAPPING.put(MIX_PUMP_2M5, "0.2/A/2M4");
+    TAG_TO_ID_MAPPING.put(MIX_FLOW_SPEED, "0.2/A/2PV1_TP");
+    TAG_TO_ID_MAPPING.put(MIX_MAIN_PUMP, "0.2/A/2M1");
+    TAG_TO_ID_MAPPING.put(MIX_WATER_HIGH_LVL_SENSOR, "0.2/A/2B2");
 
     // demo OPC server tags
     TAG_TO_ID_MAPPING.put(Tag.PRESSURE, "maths.sin");
