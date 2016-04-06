@@ -53,7 +53,7 @@ public class OPCDataReader {
     ci.setUser("Administrator");
     ci.setPassword("seal");
 //        ci.setClsid("6F17505C-4351-46AC-BC1E-CDE34BB53FAA");
-    ci.setClsid("2E565242-B238-11D3-842D-0008C779D775");
+    ci.setClsid("6F17505C-4351-46AC-BC1E-CDE34BB53FAA");
 
     final Server server = new Server(ci, Executors.newSingleThreadScheduledExecutor());
     server.connect();
