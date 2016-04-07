@@ -54,7 +54,7 @@ public class OPCTreeReader {
 
         SyncAccess syncAccess = new SyncAccess(server, 200);
 
-        syncAccess.addItem("0.4/A/4PA_BUSY", new DataCallback() {
+        syncAccess.addItem("0.5/A/4PA_BUSY", new DataCallback() {
             @Override
             public
             void changed(

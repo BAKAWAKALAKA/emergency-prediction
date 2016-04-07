@@ -52,7 +52,7 @@ public class OPCDataReader {
     ci.setHost("seal-machine1");
     ci.setUser("Administrator");
     ci.setPassword("seal");
-        ci.setClsid("6F17505C-4351-46AC-BC1E-CDE34BB53FAA"); //--- real server
+    ci.setClsid("6F17505C-4351-46AC-BC1E-CDE34BB53FAA"); //--- real server
 //    ci.setClsid("2E565242-B238-11D3-842D-0008C779D775");
     //2E565242-B238-11D3-842D-0008C779D775 --- artificial server
     final Server server = new Server(ci, Executors.newSingleThreadScheduledExecutor());
