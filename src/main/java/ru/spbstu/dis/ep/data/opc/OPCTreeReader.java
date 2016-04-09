@@ -2,6 +2,7 @@ package ru.spbstu.dis.ep.data.opc;
 
 import org.jinterop.dcom.common.JIException;
 import org.jinterop.dcom.common.JISystem;
+import org.jinterop.dcom.core.JIVariant;
 import org.openscada.opc.dcom.da.OPCSERVERSTATUS;
 import org.openscada.opc.lib.common.AlreadyConnectedException;
 import org.openscada.opc.lib.common.ConnectionInformation;
@@ -9,11 +10,13 @@ import org.openscada.opc.lib.common.NotConnectedException;
 import org.openscada.opc.lib.da.AddFailedException;
 import org.openscada.opc.lib.da.DataCallback;
 import org.openscada.opc.lib.da.DuplicateGroupException;
+import org.openscada.opc.lib.da.Group;
 import org.openscada.opc.lib.da.Item;
 import org.openscada.opc.lib.da.ItemState;
 import org.openscada.opc.lib.da.Server;
 import org.openscada.opc.lib.da.SyncAccess;
 import org.openscada.opc.lib.da.browser.FlatBrowser;
+import ru.spbstu.dis.ep.data.Tag;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.concurrent.Executors;
@@ -54,7 +57,8 @@ public class OPCTreeReader {
 
         SyncAccess syncAccess = new SyncAccess(server, 200);
 
-        syncAccess.addItem("0.5/A/4PA_BUSY", new DataCallback() {
+      String item = Tag.TAG_TO_ID_MAPPING.get(Tag.REACTOR_DOWNSTREAM_ON);
+        syncAccess.addItem(item, new DataCallback() {
             @Override
             public
             void changed(
@@ -72,8 +76,13 @@ public class OPCTreeReader {
         });
 
         syncAccess.bind();
-
+      final Group serverObject = server.addGroup("test");
+      Item itemOPC = serverObject.addItem(item);
+      boolean value = true;
         while (true)
-            Thread.sleep(1000);
+        {Thread.sleep(2000);
+         value = ! value;
+          itemOPC.write(new JIVariant(value));
+        }
     }
 }

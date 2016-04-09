@@ -38,7 +38,7 @@ public class KnowledgeBaseTest {
 class SimpleKnowledgeBase implements KnowledgeBase {
   @Override
   public ChosenAction inferOutput(final DataInput input) {
-    if (input.getDataForTag(Tag.PRESSURE) > 10) {
+    if (input.getDataForTag(Tag.MIX_tank_B204_water_bottom_level_sensor) > 10) {
       return new ChosenAction("Action1");
     } else {
       return new ChosenAction("Action2");

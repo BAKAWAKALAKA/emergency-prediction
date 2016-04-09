@@ -2,7 +2,12 @@ package ru.spbstu.dis.ep.data.opc;
 
 import com.google.common.collect.Maps;
 import org.jinterop.dcom.common.*;
+import org.jinterop.dcom.core.IJIComObject;
 import org.jinterop.dcom.core.JIVariant;
+import org.openscada.opc.dcom.da.OPCITEMDEF;
+import org.openscada.opc.dcom.da.impl.OPCGroupStateMgt;
+import org.openscada.opc.dcom.da.impl.OPCItemMgt;
+import org.openscada.opc.dcom.da.impl.OPCServer;
 import org.openscada.opc.lib.common.*;
 import org.openscada.opc.lib.da.*;
 import ru.spbstu.dis.ep.data.Tag;
@@ -58,11 +63,15 @@ public class OPCDataReader {
     final Server server = new Server(ci, Executors.newSingleThreadScheduledExecutor());
     server.connect();
     opcDataAccess = new SyncAccess(server, 200);
+    final Group serverObject = server.addGroup("test");
     tagsToRead.forEach((tag, opcId) -> {
       try {
+
+        Item itemOPC = serverObject.addItem(Tag.TAG_TO_ID_MAPPING.get(tag));
+        itemsToRead.put(tag, itemOPC);
         opcDataAccess.addItem(opcId, (item, state) -> {
           try {
-            itemsToRead.put(tag, item);
+
             final int dataType = state.getValue().getType();
             switch (dataType) {
               case JIVariant.VT_BOOL:

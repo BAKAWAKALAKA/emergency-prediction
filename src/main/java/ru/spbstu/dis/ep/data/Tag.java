@@ -13,6 +13,7 @@ public enum Tag {
   REACTOR_Temperature3,
   REACTOR_Active_Temperature_Set,
   REACTOR_Current_Process_Temperature,
+  REACTOR_Controlled_TEMPERATURE,
   REACTOR_Controlled_Output_From_Pump_P201,
   REACTOR_ControlPanel_mixing_pump_P201_on,
   MIX_tank_B204_top,
@@ -28,7 +29,7 @@ public enum Tag {
   FILT_downstream_station_pump_P102_on,
   FILT_open_knife_gate_V101_and_close_butte_V103,
   MIX_tank_B201_water_top_level_sensor,
-  MIX_tank_B201_water_bottom_level_sensor;
+  MIX_tank_B201_water_bottom_level_sensor, REACTOR_DOWNSTREAM_ON;
 
   public static HashMap<Tag, String> TAG_TO_ID_MAPPING = Maps.newHashMap();
   static {
@@ -51,7 +52,7 @@ public enum Tag {
     TAG_TO_ID_MAPPING.put(MIX_valve_V201_ToMainTank_on, "0.2/A/2M3");
     TAG_TO_ID_MAPPING.put(MIX_valve_V202_ToMainTank_on, "0.2/A/2M4");
     TAG_TO_ID_MAPPING.put(MIX_valve_V203_ToMainTank_on, "0.2/A/2M4");
-    TAG_TO_ID_MAPPING.put(MIX_ControlPanel_FLOW_SPEED, "0.2/M/2PV1_TP");
+    TAG_TO_ID_MAPPING.put(MIX_ControlPanel_FLOW_SPEED, "0.2/A/2PV1_TP");
     TAG_TO_ID_MAPPING.put(MIX_PumpToMainTank_P201_on, "0.2/A/2M1");
     TAG_TO_ID_MAPPING.put(MIX_tank_B201_water_top_level_sensor, "0.2/A/2B2");
     TAG_TO_ID_MAPPING.put(MIX_tank_B201_water_bottom_level_sensor, "0.2/A/2B3");

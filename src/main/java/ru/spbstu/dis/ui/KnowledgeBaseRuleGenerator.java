@@ -51,7 +51,7 @@ public class KnowledgeBaseRuleGenerator {
 	static InputVariable tCloseness;
 	static InputVariable tankOverflowRisk;
 
-	private static void generateRulesForOverflowOfTank() {
+	public static void generateRulesForOverflowOfTank() {
 		engine.setName("EmergencyPredictor");
 		tGrowth = new InputVariable(growthName);
 		generateTriangularTerm(tGrowth);
@@ -64,6 +64,15 @@ public class KnowledgeBaseRuleGenerator {
 		tankOverflowRisk = new InputVariable(riskName);
 		generateTriangularTerm(tankOverflowRisk);
 		engine.addInputVariable(tankOverflowRisk);
+
+    action = new OutputVariable();
+    action.setName("ACTION");
+    action.setRange(0.000, 1.000);
+    action.setDefaultValue(Double.NaN);
+    action.addTerm(new Triangle("DO_NOTHING", 0.000, 0.250, 0.500));
+    action.addTerm(new Triangle("USER_DECISION", 0.250, 0.500, 0.750));
+    action.addTerm(new Triangle("EMERGENCY_STOP", 0.500, 0.750, 1.000));
+    engine.addOutputVariable(action);
 
 		RuleBlock ruleBlock = new RuleBlock("firstBlock", new Minimum(), new Maximum(), new Minimum());
 
@@ -129,14 +138,6 @@ public class KnowledgeBaseRuleGenerator {
 				+ highLevelName + " then " + actionName + " is " + userDecisionAction, engine));
 		engine.addRuleBlock(ruleBlock);
 
-		action = new OutputVariable();
-		action.setName("ACTION");
-		action.setRange(0.000, 1.000);
-		action.setDefaultValue(Double.NaN);
-		action.addTerm(new Triangle("DO_NOTHING", 0.000, 0.250, 0.500));
-		action.addTerm(new Triangle("USER_DECISION", 0.250, 0.500, 0.750));
-		action.addTerm(new Triangle("EMERGENCY_STOP", 0.500, 0.750, 1.000));
-		engine.addOutputVariable(action);
 
 		engine.configure(new AlgebraicProduct(), new Maximum(), new Minimum(), new Maximum(), new Bisector());
 	}
