@@ -16,9 +16,9 @@ public class TagsReadingTest {
 		final Map<Tag, Double> actualValues = opcDataReader.getActualValues();
 
 		// then
-		assertThat(actualValues.get(Tag.MIX_PUMP_2M3)).isNotNull();
-		assertThat(actualValues.get(Tag.MIX_PUMP_2M4)).isNotNull();
-		assertThat(actualValues.get(Tag.MIX_PUMP_2M5)).isNotNull();
+		assertThat(actualValues.get(Tag.MIX_valve_V201_ToMainTank_on)).isNotNull();
+		assertThat(actualValues.get(Tag.MIX_valve_V202_ToMainTank_on)).isNotNull();
+		assertThat(actualValues.get(Tag.MIX_valve_V203_ToMainTank_on)).isNotNull();
   }
 
 	@Test
@@ -30,8 +30,8 @@ public class TagsReadingTest {
 		final Map<Tag, Double> actualValues = opcDataReader.getActualValues();
 
 		// then
-		assertThat(actualValues.get(Tag.MIX_FLOW_SPEED)).isNotNull();
-		assertThat(actualValues.get(Tag.MIX_WATER_HIGH_LVL_SENSOR)).isNotNull();
-		assertThat(actualValues.get(Tag.MIX_MAIN_PUMP)).isNotNull();
+		assertThat(actualValues.get(Tag.MIX_ControlPanel_FLOW_SPEED)).isNotNull();
+		assertThat(actualValues.get(Tag.MIX_tank_B201_water_top_level_sensor)).isNotNull();
+		assertThat(actualValues.get(Tag.MIX_PumpToMainTank_P201_on)).isNotNull();
 	}
 }
