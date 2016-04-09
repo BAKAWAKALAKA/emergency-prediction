@@ -51,7 +51,7 @@ public enum Tag {
     TAG_TO_ID_MAPPING.put(MIX_valve_V201_ToMainTank_on, "0.2/A/2M3");
     TAG_TO_ID_MAPPING.put(MIX_valve_V202_ToMainTank_on, "0.2/A/2M4");
     TAG_TO_ID_MAPPING.put(MIX_valve_V203_ToMainTank_on, "0.2/A/2M4");
-    TAG_TO_ID_MAPPING.put(MIX_ControlPanel_FLOW_SPEED, "0.2/A/2PV1_TP");
+    TAG_TO_ID_MAPPING.put(MIX_ControlPanel_FLOW_SPEED, "0.2/M/2PV1_TP");
     TAG_TO_ID_MAPPING.put(MIX_PumpToMainTank_P201_on, "0.2/A/2M1");
     TAG_TO_ID_MAPPING.put(MIX_tank_B201_water_top_level_sensor, "0.2/A/2B2");
     TAG_TO_ID_MAPPING.put(MIX_tank_B201_water_bottom_level_sensor, "0.2/A/2B3");
