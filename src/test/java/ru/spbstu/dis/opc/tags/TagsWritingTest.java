@@ -26,7 +26,7 @@ public class TagsWritingTest {
     writeThread.scheduleWithFixedDelay(() -> {
       final JIVariant value = new JIVariant(i.incrementAndGet());
       try {
-        Item item = opcDataReader.getItemsToRead().get(Tag.PRESSURE);
+        Item item = opcDataReader.getItemsToRead().get(Tag.MIX_tank_B204_top);
 
         System.out.println(">>> " + "writing value " + i.get());
         item.write(value);
@@ -50,12 +50,12 @@ public class TagsWritingTest {
     ScheduledExecutorService writeThread = Executors.newSingleThreadScheduledExecutor();
     final AtomicInteger i = new AtomicInteger(0);
     while (true) {
-      final JIVariant value = new JIVariant(i.incrementAndGet()*0.1);
+      final JIVariant value = new JIVariant(1);
       try {
         // when
         final Map<Tag, Double> actualValues = opcDataReader.getActualValues();
         System.out.println(actualValues);
-        Item item = opcDataReader.getItemsToRead().get(Tag.PRESSURE);
+        Item item = opcDataReader.getItemsToRead().get(Tag.MIX_tank_B204_top);
 
         System.out.println(">>> " + "writing value " + value.toString());
         if (item != null) {

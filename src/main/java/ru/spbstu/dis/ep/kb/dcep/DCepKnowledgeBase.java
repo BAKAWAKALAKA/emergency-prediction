@@ -49,8 +49,8 @@ public class DCepKnowledgeBase implements KnowledgeBase, Serializable{
 
       JavaDStream<ChosenAction> actionStream = dataInputReceiver.map(dataInput -> {
         StaticBlockingSiddhi.supplyData(
-            dataInput.getDataForTag(Tag.PRESSURE),
-            dataInput.getDataForTag(Tag.LOWER_PRESSURE));
+            dataInput.getDataForTag(Tag.FILT_downstream_station_pump_P102_on),
+            dataInput.getDataForTag(Tag.FILT_foul_water_pump_P101_on));
         return StaticBlockingSiddhi.getAction();
 //        return new ChosenAction("ad");
       });

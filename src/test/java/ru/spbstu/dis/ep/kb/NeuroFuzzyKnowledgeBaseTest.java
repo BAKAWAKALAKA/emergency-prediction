@@ -37,7 +37,7 @@ public class NeuroFuzzyKnowledgeBaseTest {
 class StupidNeuralNetwork implements NeuralNetwork {
   @Override
   public NeuralNetworkOutput inferOutput(final DataInput input) {
-    if (input.getDataForTag(Tag.PRESSURE) > 5) {
+    if (input.getDataForTag(Tag.MIX_valve_V202_ToMainTank_on) > 5) {
       return new NeuralNetworkOutput("emergency", 1);
     } else {
       return new NeuralNetworkOutput("emergency", 0);
@@ -48,7 +48,7 @@ class StupidNeuralNetwork implements NeuralNetwork {
 class OtherStupidNeuralNetwork implements NeuralNetwork {
   @Override
   public NeuralNetworkOutput inferOutput(final DataInput input) {
-    if (input.getDataForTag(Tag.PRESSURE) > 50) {
+    if (input.getDataForTag(Tag.FILT_foul_water_pump_P101_on) > 50) {
       return new NeuralNetworkOutput("emergency", 1);
     } else {
       return new NeuralNetworkOutput("emergency", 0);

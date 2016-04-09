@@ -47,8 +47,8 @@ public class DataInput implements Serializable{
       final double pressure,
       final double lowerPressure) {
     final HashMap<Tag, Double> data = new HashMap<>();
-    data.put(Tag.PRESSURE, pressure);
-    data.put(Tag.LOWER_PRESSURE, lowerPressure);
+//    data.put(Tag.PRESSURE, pressure);
+//    data.put(Tag.LOWER_PRESSURE, lowerPressure);
     return new DataInput(data);
   }
 }
