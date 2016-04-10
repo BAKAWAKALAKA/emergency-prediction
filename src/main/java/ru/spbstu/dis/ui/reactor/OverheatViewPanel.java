@@ -1,9 +1,6 @@
-package ru.spbstu.dis.ui;
+package ru.spbstu.dis.ui.reactor;
 
-import com.fuzzylite.FuzzyLite;
-import com.fuzzylite.Op;
 import com.fuzzylite.variable.InputVariable;
-import com.google.common.util.concurrent.AtomicDouble;
 import org.jfree.data.time.Millisecond;
 import org.jinterop.dcom.common.JIException;
 import org.jinterop.dcom.common.JISystem;
@@ -22,7 +19,12 @@ import org.openscada.opc.lib.da.Server;
 import org.openscada.opc.lib.da.SyncAccess;
 import popup.ssn.NotificationPopup;
 import ru.spbstu.dis.ep.data.Tag;
+import ru.spbstu.dis.ui.DecisionSupportList;
+import ru.spbstu.dis.ui.DynamicDataChart;
 import static ru.spbstu.dis.ui.KnowledgeBaseRuleGenerator.*;
+import ru.spbstu.dis.ui.MeterChart;
+import ru.spbstu.dis.ui.PopupTester;
+import ru.spbstu.dis.ui.Thermometer;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -32,7 +34,7 @@ import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class MainPanel {
+public class OverheatViewPanel {
 
   static double growthValue;
 
@@ -78,20 +80,20 @@ public class MainPanel {
     initGrowthValueChart();
     initRiskValueChart();
     initThermometerChart();
+    initMeterChart();
     initClosenessValueChart();
     SwingUtilities
-        .invokeLater(() -> decisionSupportList = new DecisionSupportList("Decisions List"));
+        .invokeLater(() -> decisionSupportList = new DecisionSupportList("Decisions Support List"));
     runSimulation();
   }
 
   private static void initThermometerChart() {
-    final Thermometer demo = new Thermometer("Heat station temperature");
+    final Thermometer demo = new Thermometer("Температура реактора");
 
     Thread th = new Thread(() -> {
       while (true) {
-        demo.value = growthValue;
-        demo.dataset.setValue(growthValue * MAX_TEMPERATURE);
-        final Millisecond now = new Millisecond();
+        demo.setValue(growthValue);
+        demo.getDataset().setValue(growthValue * MAX_TEMPERATURE);
         try {
           Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -101,21 +103,37 @@ public class MainPanel {
     });
     th.start();
     final JPanel titlePanel = new JPanel(new FlowLayout());
-    titlePanel.add(new JLabel("Heating Station control"));
+    titlePanel.add(demo.getChartPanel());
     closenessChartFrame.add(titlePanel);
-    closenessChartFrame.addChart(demo.chartPanel);
   }
 
-  private static DynamicDataChart closenessChartFrame = new DynamicDataChart("Closeness Value");
+  private static void initMeterChart() {
+    final MeterChart demo = new MeterChart("Скорость кулера");
+
+    Thread th = new Thread(() -> {
+      while (true) {
+        demo.setValue(growthValue);
+        demo.getDataset().setValue(growthValue * MAX_TEMPERATURE);
+        try {
+          Thread.sleep(1000);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
+    });
+    th.start();
+    final JPanel titlePanel = new JPanel(new FlowLayout());
+    titlePanel.add(demo.getChartPanel());
+    closenessChartFrame.add(titlePanel);
+  }
+
+  private static DynamicDataChart closenessChartFrame = new DynamicDataChart("Близость аварии");
 
   private static void initClosenessValueChart() {
 
     Thread th = new Thread(() -> {
       while (true) {
-        closenessChartFrame.lastValue = closenessValue * MAX_TEMPERATURE;
-        final Millisecond now = new Millisecond();
-        System.out.println("Now = " + now.toString());
-        closenessChartFrame.series.add(new Millisecond(), closenessChartFrame.lastValue);
+        closenessChartFrame.setLastValue(closenessValue * MAX_TEMPERATURE);
         try {
           Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -133,14 +151,14 @@ public class MainPanel {
   }
 
   private static void initGrowthValueChart() {
-    final DynamicDataChart demo = new DynamicDataChart("Growth value");
+    final DynamicDataChart demo = new DynamicDataChart("Прирост значения");
 
     Thread th = new Thread(() -> {
       while (true) {
-        demo.lastValue = growthValue * MAX_TEMPERATURE;
+        demo.setLastValue(growthValue * MAX_TEMPERATURE);
         final Millisecond now = new Millisecond();
         System.out.println("Now = " + now.toString());
-        demo.series.add(new Millisecond(), demo.lastValue);
+        demo.getSeries().add(new Millisecond(), demo.getLastValue());
         try {
           Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -150,18 +168,18 @@ public class MainPanel {
     });
     th.start();
 
-    closenessChartFrame.addChart(demo.chartPanel);
+    closenessChartFrame.addChart(demo.getChartPanel());
   }
 
   private static void initRiskValueChart() {
-    final DynamicDataChart demo = new DynamicDataChart("Tank Overflow Risk");
+    final DynamicDataChart demo = new DynamicDataChart("Вероятность перегрева");
 
     Thread th = new Thread(() -> {
       while (true) {
-        demo.lastValue = tankOverheatClosenessValue;
+        demo.setLastValue(tankOverheatClosenessValue);
         final Millisecond now = new Millisecond();
         System.out.println("Now = " + now.toString());
-        demo.series.add(new Millisecond(), demo.lastValue);
+        demo.getSeries().add(new Millisecond(), demo.getLastValue());
         try {
           Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -171,7 +189,7 @@ public class MainPanel {
     });
     th.start();
 
-    closenessChartFrame.addChart(demo.chartPanel);
+    closenessChartFrame.addChart(demo.getChartPanel());
   }
 
   private static void runSimulation() {
@@ -313,19 +331,18 @@ public class MainPanel {
   DuplicateGroupException, AddFailedException, InterruptedException {
 
     reactorHeaterItemOPC.write(new JIVariant(true));
-    closenessValue =0d;
+    closenessValue = 0d;
 
     while (true) {
       Thread.sleep(1000);
       // TODO change to formula of water tank filling
-      modellingTemperature = modellingTemperature +  1d;
+      modellingTemperature = modellingTemperature + 1d;
       tankOverheatClosenessValue = 0.2d;
-      tankOverflowRisk.setInputValue(modellingTemperature/MAX_TEMPERATURE);
+      tankOverflowRisk.setInputValue(modellingTemperature / MAX_TEMPERATURE);
       tCloseness.setInputValue(tankOverheatClosenessValue / MAX_TEMPERATURE);
       reactorTempItemOPC.write(new JIVariant(tankOverheatClosenessValue));
       decisionSupportList.getSeries().add(new Millisecond(), tankOverheatClosenessValue);
       engine.process();
-
 
       if (action.highestMembershipTerm(action.getOutputValue()) != null
           && action.highestMembershipTerm(action.getOutputValue()).getName()
@@ -351,23 +368,23 @@ public class MainPanel {
         }
         return;
       }
-//      FuzzyLite.logger()
-//          .info(String.format(
-//              "growth=%s, closeness=%s, tankOverHeatRisk=%s -> " + actionName
-//                  + ".output=%s, action=%s",
-//              Op.str(growthValue), Op.str(closenessValue), Op.str(tankOverheatClosenessValue),
-//              Op.str(action.getOutputValue()), action.fuzzyOutputValue()));
-//      notifier(
-//          String.format(
-//              "GROWTH=%s,\nCLOSENESS=%s,\nOVERF" + lowLevelName + "_RISK=%s " + "->\n"
-//                  + " RECOMMENDED "
-//                  + actionName + "=%s,\nACTIONS=%s",
-//              tGrowth.highestMembershipTerm(tGrowth.getInputValue()).getName(),
-//              tCloseness.highestMembershipTerm(closenessValue).getName(),
-//              tankOverHeatRisk.highestMembershipTerm(tankOverheatClosenessValue).getName(),
-//              action.highestMembershipTerm(action.getOutputValue()).getName(),
-//              action.fuzzyOutputValue()),
-//          tankOverheatClosenessValue);
+      //      FuzzyLite.logger()
+      //          .info(String.format(
+      //              "growth=%s, closeness=%s, tankOverHeatRisk=%s -> " + actionName
+      //                  + ".output=%s, action=%s",
+      //              Op.str(growthValue), Op.str(closenessValue), Op.str(tankOverheatClosenessValue),
+      //              Op.str(action.getOutputValue()), action.fuzzyOutputValue()));
+      //      notifier(
+      //          String.format(
+      //              "GROWTH=%s,\nCLOSENESS=%s,\nOVERF" + lowLevelName + "_RISK=%s " + "->\n"
+      //                  + " RECOMMENDED "
+      //                  + actionName + "=%s,\nACTIONS=%s",
+      //              tGrowth.highestMembershipTerm(tGrowth.getInputValue()).getName(),
+      //              tCloseness.highestMembershipTerm(closenessValue).getName(),
+      //              tankOverHeatRisk.highestMembershipTerm(tankOverheatClosenessValue).getName(),
+      //              action.highestMembershipTerm(action.getOutputValue()).getName(),
+      //              action.fuzzyOutputValue()),
+      //          tankOverheatClosenessValue);
       try {
         Thread.sleep(1000);
       } catch (InterruptedException e) {
@@ -387,7 +404,7 @@ public class MainPanel {
         options,
         options[2]);
     if (n == 1) {
-      modellingTemperature-=- 10;
+      modellingTemperature -= -10;
       try {
 
         reactorTempItemOPC.write(new JIVariant(modellingTemperature));
@@ -396,7 +413,7 @@ public class MainPanel {
       }
     }
     if (n == 2) {
-      modellingTemperature-= 20;
+      modellingTemperature -= 20;
       try {
 
         reactorTempItemOPC.write(new JIVariant(modellingTemperature));
@@ -430,15 +447,15 @@ public class MainPanel {
   private static void notifier(String term, double dangerLevel) {
 
     if (dangerLevel > 0.5d) {
-      ImageIcon icon = new ImageIcon(MainPanel.class.getResource("/alarm.png"));
+      ImageIcon icon = new ImageIcon(OverheatViewPanel.class.getResource("/alarm.png"));
       showErrorNotif(term, new Color(249, 78, 30), icon);
     }
     if (dangerLevel > 0.0d && dangerLevel <= 0.3d) {
-      ImageIcon icon = new ImageIcon(MainPanel.class.getResource("/info.png"));
+      ImageIcon icon = new ImageIcon(OverheatViewPanel.class.getResource("/info.png"));
       showErrorNotif(term, new Color(127, 176, 72), icon);
     }
     if (dangerLevel > 0.3d && dangerLevel <= 0.5d) {
-      ImageIcon icon = new ImageIcon(MainPanel.class.getResource("/warning.png"));
+      ImageIcon icon = new ImageIcon(OverheatViewPanel.class.getResource("/warning.png"));
       showErrorNotif(term, new Color(249, 236, 100), icon);
     }
   }

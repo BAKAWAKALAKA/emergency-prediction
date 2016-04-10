@@ -21,7 +21,7 @@ public class KnowledgeBaseRuleGenerator {
 
 	static String highLevelName = "HIGH";
 
-	static String emergencyStopAction = "EMERGENCY_STOP";
+	public static String emergencyStopAction = "EMERGENCY_STOP";
 
 	static String normalLevelName = "NORMAL";
 
@@ -31,7 +31,7 @@ public class KnowledgeBaseRuleGenerator {
 
 	static final String riskName = "RISK";
 
-	static String userDecisionAction = "USER_DECISION";
+	public static String userDecisionAction = "USER_DECISION";
 
 	static String lowLevelName = "LOW";
 
@@ -43,13 +43,13 @@ public class KnowledgeBaseRuleGenerator {
 
 	public static final Triangle HIGHT = new Triangle(highLevelName, 0.500, 0.750, 1.000);
 
-	static InputVariable tGrowth;
+	public static InputVariable tGrowth;
 
-	static OutputVariable action;
+	public static OutputVariable action;
 
-	static Engine engine = new Engine();
-	static InputVariable tCloseness;
-	static InputVariable tankOverflowRisk;
+	public static Engine engine = new Engine();
+	public static InputVariable tCloseness;
+	public static InputVariable tankOverflowRisk;
 
 	public static void generateRulesForOverflowOfTank() {
 		engine.setName("EmergencyPredictor");
