@@ -17,7 +17,7 @@ import ru.spbstu.dis.ep.data.opc.OPCDataReader;
  * Created by a.fedorov on 08.04.2016.
  */
 public class KnowledgeBaseRuleGenerator {
-	static String actionName = "ACTION";
+	public static String actionName = "ACTION";
 
 	static String highLevelName = "HIGH";
 
@@ -33,7 +33,7 @@ public class KnowledgeBaseRuleGenerator {
 
 	public static String userDecisionAction = "USER_DECISION";
 
-	static String lowLevelName = "LOW";
+	public static String lowLevelName = "LOW";
 
 	static String doNothingAction = "DO_NOTHING";
 
@@ -41,7 +41,7 @@ public class KnowledgeBaseRuleGenerator {
 
 	public static final Triangle NORMAL = new Triangle(normalLevelName, 0.250, 0.500, 0.750);
 
-	public static final Triangle HIGHT = new Triangle(highLevelName, 0.500, 0.750, 1.000);
+	public static final Triangle HIGHT = new Triangle(highLevelName, 0.500, 0.750, 10.000);
 
 	public static InputVariable tGrowth;
 
@@ -143,7 +143,7 @@ public class KnowledgeBaseRuleGenerator {
 	}
 
 	private static void generateTriangularTerm(InputVariable tankOverflowRisk) {
-		tankOverflowRisk.setRange(0.000, 1.000);
+		tankOverflowRisk.setRange(0.000, 10.000);
 		tankOverflowRisk.addTerm(LOW);
 		tankOverflowRisk.addTerm(NORMAL);
 		tankOverflowRisk.addTerm(HIGHT);

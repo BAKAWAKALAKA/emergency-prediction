@@ -57,7 +57,7 @@ public class OPCTreeReader {
 
         SyncAccess syncAccess = new SyncAccess(server, 200);
 
-      String item = Tag.TAG_TO_ID_MAPPING.get(Tag.REACTOR_DOWNSTREAM_ON);
+      String item = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_valve_V201_ToMainTank_on);
         syncAccess.addItem(item, new DataCallback() {
             @Override
             public

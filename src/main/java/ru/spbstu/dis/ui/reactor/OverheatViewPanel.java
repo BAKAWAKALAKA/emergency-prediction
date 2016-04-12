@@ -48,7 +48,7 @@ public class OverheatViewPanel {
 
   static Item reactorTempSensorOPC;
 
-  public final static Double MAX_TEMPERATURE = 70d;
+  public final static Double MAX_TEMPERATURE = 60d;
 
   static DecisionSupportList decisionSupportList;
 
@@ -92,8 +92,8 @@ public class OverheatViewPanel {
 
     Thread th = new Thread(() -> {
       while (true) {
-        demo.setValue(growthValue);
-        demo.getDataset().setValue(growthValue * MAX_TEMPERATURE);
+        demo.setValue(modellingTemperature);
+        demo.getDataset().setValue(modellingTemperature);
         try {
           Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -112,8 +112,8 @@ public class OverheatViewPanel {
 
     Thread th = new Thread(() -> {
       while (true) {
-        demo.setValue(growthValue);
-        demo.getDataset().setValue(growthValue * MAX_TEMPERATURE);
+        demo.setValue(modellingTemperature*2);
+        demo.getDataset().setValue(modellingTemperature*2);
         try {
           Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -225,7 +225,22 @@ public class OverheatViewPanel {
           }
         }
       });
-
+      String downstream = Tag.TAG_TO_ID_MAPPING.get(Tag.REACTOR_DOWNSTREAM_ON);
+      syncAccess.addItem(downstream, new DataCallback() {
+        @Override
+        public void changed(
+            Item item,
+            ItemState itemState) {
+          System.out.println(item.getId());
+          try {
+            boolean objectAsBoolean = itemState.getValue()
+                .getObjectAsBoolean();
+            System.out.println("Downstream = " + objectAsBoolean);
+          } catch (JIException e) {
+            e.printStackTrace();
+          }
+        }
+      });
       String reactorTemperatureSensor = Tag.TAG_TO_ID_MAPPING
           .get(Tag.REACTOR_Current_Process_Temperature);
       syncAccess.addItem(reactorTemperatureSensor, new DataCallback() {
@@ -288,6 +303,7 @@ public class OverheatViewPanel {
       reactorTempSensorOPC = serverObject.addItem(reactorTemperatureSensor);
       reactorCoolerItemOPC = serverObject.addItem(reactorCooler);
       reactorHeaterItemOPC = serverObject.addItem(reactorHeater);
+      reactorDownStream = serverObject.addItem(downstream);
     } catch (AlreadyConnectedException e) {
       e.printStackTrace();
     } catch (JIException e) {
@@ -331,13 +347,19 @@ public class OverheatViewPanel {
   DuplicateGroupException, AddFailedException, InterruptedException {
 
     reactorHeaterItemOPC.write(new JIVariant(true));
-    closenessValue = 0d;
+    closenessValue = 0.1d;
 
     while (true) {
       Thread.sleep(1000);
+      if(downstrteamTime >=2){
+        reactorDownStream.write(new JIVariant(false));
+      }
+      downstrteamTime++;
+
+      closenessValue = closenessValue + 0.1d;
       // TODO change to formula of water tank filling
       modellingTemperature = modellingTemperature + 1d;
-      tankOverheatClosenessValue = 0.2d;
+      tankOverheatClosenessValue = tankOverheatClosenessValue + 0.2d;
       tankOverflowRisk.setInputValue(modellingTemperature / MAX_TEMPERATURE);
       tCloseness.setInputValue(tankOverheatClosenessValue / MAX_TEMPERATURE);
       reactorTempItemOPC.write(new JIVariant(tankOverheatClosenessValue));
@@ -374,17 +396,17 @@ public class OverheatViewPanel {
       //                  + ".output=%s, action=%s",
       //              Op.str(growthValue), Op.str(closenessValue), Op.str(tankOverheatClosenessValue),
       //              Op.str(action.getOutputValue()), action.fuzzyOutputValue()));
-      //      notifier(
-      //          String.format(
-      //              "GROWTH=%s,\nCLOSENESS=%s,\nOVERF" + lowLevelName + "_RISK=%s " + "->\n"
-      //                  + " RECOMMENDED "
-      //                  + actionName + "=%s,\nACTIONS=%s",
-      //              tGrowth.highestMembershipTerm(tGrowth.getInputValue()).getName(),
-      //              tCloseness.highestMembershipTerm(closenessValue).getName(),
-      //              tankOverHeatRisk.highestMembershipTerm(tankOverheatClosenessValue).getName(),
-      //              action.highestMembershipTerm(action.getOutputValue()).getName(),
-      //              action.fuzzyOutputValue()),
-      //          tankOverheatClosenessValue);
+            notifier(
+                String.format(
+                    "GROWTH=%s,\nCLOSENESS=%s,\nOVERF" + lowLevelName + "_RISK=%s " + "->\n"
+                        + " RECOMMENDED "
+                        + actionName + "=%s,\nACTIONS=%s",
+                    tGrowth.highestMembershipTerm(tGrowth.getInputValue()).getName(),
+                    tCloseness.highestMembershipTerm(closenessValue).getName(),
+                    tankOverHeatRisk.highestMembershipTerm(tankOverheatClosenessValue).getName(),
+                    action.highestMembershipTerm(action.getOutputValue()).getName(),
+                    action.fuzzyOutputValue()),
+                tankOverheatClosenessValue);
       try {
         Thread.sleep(1000);
       } catch (InterruptedException e) {
@@ -395,7 +417,7 @@ public class OverheatViewPanel {
 
   private static boolean showUserDecisionDialog() {
     // show a joptionpane dialog using showMessageDialog
-    Object[] options = {"Turn on coller", "Minus 10 degree from actual temp",
+    Object[] options = {"Turn on coller", "Turn on downstream for 5 sec",
         "Minus 20 degree from actual temp",
         "Stop Heating"};
     int n = JOptionPane.showOptionDialog(closenessChartFrame, "Would you like to stop " +
@@ -404,10 +426,11 @@ public class OverheatViewPanel {
         options,
         options[2]);
     if (n == 1) {
-      modellingTemperature -= -10;
-      try {
 
-        reactorTempItemOPC.write(new JIVariant(modellingTemperature));
+      try {
+        downstrteamTime = 0;
+        modellingTemperature -= 20;
+        reactorDownStream.write(new JIVariant(true));
       } catch (JIException e) {
         e.printStackTrace();
       }
@@ -494,4 +517,8 @@ public class OverheatViewPanel {
   }
 
   private static Item reactorHeaterItemOPC;
+
+  private static Item reactorDownStream;
+
+  private static int downstrteamTime;
 }

@@ -100,7 +100,7 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
     axis.setAutoRange(true);
     axis.setFixedAutoRange(60000.0);  // 60 seconds
     axis = plot.getRangeAxis();
-    axis.setRange(0.0, 100);
+    axis.setRange(0.0, 10.0);
     return result;
   }
 
