@@ -54,9 +54,9 @@ public enum Tag {
     TAG_TO_ID_MAPPING.put(MIX_tank_B204_water_bottom_level_sensor, "MixingConnection/E/2B7");
     TAG_TO_ID_MAPPING.put(MIX_ControlPanel_DownstreamStation_pump_P202_on, "MixingConnection/M/TP_2M2");
     TAG_TO_ID_MAPPING.put(MIX_ControlPanel_PumpToMainTank_P201_on, "MixingConnection/M/TP_2M1");
-    TAG_TO_ID_MAPPING.put(MIX_valve_V201_ToMainTank_on, "MixingConnection/A/2M3");
-    TAG_TO_ID_MAPPING.put(MIX_valve_V202_ToMainTank_on, "MixingConnection/A/2M4");
-    TAG_TO_ID_MAPPING.put(MIX_valve_V203_ToMainTank_on, "MixingConnection/A/2M4");
+    TAG_TO_ID_MAPPING.put(MIX_valve_V201_ToMainTank_on, "MixingConnection/M/TP_2M3");
+    TAG_TO_ID_MAPPING.put(MIX_valve_V202_ToMainTank_on, "MixingConnection/M/TP_2M4");
+    TAG_TO_ID_MAPPING.put(MIX_valve_V203_ToMainTank_on, "MixingConnection/M/TP_2M5");
     TAG_TO_ID_MAPPING.put(MIX_ControlPanel_FLOW_SPEED, "MixingConnection/M/2PV1_TP");
     TAG_TO_ID_MAPPING.put(MIX_PumpToMainTank_P201_on, "MixingConnection/A/2M1");
     TAG_TO_ID_MAPPING.put(MIX_tank_B201_water_top_level_sensor, "MixingConnection/A/2B2");
