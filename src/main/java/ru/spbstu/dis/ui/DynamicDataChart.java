@@ -16,7 +16,9 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.data.time.Day;
 import org.jfree.data.time.Millisecond;
+import org.jfree.data.time.RegularTimePeriod;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
@@ -28,6 +30,8 @@ import org.jfree.ui.RefineryUtilities;
  * data by clicking on a button.
  */
 public class DynamicDataChart extends ApplicationFrame implements ActionListener {
+
+  private XYPlot plot;
 
   private TimeSeries series;
 
@@ -72,7 +76,7 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
   }
 
   public void addButton() {
-    final JButton button = new JButton("Stop Station");
+    final JButton button = new JButton("Exit");
     button.setBackground(new Color(180, 11, 0));
     button.setSize(300, 80);
     button.setActionCommand("ADD_DATA");
@@ -95,14 +99,16 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
         true,
         false
     );
-    final XYPlot plot = result.getXYPlot();
+    plot = result.getXYPlot();
     ValueAxis axis = plot.getDomainAxis();
     axis.setAutoRange(true);
     axis.setFixedAutoRange(60000.0);  // 60 seconds
     axis = plot.getRangeAxis();
-    axis.setRange(0.0, 10.0);
+    axis.setAutoRange(true);
     return result;
   }
+
+
 
   // ****************************************************************************
   // * JFREECHART DEVELOPER GUIDE                                               *
@@ -182,6 +188,14 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
 
   public void setChartPanel(final ChartPanel chartPanel) {
     this.chartPanel = chartPanel;
+  }
+
+  public XYPlot getPlot() {
+    return plot;
+  }
+
+  public void setPlot(final XYPlot plot) {
+    this.plot = plot;
   }
 }
 

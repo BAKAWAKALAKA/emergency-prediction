@@ -2,6 +2,7 @@ package ru.spbstu.dis.ui.reactor;
 
 import com.fuzzylite.variable.InputVariable;
 import org.jfree.data.time.Millisecond;
+import org.jfree.data.time.TimeSeries;
 import org.jinterop.dcom.common.JIException;
 import org.jinterop.dcom.common.JISystem;
 import org.jinterop.dcom.core.JIVariant;
@@ -65,6 +66,7 @@ public class OverheatViewPanel {
     }
   }
 
+
   public static void main(String[] args) {
     try {
       for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -108,12 +110,12 @@ public class OverheatViewPanel {
   }
 
   private static void initMeterChart() {
-    final MeterChart demo = new MeterChart("Скорость кулера");
+    final MeterChart demo = new MeterChart("Близость аварии");
 
     Thread th = new Thread(() -> {
       while (true) {
-        demo.setValue(modellingTemperature*2);
-        demo.getDataset().setValue(modellingTemperature*2);
+        demo.setValue(closenessValue);
+        demo.getDataset().setValue(closenessValue);
         try {
           Thread.sleep(1000);
         } catch (InterruptedException e) {
