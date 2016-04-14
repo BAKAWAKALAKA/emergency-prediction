@@ -1,11 +1,12 @@
 package ru.spbstu.dis.opc.tags;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import ru.spbstu.dis.ep.data.Tag;
 import ru.spbstu.dis.ep.data.opc.OPCDataReader;
 import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
-
+@Ignore
 public class TagsReadingTest {
   @Test
   public void shouldOPCReaderReadWaterPumpsState() throws InterruptedException {

@@ -2,12 +2,13 @@ package ru.spbstu.dis;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.Ignore;
 import ru.spbstu.dis.ep.EmergencyPredictor;
 import ru.spbstu.dis.ep.data.DataInput;
 import ru.spbstu.dis.ep.kb.ChosenAction;
 import ru.spbstu.dis.ep.kb.KnowledgeBase;
 import java.util.concurrent.atomic.AtomicReference;
-
+@Ignore
 public class EmergencyPredictorTest {
   public void shouldInterConnectComponentsAppropriately() {
     // given

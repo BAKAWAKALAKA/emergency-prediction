@@ -2,6 +2,7 @@ package ru.spbstu.dis.opc.tags;
 
 import org.jinterop.dcom.common.JIException;
 import org.jinterop.dcom.core.JIVariant;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openscada.opc.lib.da.Item;
 import ru.spbstu.dis.ep.data.Tag;
@@ -9,7 +10,7 @@ import ru.spbstu.dis.ep.data.opc.OPCDataReader;
 import java.util.Map;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
-
+@Ignore
 public class TagsWritingTest {
   @Test
   public void shouldOPCWriteToItems()

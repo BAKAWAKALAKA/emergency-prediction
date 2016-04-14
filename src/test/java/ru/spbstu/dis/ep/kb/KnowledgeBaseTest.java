@@ -1,10 +1,11 @@
 package ru.spbstu.dis.ep.kb;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.Ignore;
 import org.junit.Test;
 import ru.spbstu.dis.ep.data.DataInput;
 import ru.spbstu.dis.ep.data.Tag;
-
+@Ignore
 public class KnowledgeBaseTest {
   @Test
   public void shouldInferInSimpleKnowledgeBase_case1()

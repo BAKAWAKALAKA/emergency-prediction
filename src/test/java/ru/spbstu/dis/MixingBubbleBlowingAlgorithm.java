@@ -1,8 +1,11 @@
 package ru.spbstu.dis;
 
+import org.junit.Ignore;
+
 /**
  * Created by el on 09.04.2016.
  */
+@Ignore
 public class MixingBubbleBlowingAlgorithm {
   private int waterSpeedManual;
   private int waterSpeedActual;
