@@ -15,9 +15,9 @@ public class OpcWrapperGuiceModule implements Module {
     binder.bind(Config.class).toProvider(ConfigProvider.class).in(Singleton.class);
   }
 
-  @Provides
   @Singleton
-  public OpcService bindOPcService(Config config) {
+  @Provides
+  OpcService bindOPcService(Config config) {
     if (config.getBoolean("opc.service.real")) {
       return RealOpcService.createForConfig(config);
     } else {
