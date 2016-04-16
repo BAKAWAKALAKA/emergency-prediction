@@ -1,8 +1,8 @@
 package ru.spbstu.dis.ui.reactor;
 
 import com.fuzzylite.variable.InputVariable;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.time.Millisecond;
-import org.jfree.data.time.TimeSeries;
 import org.jinterop.dcom.common.JIException;
 import org.jinterop.dcom.common.JISystem;
 import org.jinterop.dcom.core.JIVariant;
@@ -37,9 +37,9 @@ import java.util.logging.Logger;
 
 public class OverheatViewPanel {
 
-  static double growthValue;
+  static double temperatureGrowthVal;
 
-  static double closenessValue;
+  static double overflowRiskVal;
 
   static double tankOverheatClosenessValue;
 
@@ -49,13 +49,13 @@ public class OverheatViewPanel {
 
   static Item reactorTempSensorOPC;
 
+  static Double modellingTemperature;
+
   public final static Double MAX_TEMPERATURE = 60d;
 
   static DecisionSupportList decisionSupportList;
 
   static ArrayList notifications = new ArrayList();
-
-  static Double modellingTemperature;
 
   static {
     try {
@@ -65,7 +65,6 @@ public class OverheatViewPanel {
       e.printStackTrace();
     }
   }
-
 
   public static void main(String[] args) {
     try {
@@ -114,8 +113,8 @@ public class OverheatViewPanel {
 
     Thread th = new Thread(() -> {
       while (true) {
-        demo.setValue(closenessValue);
-        demo.getDataset().setValue(closenessValue);
+        demo.setValue(overflowRiskVal);
+        demo.getDataset().setValue(overflowRiskVal);
         try {
           Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -129,13 +128,14 @@ public class OverheatViewPanel {
     closenessChartFrame.add(titlePanel);
   }
 
-  private static DynamicDataChart closenessChartFrame = new DynamicDataChart("Близость аварии");
+  private static DynamicDataChart closenessChartFrame = new DynamicDataChart("Вероятность " +
+      "переполнения емкостей");
 
   private static void initClosenessValueChart() {
 
     Thread th = new Thread(() -> {
       while (true) {
-        closenessChartFrame.setLastValue(closenessValue * MAX_TEMPERATURE);
+        closenessChartFrame.setLastValue(overflowRiskVal * MAX_TEMPERATURE);
         try {
           Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -153,11 +153,11 @@ public class OverheatViewPanel {
   }
 
   private static void initGrowthValueChart() {
-    final DynamicDataChart demo = new DynamicDataChart("Прирост значения");
+    final DynamicDataChart demo = new DynamicDataChart("Вероятность аварии");
 
     Thread th = new Thread(() -> {
       while (true) {
-        demo.setLastValue(growthValue * MAX_TEMPERATURE);
+        demo.setLastValue(temperatureGrowthVal);
         final Millisecond now = new Millisecond();
         System.out.println("Now = " + now.toString());
         demo.getSeries().add(new Millisecond(), demo.getLastValue());
@@ -170,7 +170,10 @@ public class OverheatViewPanel {
     });
     th.start();
 
-    closenessChartFrame.addChart(demo.getChartPanel());
+    //    closenessChartFrame.addChart(demo.getChartPanel());
+    XYPlot plot = (XYPlot) closenessChartFrame.getChartPanel().getChart().getPlot();
+    plot.setDataset(plot.getDatasetCount(), ((XYPlot) demo.getChartPanel().getChart().getPlot()
+    ).getDataset(0));
   }
 
   private static void initRiskValueChart() {
@@ -191,7 +194,9 @@ public class OverheatViewPanel {
     });
     th.start();
 
-    closenessChartFrame.addChart(demo.getChartPanel());
+    XYPlot plot = (XYPlot) closenessChartFrame.getChartPanel().getChart().getPlot();
+    plot.setDataset(plot.getDatasetCount(), ((XYPlot) demo.getChartPanel().getChart().getPlot()
+    ).getDataset(0));
   }
 
   private static void runSimulation() {
@@ -211,91 +216,19 @@ public class OverheatViewPanel {
       SyncAccess syncAccess = new SyncAccess(server, 200);
 
       String reactorTemperature = Tag.TAG_TO_ID_MAPPING.get(Tag.REACTOR_Controlled_TEMPERATURE);
-      syncAccess.addItem(reactorTemperature, new DataCallback() {
-        @Override
-        public void changed(
-            Item item,
-            ItemState itemState) {
-          System.out.println(item.getId());
-          try {
-            float objectAsBoolean = itemState.getValue()
-                .getObjectAsFloat();
-            tCloseness.setInputValue(objectAsBoolean / MAX_TEMPERATURE);
-            System.out.println("reactor temperature set = " + objectAsBoolean);
-          } catch (JIException e) {
-            e.printStackTrace();
-          }
-        }
-      });
+      addFloatItemToOPC(syncAccess, reactorTemperature);
       String downstream = Tag.TAG_TO_ID_MAPPING.get(Tag.REACTOR_DOWNSTREAM_ON);
-      syncAccess.addItem(downstream, new DataCallback() {
-        @Override
-        public void changed(
-            Item item,
-            ItemState itemState) {
-          System.out.println(item.getId());
-          try {
-            boolean objectAsBoolean = itemState.getValue()
-                .getObjectAsBoolean();
-            System.out.println("Downstream = " + objectAsBoolean);
-          } catch (JIException e) {
-            e.printStackTrace();
-          }
-        }
-      });
+      createBooleanObject(syncAccess, downstream);
       String reactorTemperatureSensor = Tag.TAG_TO_ID_MAPPING
           .get(Tag.REACTOR_Current_Process_Temperature);
-      syncAccess.addItem(reactorTemperatureSensor, new DataCallback() {
-        @Override
-        public void changed(
-            Item item,
-            ItemState itemState) {
-          System.out.println(item.getId());
-          try {
-            float objectAsBoolean = itemState.getValue()
-                .getObjectAsFloat();
-            tGrowth.setInputValue(objectAsBoolean / MAX_TEMPERATURE);
-            System.out.println("reactor real temperature = " + objectAsBoolean);
-          } catch (JIException e) {
-            e.printStackTrace();
-          }
-        }
-      });
+      addFloatItemToOPC(syncAccess, reactorTemperatureSensor);
 
       String reactorCooler = Tag.TAG_TO_ID_MAPPING.get(Tag.REACTOR_ControlPanel_Mixing_on);
-      syncAccess.addItem(reactorCooler, new DataCallback() {
-        @Override
-        public void changed(
-            Item item,
-            ItemState itemState) {
-          System.out.println(item.getId());
-          try {
-            boolean objectAsBoolean = itemState.getValue()
-                .getObjectAsBoolean();
-            System.out.println("reactor real temperature = " + objectAsBoolean);
-          } catch (JIException e) {
-            e.printStackTrace();
-          }
-        }
-      });
+      createBooleanObject(syncAccess, reactorCooler);
 
       String reactorHeater = Tag.TAG_TO_ID_MAPPING
           .get(Tag.REACTOR_ControlPanel_mixing_pump_P201_on);
-      syncAccess.addItem(reactorHeater, new DataCallback() {
-        @Override
-        public void changed(
-            Item item,
-            ItemState itemState) {
-          System.out.println(item.getId());
-          try {
-            boolean objectAsBoolean = itemState.getValue()
-                .getObjectAsBoolean();
-            System.out.println("reactor heating is active = " + objectAsBoolean);
-          } catch (JIException e) {
-            e.printStackTrace();
-          }
-        }
-      });
+      createBooleanObject(syncAccess, reactorHeater);
 
       syncAccess.bind();
       final Group serverObject = server.addGroup("test");
@@ -343,28 +276,57 @@ public class OverheatViewPanel {
     th.start();
   }
 
+  private static void addFloatItemToOPC(final SyncAccess syncAccess,
+      final String reactorTemperature)
+  throws JIException, AddFailedException {
+    syncAccess.addItem(reactorTemperature, new DataCallback() {
+      @Override
+      public void changed(
+          Item item,
+          ItemState itemState) {
+        System.out.println(item.getId());
+        try {
+          float objectAsBoolean = itemState.getValue()
+              .getObjectAsFloat();
+          System.out.println("reactor temperature set = " + objectAsBoolean);
+        } catch (JIException e) {
+          e.printStackTrace();
+        }
+      }
+    });
+  }
+
+  private static void createBooleanObject(final SyncAccess syncAccess, final String reactorCooler)
+  throws JIException, AddFailedException {
+    syncAccess.addItem(reactorCooler, new DataCallback() {
+      @Override
+      public void changed(
+          Item item,
+          ItemState itemState) {
+        System.out.println(item.getId());
+        try {
+          boolean objectAsBoolean = itemState.getValue()
+              .getObjectAsBoolean();
+          System.out.println("reactor real temperature = " + objectAsBoolean);
+        } catch (JIException e) {
+          e.printStackTrace();
+        }
+      }
+    });
+  }
+
   private static void getDataFromOPC(final InputVariable tGrowth, final InputVariable tCloseness,
       final InputVariable tankOverHeatRisk)
   throws AlreadyConnectedException, JIException, UnknownHostException, NotConnectedException,
   DuplicateGroupException, AddFailedException, InterruptedException {
 
     reactorHeaterItemOPC.write(new JIVariant(true));
-    closenessValue = 0.1d;
-
+    overflowRiskVal = 0.1d;
     while (true) {
       Thread.sleep(1000);
-      if(downstrteamTime >=2){
-        reactorDownStream.write(new JIVariant(false));
-      }
       downstrteamTime++;
-
-      closenessValue = closenessValue + 0.1d;
-      // TODO change to formula of water tank filling
-      modellingTemperature = modellingTemperature + 1d;
-      tankOverheatClosenessValue = tankOverheatClosenessValue + 0.2d;
-      tankOverflowRisk.setInputValue(modellingTemperature / MAX_TEMPERATURE);
-      tCloseness.setInputValue(tankOverheatClosenessValue / MAX_TEMPERATURE);
-      reactorTempItemOPC.write(new JIVariant(tankOverheatClosenessValue));
+      tankOverheatClosenessValue = reactorTempSensorOPC.read(true).getValue().getObjectAsDouble();
+      temperatureGrowthVal = reactorTempItemOPC.read(true).getValue().getObjectAsDouble();
       decisionSupportList.getSeries().add(new Millisecond(), tankOverheatClosenessValue);
       engine.process();
 
@@ -375,40 +337,34 @@ public class OverheatViewPanel {
           return;
         }
       }
-      if (action.highestMembershipTerm(action.getOutputValue()) == null
-          || action.highestMembershipTerm(action.getOutputValue()).getName()
-          .equals(emergencyStopAction)) {
-        // show a joptionpane dialog using showMessageDialog
-        JOptionPane.showMessageDialog(closenessChartFrame, "Water Overflow",
-            "Emergency situation, Station " + "stopped", JOptionPane.ERROR_MESSAGE);
-        modellingTemperature = 0d;
-        try {
-
-          reactorTempItemOPC.write(new JIVariant(modellingTemperature));
-          reactorTempItemOPC.write(new JIVariant(false));
-          reactorHeaterItemOPC.write(new JIVariant(false));
-        } catch (JIException e) {
-          e.printStackTrace();
-        }
-        return;
-      }
-      //      FuzzyLite.logger()
-      //          .info(String.format(
-      //              "growth=%s, closeness=%s, tankOverHeatRisk=%s -> " + actionName
-      //                  + ".output=%s, action=%s",
-      //              Op.str(growthValue), Op.str(closenessValue), Op.str(tankOverheatClosenessValue),
-      //              Op.str(action.getOutputValue()), action.fuzzyOutputValue()));
-            notifier(
-                String.format(
-                    "GROWTH=%s,\nCLOSENESS=%s,\nOVERF" + lowLevelName + "_RISK=%s " + "->\n"
-                        + " RECOMMENDED "
-                        + actionName + "=%s,\nACTIONS=%s",
-                    tGrowth.highestMembershipTerm(tGrowth.getInputValue()).getName(),
-                    tCloseness.highestMembershipTerm(closenessValue).getName(),
-                    tankOverHeatRisk.highestMembershipTerm(tankOverheatClosenessValue).getName(),
-                    action.highestMembershipTerm(action.getOutputValue()).getName(),
-                    action.fuzzyOutputValue()),
-                tankOverheatClosenessValue);
+//      if (action.highestMembershipTerm(action.getOutputValue()) == null
+//          || action.highestMembershipTerm(action.getOutputValue()).getName()
+//          .equals(emergencyStopAction)) {
+//        // show a joptionpane dialog using showMessageDialog
+//        JOptionPane.showMessageDialog(closenessChartFrame, "Аварийная ситуация",
+//            "Аварийная ситуация" + ", станция остановлена", JOptionPane.ERROR_MESSAGE);
+//        modellingTemperature = 0d;
+//        try {
+//
+//          reactorTempItemOPC.write(new JIVariant(modellingTemperature));
+//          reactorTempItemOPC.write(new JIVariant(false));
+//          reactorHeaterItemOPC.write(new JIVariant(false));
+//        } catch (JIException e) {
+//          e.printStackTrace();
+//        }
+//        return;
+//      }
+      notifier(
+          String.format(
+              "GROWTH=%s,\nCLOSENESS=%s,\nOVERF" + lowLevelName + "_RISK=%s " + "->\n"
+                  + " RECOMMENDED "
+                  + actionName + "=%s,\nACTIONS=%s",
+              tGrowth.highestMembershipTerm(tGrowth.getInputValue()).getName(),
+              tCloseness.highestMembershipTerm(overflowRiskVal).getName(),
+              tankOverHeatRisk.highestMembershipTerm(tankOverheatClosenessValue).getName(),
+              action.highestMembershipTerm(action.getOutputValue()).getName(),
+              action.fuzzyOutputValue()),
+          tankOverheatClosenessValue);
       try {
         Thread.sleep(1000);
       } catch (InterruptedException e) {
@@ -422,9 +378,8 @@ public class OverheatViewPanel {
     Object[] options = {"Turn on coller", "Turn on downstream for 5 sec",
         "Minus 20 degree from actual temp",
         "Stop Heating"};
-    int n = JOptionPane.showOptionDialog(closenessChartFrame, "Would you like to stop " +
-            "heating?",
-        "User decision", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+    int n = JOptionPane.showOptionDialog(closenessChartFrame, "Принятие решений?",
+        "Вывод из НС", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null,
         options,
         options[2]);
     if (n == 1) {
