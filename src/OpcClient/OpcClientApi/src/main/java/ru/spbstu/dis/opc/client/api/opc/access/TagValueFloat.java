@@ -16,4 +16,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     property = "type")
 public class TagValueFloat {
   public Float value;
+
+  private TagValueFloat() {
+  }
+
+  public TagValueFloat(final Float value) {
+    this.value = value;
+  }
 }

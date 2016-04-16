@@ -17,4 +17,11 @@ import java.util.Set;
     property = "type")
 public class AvailableTags {
   public Set<String> tags;
+
+  private AvailableTags() {
+  }
+
+  public AvailableTags(final Set<String> tags) {
+    this.tags = tags;
+  }
 }

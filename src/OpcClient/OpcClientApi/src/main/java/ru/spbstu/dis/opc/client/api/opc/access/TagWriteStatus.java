@@ -16,4 +16,12 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     property = "type")
 public class TagWriteStatus {
   public Integer status;
+
+  private TagWriteStatus() {
+  }
+
+  public TagWriteStatus(final Integer status) {
+
+    this.status = status;
+  }
 }

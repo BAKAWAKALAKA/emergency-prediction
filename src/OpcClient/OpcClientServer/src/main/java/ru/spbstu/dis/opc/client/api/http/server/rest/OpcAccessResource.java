@@ -1,31 +1,46 @@
 package ru.spbstu.dis.opc.client.api.http.server.rest;
 
+import com.google.inject.Inject;
+import ru.spbstu.dis.opc.client.api.http.server.services.OpcService;
 import ru.spbstu.dis.opc.client.api.opc.access.AvailableTags;
 import ru.spbstu.dis.opc.client.api.opc.access.OpcAccessApi;
 import ru.spbstu.dis.opc.client.api.opc.access.TagValueBoolean;
 import ru.spbstu.dis.opc.client.api.opc.access.TagValueFloat;
 import ru.spbstu.dis.opc.client.api.opc.access.TagWriteStatus;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-@Path("api/1.0/opc")
+@Path("/v1/opc")
 @Produces(MediaType.APPLICATION_JSON)
 public class OpcAccessResource implements OpcAccessApi {
+  private final OpcService opcService;
+
+  @Inject
+  public OpcAccessResource(final OpcService opcService) {
+    this.opcService = opcService;
+  }
 
   public AvailableTags availableTags() {
-    return null;
+    return new AvailableTags(opcService.tags());
   }
 
   public TagWriteStatus writeValueForTag(final String tag, final Boolean value) {
-    return null;
+    return new TagWriteStatus(opcService.writeValueForTag(tag, value));
+  }
+
+  public TagWriteStatus writeValueForTag(final String tag, final Float value) {
+    return new TagWriteStatus(opcService.writeValueForTag(tag, value));
   }
 
   public TagValueBoolean readBoolean(final String tag) {
-    return null;
+    return new TagValueBoolean(opcService.readBoolean(tag));
   }
 
   public TagValueFloat readFloat(final String tag) {
-    return null;
+    return new TagValueFloat(opcService.readFloat(tag));
   }
 }

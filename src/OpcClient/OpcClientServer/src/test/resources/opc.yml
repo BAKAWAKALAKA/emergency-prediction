@@ -1,5 +1,5 @@
 server:
-  rootPath: /api/v1/
+  rootPath: /api/
   applicationConnectors:
     - type: http
       port: 7998

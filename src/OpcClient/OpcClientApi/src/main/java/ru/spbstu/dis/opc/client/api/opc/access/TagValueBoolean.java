@@ -16,4 +16,12 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     property = "type")
 public class TagValueBoolean {
   public Boolean value;
+
+  private TagValueBoolean() {
+  }
+
+  public TagValueBoolean(final Boolean value) {
+
+    this.value = value;
+  }
 }

@@ -1,5 +1,5 @@
 server:
-  rootPath: /api/v1/
+  rootPath: /api/
   applicationConnectors:
     - type: http
       port: 7998
@@ -22,7 +22,7 @@ logging:
       threshold: INFO
     - type: file
       currentLogFilename: opc.log
-      threshold: WARN
+      threshold: INFO
       archive: true
       archivedLogFilenamePattern: opc-%d.zip
       archivedFileCount: 5
