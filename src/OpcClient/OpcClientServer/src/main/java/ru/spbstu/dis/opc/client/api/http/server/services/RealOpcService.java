@@ -1,7 +1,6 @@
 package ru.spbstu.dis.opc.client.api.http.server.services;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.google.inject.Inject;
 import com.typesafe.config.Config;
 import static java.util.stream.Collectors.toSet;
 import org.jinterop.dcom.common.JIException;
@@ -34,7 +33,6 @@ public class RealOpcService implements OpcService {
 
   private final Group group;
 
-  @Inject
   public RealOpcService(final Server server, final Group group) {
     this.server = server;
     this.group = group;

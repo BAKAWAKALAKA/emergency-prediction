@@ -1,6 +1,7 @@
 package ru.spbstu.dis.opc.client.api.http.server.services;
 
 import com.google.inject.Guice;
+import com.google.inject.Injector;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -12,8 +13,8 @@ public class RealOpcServiceTest {
   @Test
   public void testName()
   throws Exception {
-    final RealOpcService opcService = Guice.createInjector(new OpcWrapperGuiceModule())
-        .getInstance(RealOpcService.class);
+    final Injector injector = Guice.createInjector(new OpcWrapperGuiceModule());
+    final OpcService opcService = injector.getInstance(OpcService.class);
     final Set<String> tags = opcService.tags();
     assertThat(tags).isNotEmpty();
     final String tagNameToCheck = "MixingConnection/M/TP_2M5";

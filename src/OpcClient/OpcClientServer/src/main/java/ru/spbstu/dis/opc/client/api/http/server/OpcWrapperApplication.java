@@ -7,9 +7,6 @@ import com.typesafe.config.Config;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import io.swagger.jaxrs.config.BeanConfig;
-import io.swagger.jaxrs.listing.ApiListingResource;
-import io.swagger.jaxrs.listing.SwaggerSerializers;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 import static org.eclipse.jetty.servlets.CrossOriginFilter.*;
 import org.glassfish.jersey.server.validation.ValidationFeature;
@@ -53,13 +50,13 @@ public class OpcWrapperApplication
     final int port = swagger.getInt("port");
     final String schema = swagger.getString("schema");
     final String rootPath = swagger.getString("rootPath");
-    BeanConfig beanConfig = new BeanConfig();
-    beanConfig.setVersion("1.0.0");
-    beanConfig.setSchemes(new String[]{schema});
-    beanConfig.setHost(String.format("%s:%s", host, port));
-    beanConfig.setBasePath(rootPath);
-    beanConfig.setResourcePackage(RESOURCES_PACKAGE);
-    beanConfig.setScan(true);
+    //    BeanConfig beanConfig = new BeanConfig();
+    //    beanConfig.setVersion("1.0.0");
+    //    beanConfig.setSchemes(new String[]{schema});
+    //    beanConfig.setHost(String.format("%s:%s", host, port));
+    //    beanConfig.setBasePath(rootPath);
+    //    beanConfig.setResourcePackage(RESOURCES_PACKAGE);
+    //    beanConfig.setScan(true);
   }
 
   @Override
@@ -73,9 +70,9 @@ public class OpcWrapperApplication
   }
 
   private void registerAndEnableFeatures(final Environment environment) {
-    environment.jersey().register(ApiListingResource.class);
     environment.jersey().register(ValidationFeature.class);
-    environment.jersey().register(SwaggerSerializers.class);
+    //    environment.jersey().register(ApiListingResource.class);
+    //    environment.jersey().register(SwaggerSerializers.class);
   }
 
   private void configCors(final Environment environment) {
