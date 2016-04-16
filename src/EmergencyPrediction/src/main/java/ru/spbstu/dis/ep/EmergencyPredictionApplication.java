@@ -1,11 +1,9 @@
 package ru.spbstu.dis.ep;
 
 import ru.spbstu.dis.ep.data.DataProvider;
-import ru.spbstu.dis.ep.data.Tag;
 import ru.spbstu.dis.ep.data.random.RandomDataProvider;
 import ru.spbstu.dis.ep.kb.KnowledgeBase;
 import ru.spbstu.dis.ep.kb.dcep.DCepKnowledgeBase;
-import ru.spbstu.dis.ep.kb.dcep.StaticBlockingSiddhi;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;

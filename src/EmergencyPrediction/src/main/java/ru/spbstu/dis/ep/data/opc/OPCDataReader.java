@@ -2,12 +2,7 @@ package ru.spbstu.dis.ep.data.opc;
 
 import com.google.common.collect.Maps;
 import org.jinterop.dcom.common.*;
-import org.jinterop.dcom.core.IJIComObject;
 import org.jinterop.dcom.core.JIVariant;
-import org.openscada.opc.dcom.da.OPCITEMDEF;
-import org.openscada.opc.dcom.da.impl.OPCGroupStateMgt;
-import org.openscada.opc.dcom.da.impl.OPCItemMgt;
-import org.openscada.opc.dcom.da.impl.OPCServer;
 import org.openscada.opc.lib.common.*;
 import org.openscada.opc.lib.da.*;
 import ru.spbstu.dis.ep.data.Tag;

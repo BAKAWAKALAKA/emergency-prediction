@@ -10,8 +10,6 @@ import com.fuzzylite.rule.RuleBlock;
 import com.fuzzylite.term.Triangle;
 import com.fuzzylite.variable.InputVariable;
 import com.fuzzylite.variable.OutputVariable;
-import ru.spbstu.dis.ep.data.Tag;
-import ru.spbstu.dis.ep.data.opc.OPCDataReader;
 
 /**
  * Created by a.fedorov on 08.04.2016.

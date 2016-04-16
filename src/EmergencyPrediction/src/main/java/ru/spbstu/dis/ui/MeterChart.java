@@ -7,9 +7,7 @@ import org.jfree.chart.plot.MeterInterval;
 import org.jfree.chart.plot.MeterPlot;
 import org.jfree.data.Range;
 import org.jfree.data.general.DefaultValueDataset;
-import org.jfree.data.time.DateRange;
 import org.jfree.ui.ApplicationFrame;
-import org.jfree.ui.RectangleInsets;
 import java.awt.*;
 
 /**
