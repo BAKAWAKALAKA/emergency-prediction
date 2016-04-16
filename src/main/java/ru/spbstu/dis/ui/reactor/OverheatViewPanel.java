@@ -51,7 +51,7 @@ public class OverheatViewPanel {
 
   static Double modellingTemperature;
 
-  public final static Double MAX_TEMPERATURE = 60d;
+  public final static Double MAX_TEMPERATURE = 35d;
 
   static DecisionSupportList decisionSupportList;
 
@@ -93,8 +93,8 @@ public class OverheatViewPanel {
 
     Thread th = new Thread(() -> {
       while (true) {
-        demo.setValue(temperatureGrowthVal);
-        demo.getDataset().setValue(temperatureGrowthVal);
+        demo.setValue(tankOverheatClosenessValue);
+        demo.getDataset().setValue(tankOverheatClosenessValue);
         try {
           Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -239,6 +239,15 @@ public class OverheatViewPanel {
       createBooleanObject(syncAccess, mixerValveSensor2);
       String mixerValveSensor3 = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_valve_V203_ToMainTank_SENSOR);
       createBooleanObject(syncAccess, mixerValveSensor3);
+      String mixerToMaintTankPump = Tag.TAG_TO_ID_MAPPING.get(Tag
+          .MIX_ControlPanel_PumpToMainTank_P201_on);
+      createBooleanObject(syncAccess, mixerValveSensor3);
+      String mixerTopWaterLvlSensor = Tag.TAG_TO_ID_MAPPING.get(Tag
+          .MIX_tank_B204_top);
+      createBooleanObject(syncAccess, mixerTopWaterLvlSensor);
+      String mixerBottomWaterLvlSensor = Tag.TAG_TO_ID_MAPPING.get(Tag
+          .MIX_tank_B204_water_bottom_level_sensor);
+      createBooleanObject(syncAccess, mixerBottomWaterLvlSensor);
       syncAccess.bind();
       final Group serverObject = server.addGroup("test");
 
@@ -254,6 +263,9 @@ public class OverheatViewPanel {
       mixerPump2Sens = serverObject.addItem(mixerValveSensor2);
       mixerPump3Sens = serverObject.addItem(mixerValveSensor3);
       mixingSpeed = serverObject.addItem(mixerSpeed);
+      mixingTopLevel = serverObject.addItem(mixerTopWaterLvlSensor);
+      mixingBottomLevel = serverObject.addItem(mixerBottomWaterLvlSensor);
+      mixerMainPump = serverObject.addItem(mixerToMaintTankPump);
     } catch (AlreadyConnectedException e) {
       e.printStackTrace();
     } catch (JIException e) {
@@ -342,24 +354,53 @@ public class OverheatViewPanel {
       temperatureGrowthVal = reactorTempWriterOPC.read(true).getValue().getObjectAsFloat();
       decisionSupportList.getSeries().add(new Millisecond(), tankOverheatClosenessValue);
       overflowRiskVal = mixingSpeed.read(true).getValue().getObjectAsFloat();
-      boolean pump1Val = !mixerPump1Sens.read(true).getValue().getObjectAsBoolean();
-      mixerPump1.write(new JIVariant(pump1Val));
-      boolean pump2val = !mixerPump2Sens.read(true).getValue().getObjectAsBoolean();
-      mixerPump2.write(new JIVariant(pump2val));
-      boolean pump3val = !mixerPump3Sens.read(true).getValue().getObjectAsBoolean();
-      mixerPump3.write(new JIVariant(pump3val));
+      if (tankOverheatClosenessValue >= MAX_TEMPERATURE) {
+        coolDownReactor();
+      }
+      if (overflowRiskVal > MAX_FLOW_SPEED && mixingBottomLevel.read(true).getValue()
+          .getObjectAsBoolean()) {
+        stopWaterFlowToMainTank();
+      }
       notifier(
           String.format(
-              "GROWTH=%s,\nCLOSENESS=%s,\nOVERF" + lowLevelName + "_RISK=%s " + "->\n"
+              "Температура реактора=%s,\nВероятность перегрева=%s,\n" +
+                  "Вероятность переполнения бака=%s " +
+                  "->\n"
                   + " RECOMMENDED "
                   + actionName + "=%s,\nACTIONS=%s",
-              temperatureGrowthVal,
-              tCloseness.highestMembershipTerm(overflowRiskVal).getName(),
-              tankOverHeatRisk.highestMembershipTerm(tankOverheatClosenessValue).getName(),
-              action.highestMembershipTerm(action.getOutputValue()).getName(),
-              action.fuzzyOutputValue()),
+              tankOverheatClosenessValue,
+              (tankOverheatClosenessValue - MAX_TEMPERATURE) / MAX_TEMPERATURE,
+              (overflowRiskVal - MAX_FLOW_SPEED) / MAX_FLOW_SPEED,
+              "User action",
+              0.1),
           tankOverheatClosenessValue);
     }
+  }
+
+  private static void stopWaterFlowToMainTank()
+  throws JIException, InterruptedException {
+    mixingSpeed.write(new JIVariant(0f));
+    mixerMainPump.write(new JIVariant(false));
+    reactorDownStream.write(new JIVariant(true));
+    Thread.sleep(1000);
+    reactorDownStream.write(new JIVariant(false));
+  }
+
+  private static void coolDownReactor()
+  throws JIException, InterruptedException {
+    reactorTempWriterOPC.write(new JIVariant(0f));
+    reactorHeaterItemOPC.write(new JIVariant(false));
+    boolean pump1Val = mixerPump1Sens.read(true).getValue().getObjectAsBoolean();
+    mixerPump1.write(new JIVariant(true));
+    boolean pump2val = mixerPump2Sens.read(true).getValue().getObjectAsBoolean();
+    mixerPump2.write(new JIVariant(true));
+    boolean pump3val = mixerPump3Sens.read(true).getValue().getObjectAsBoolean();
+    mixerPump3.write(new JIVariant(true));
+    mixingSpeed.write(new JIVariant(40f));
+    reactorDownStream.write(new JIVariant(true));
+    Thread.sleep(1000);
+    reactorDownStream.write(new JIVariant(false));
+    reactorCoolerWriterOPC.write(new JIVariant(true));
   }
 
   private static boolean showUserDecisionDialog() {
@@ -481,4 +522,12 @@ public class OverheatViewPanel {
   private static Item mixerPump2Sens;
 
   private static Item mixerPump3Sens;
+
+  private static final int MAX_FLOW_SPEED = 50;
+
+  private static Item mixingTopLevel;
+
+  private static Item mixingBottomLevel;
+
+  private static Item mixerMainPump;
 }
