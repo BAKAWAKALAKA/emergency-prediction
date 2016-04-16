@@ -15,7 +15,6 @@ import org.openscada.opc.lib.da.DuplicateGroupException;
 import org.openscada.opc.lib.da.Group;
 import org.openscada.opc.lib.da.Item;
 import org.openscada.opc.lib.da.Server;
-import org.openscada.opc.lib.da.SyncAccess;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.IOException;
@@ -23,7 +22,6 @@ import java.net.UnknownHostException;
 import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.function.Function;
 
 public class RealOpcService implements OpcService {
 
@@ -72,41 +70,24 @@ public class RealOpcService implements OpcService {
 
   @Override
   public Boolean readBoolean(final String tag) {
-    return doOperation(tag, item -> {
-      try {
-        final JIVariant value = item.read(true).getValue();
-        return value.getObjectAsBoolean();
-      } catch (JIException e) {
-        throw new IllegalStateException(e);
-      }
-    });
-  }
-
-  private <T> T doOperation(String tag, Function<Item, T> itemFunc) {
     try {
-      final SyncAccess syncAccess = new SyncAccess(server, 200);
-      syncAccess.addItem(tag, (item, itemState) -> {
-        LOGGER.info("Tag {} was added successfully", tag);
-      });
-      syncAccess.bind();
-      final Item addedItem = group.addItem(tag);
-      return itemFunc.apply(addedItem);
-    } catch (UnknownHostException | NotConnectedException | DuplicateGroupException | JIException | AddFailedException e) {
-      LOGGER.error("Exception during tag {} read", tag);
+      final Item item = group.addItem(tag);
+      final JIVariant value = item.read(true).getValue();
+      return value.getObjectAsBoolean();
+    } catch (JIException | AddFailedException e) {
       throw new IllegalStateException(e);
     }
   }
 
   @Override
   public Float readFloat(final String tag) {
-    return doOperation(tag, item -> {
-      try {
-        final JIVariant value = item.read(true).getValue();
-        return value.getObjectAsFloat();
-      } catch (JIException e) {
-        throw new IllegalStateException(e);
-      }
-    });
+    try {
+      final Item item = group.addItem(tag);
+      final JIVariant value = item.read(true).getValue();
+      return value.getObjectAsFloat();
+    } catch (JIException | AddFailedException e) {
+      throw new IllegalStateException(e);
+    }
   }
 
   public static RealOpcService createForConfig(Config config) {
