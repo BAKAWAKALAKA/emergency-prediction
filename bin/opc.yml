@@ -1,0 +1,29 @@
+server:
+  rootPath: /api/
+  applicationConnectors:
+    - type: http
+      port: 7998
+
+# Logging settings.
+logging:
+
+  # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
+  level: INFO
+
+  # Logger-specific levels.
+  loggers:
+
+    # Sets the level for 'com.example.app' to DEBUG.
+    com.example.app: ALL
+
+    org.hibernate.SQL: ALL
+  appenders:
+    - type: console
+      threshold: INFO
+    - type: file
+      currentLogFilename: opc.log
+      threshold: INFO
+      archive: true
+      archivedLogFilenamePattern: opc-%d.zip
+      archivedFileCount: 5
+      timeZone: UTC
