@@ -89,8 +89,11 @@ public class OpcWrapperApplication
     cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
   }
 
-  public static void main(String[] args)
-  throws Exception {
-    new OpcWrapperApplication().run(args);
+  public static void main(String[] args) {
+    try {
+      new OpcWrapperApplication().run(args);
+    } catch (Exception e) {
+      LOGGER.error("Unexpected error occurred", e);
+    }
   }
 }

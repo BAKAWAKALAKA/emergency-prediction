@@ -2,9 +2,11 @@ package ru.spbstu.dis.opc.client.api.opc.access;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -17,13 +19,15 @@ public interface OpcAccessApi {
 
   @Path("/boolean")
   @POST
-  TagWriteStatus writeValueForTag(@NotNull @Size(min = 1) String tag, @NotNull Boolean value);
+  TagWriteStatus writeValueForTag(
+      @NotNull @Size(min = 1) @FormParam("tag") String tag,
+      @NotNull @FormParam("value") Boolean value);
 
-  @Path("/read/boolean")
+  @Path("/read/boolean/{tag}")
   @GET
-  TagValueBoolean readBoolean(@NotNull @Size(min = 1) String tag);
+  TagValueBoolean readBoolean(@NotNull @Size(min = 1) @PathParam("tag") String tag);
 
-  @Path("/read/float")
+  @Path("/read/float/{tag}")
   @GET
-  TagValueFloat readFloat(@NotNull @Size(min = 1) String tag);
+  TagValueFloat readFloat(@NotNull @Size(min = 1) @PathParam("tag") String tag);
 }

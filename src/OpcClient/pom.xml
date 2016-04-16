@@ -17,7 +17,9 @@
         <dropwizard-guice.version>0.8.4.0</dropwizard-guice.version>
         <config.version>1.2.0</config.version>
         <junit.version>4.12</junit.version>
-        <swagger-jersey2-jaxrs.version>1.5.0</swagger-jersey2-jaxrs.version>
+        <swagger-jersey2-jaxrs.version>1.5.8</swagger-jersey2-jaxrs.version>
+        <hibernate-validator.version>5.2.2.Final</hibernate-validator.version>
+        <jersey-server.version>2.22.1</jersey-server.version>
     </properties>
 
     <parent>
@@ -50,6 +52,21 @@
                 <groupId>io.dropwizard</groupId>
                 <artifactId>dropwizard-jackson</artifactId>
                 <version>${dropwizard.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.dropwizard</groupId>
+                <artifactId>dropwizard-validation</artifactId>
+                <version>${dropwizard.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate-validator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.ext</groupId>
+                <artifactId>jersey-bean-validation</artifactId>
+                <version>${jersey-server.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.hubspot.dropwizard</groupId>
@@ -115,6 +132,16 @@
                 <groupId>io.swagger</groupId>
                 <artifactId>swagger-jersey2-jaxrs</artifactId>
                 <version>${swagger-jersey2-jaxrs.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.glassfish.jersey.containers</groupId>
+                        <artifactId>jersey-container-servlet-core</artifactId>
+                    </exclusion>
+                    <!--<exclusion>-->
+                        <!--<groupId>org.glassfish.jersey.media</groupId>-->
+                        <!--<artifactId>jersey-media-multipart</artifactId>-->
+                    <!--</exclusion>-->
+                </exclusions>
             </dependency>
             <!--tests-->
             <dependency>
