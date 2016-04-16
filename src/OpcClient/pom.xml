@@ -17,6 +17,7 @@
         <dropwizard-guice.version>0.8.4.0</dropwizard-guice.version>
         <config.version>1.2.0</config.version>
         <junit.version>4.12</junit.version>
+        <swagger-jersey2-jaxrs.version>1.5.0</swagger-jersey2-jaxrs.version>
     </properties>
 
     <parent>
@@ -109,6 +110,11 @@
                 <groupId>com.typesafe</groupId>
                 <artifactId>config</artifactId>
                 <version>${config.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-jersey2-jaxrs</artifactId>
+                <version>${swagger-jersey2-jaxrs.version}</version>
             </dependency>
             <!--tests-->
             <dependency>
