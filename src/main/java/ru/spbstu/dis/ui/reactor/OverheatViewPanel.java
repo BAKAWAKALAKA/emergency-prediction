@@ -233,6 +233,8 @@ public class OverheatViewPanel {
       createBooleanObject(syncAccess, mixerValve3);
       String mixerSpeed = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_ControlPanel_FLOW_SPEED);
       addFloatItemToOPC(syncAccess, mixerSpeed);
+      String mixerRealSpeed = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_TANK_MAN_FLOW_SPEED);
+      addFloatItemToOPC(syncAccess, mixerRealSpeed);
       String mixerValveSensor1 = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_valve_V201_ToMainTank_SENSOR);
       createBooleanObject(syncAccess, mixerValveSensor1);
       String mixerValveSensor2 = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_valve_V202_ToMainTank_SENSOR);
@@ -266,6 +268,7 @@ public class OverheatViewPanel {
       mixingTopLevel = serverObject.addItem(mixerTopWaterLvlSensor);
       mixingBottomLevel = serverObject.addItem(mixerBottomWaterLvlSensor);
       mixerMainPump = serverObject.addItem(mixerToMaintTankPump);
+      mixerMainPumpRealSpeed = serverObject.addItem(mixerRealSpeed);
     } catch (AlreadyConnectedException e) {
       e.printStackTrace();
     } catch (JIException e) {
@@ -353,7 +356,7 @@ public class OverheatViewPanel {
       tankOverheatClosenessValue = reactorTempSensorOPC.read(true).getValue().getObjectAsFloat();
       temperatureGrowthVal = reactorTempWriterOPC.read(true).getValue().getObjectAsFloat();
       decisionSupportList.getSeries().add(new Millisecond(), tankOverheatClosenessValue);
-      overflowRiskVal = mixingSpeed.read(true).getValue().getObjectAsFloat();
+      overflowRiskVal = mixerMainPumpRealSpeed.read(true).getValue().getObjectAsFloat();
       if (tankOverheatClosenessValue >= MAX_TEMPERATURE) {
         coolDownReactor();
       }
@@ -379,7 +382,7 @@ public class OverheatViewPanel {
 
   private static void stopWaterFlowToMainTank()
   throws JIException, InterruptedException {
-    mixingSpeed.write(new JIVariant(0f));
+    mixerMainPumpRealSpeed.write(new JIVariant(0f));
     mixerMainPump.write(new JIVariant(false));
     reactorDownStream.write(new JIVariant(true));
     Thread.sleep(1000);
@@ -530,4 +533,6 @@ public class OverheatViewPanel {
   private static Item mixingBottomLevel;
 
   private static Item mixerMainPump;
+
+  private static Item mixerMainPumpRealSpeed;
 }
