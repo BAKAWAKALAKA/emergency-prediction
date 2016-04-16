@@ -20,3 +20,10 @@ logging:
   appenders:
     - type: console
       threshold: INFO
+    - type: file
+      currentLogFilename: opc.log
+      threshold: WARN
+      archive: true
+      archivedLogFilenamePattern: opc-%d.zip
+      archivedFileCount: 5
+      timeZone: UTC
