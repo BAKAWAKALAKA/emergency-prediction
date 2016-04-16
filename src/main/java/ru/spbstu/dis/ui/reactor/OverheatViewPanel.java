@@ -93,8 +93,8 @@ public class OverheatViewPanel {
 
     Thread th = new Thread(() -> {
       while (true) {
-        demo.setValue(modellingTemperature);
-        demo.getDataset().setValue(modellingTemperature);
+        demo.setValue(temperatureGrowthVal);
+        demo.getDataset().setValue(temperatureGrowthVal);
         try {
           Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -227,10 +227,18 @@ public class OverheatViewPanel {
       createBooleanObject(syncAccess, reactorHeater);
       String mixerValve1 = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_valve_V201_ToMainTank_on);
       createBooleanObject(syncAccess, mixerValve1);
-      String mixerValve2 = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_valve_V201_ToMainTank_on);
+      String mixerValve2 = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_valve_V202_ToMainTank_on);
       createBooleanObject(syncAccess, mixerValve2);
-      String mixerValve3 = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_valve_V201_ToMainTank_on);
+      String mixerValve3 = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_valve_V203_ToMainTank_on);
       createBooleanObject(syncAccess, mixerValve3);
+      String mixerSpeed = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_ControlPanel_FLOW_SPEED);
+      addFloatItemToOPC(syncAccess, mixerSpeed);
+      String mixerValveSensor1 = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_valve_V201_ToMainTank_SENSOR);
+      createBooleanObject(syncAccess, mixerValveSensor1);
+      String mixerValveSensor2 = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_valve_V202_ToMainTank_SENSOR);
+      createBooleanObject(syncAccess, mixerValveSensor2);
+      String mixerValveSensor3 = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_valve_V203_ToMainTank_SENSOR);
+      createBooleanObject(syncAccess, mixerValveSensor3);
       syncAccess.bind();
       final Group serverObject = server.addGroup("test");
 
@@ -242,6 +250,10 @@ public class OverheatViewPanel {
       mixerPump1 = serverObject.addItem(mixerValve1);
       mixerPump2 = serverObject.addItem(mixerValve2);
       mixerPump3 = serverObject.addItem(mixerValve3);
+      mixerPump1Sens = serverObject.addItem(mixerValveSensor1);
+      mixerPump2Sens = serverObject.addItem(mixerValveSensor2);
+      mixerPump3Sens = serverObject.addItem(mixerValveSensor3);
+      mixingSpeed = serverObject.addItem(mixerSpeed);
     } catch (AlreadyConnectedException e) {
       e.printStackTrace();
     } catch (JIException e) {
@@ -325,18 +337,23 @@ public class OverheatViewPanel {
 
     reactorHeaterItemOPC.write(new JIVariant(true));
     while (true) {
-      Thread.sleep(1000);
-      tankOverheatClosenessValue = reactorTempSensorOPC.read(true).getValue().getObjectAsDouble();
-      temperatureGrowthVal = reactorTempWriterOPC.read(true).getValue().getObjectAsDouble();
-
+      Thread.sleep(2000);
+      tankOverheatClosenessValue = reactorTempSensorOPC.read(true).getValue().getObjectAsFloat();
+      temperatureGrowthVal = reactorTempWriterOPC.read(true).getValue().getObjectAsFloat();
       decisionSupportList.getSeries().add(new Millisecond(), tankOverheatClosenessValue);
-
+      overflowRiskVal = mixingSpeed.read(true).getValue().getObjectAsFloat();
+      boolean pump1Val = !mixerPump1Sens.read(true).getValue().getObjectAsBoolean();
+      mixerPump1.write(new JIVariant(pump1Val));
+      boolean pump2val = !mixerPump2Sens.read(true).getValue().getObjectAsBoolean();
+      mixerPump2.write(new JIVariant(pump2val));
+      boolean pump3val = !mixerPump3Sens.read(true).getValue().getObjectAsBoolean();
+      mixerPump3.write(new JIVariant(pump3val));
       notifier(
           String.format(
               "GROWTH=%s,\nCLOSENESS=%s,\nOVERF" + lowLevelName + "_RISK=%s " + "->\n"
                   + " RECOMMENDED "
                   + actionName + "=%s,\nACTIONS=%s",
-              tGrowth.highestMembershipTerm(tGrowth.getInputValue()).getName(),
+              temperatureGrowthVal,
               tCloseness.highestMembershipTerm(overflowRiskVal).getName(),
               tankOverHeatRisk.highestMembershipTerm(tankOverheatClosenessValue).getName(),
               action.highestMembershipTerm(action.getOutputValue()).getName(),
@@ -456,4 +473,12 @@ public class OverheatViewPanel {
   private static Item mixerPump2;
 
   private static Item mixerPump3;
+
+  private static Item mixingSpeed;
+
+  private static Item mixerPump1Sens;
+
+  private static Item mixerPump2Sens;
+
+  private static Item mixerPump3Sens;
 }

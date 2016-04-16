@@ -29,7 +29,7 @@ public enum Tag {
   FILT_downstream_station_pump_P102_on,
   FILT_open_knife_gate_V101_and_close_butte_V103,
   MIX_tank_B201_water_top_level_sensor,
-  MIX_tank_B201_water_bottom_level_sensor, REACTOR_DOWNSTREAM_ON;
+  MIX_tank_B201_water_bottom_level_sensor, REACTOR_DOWNSTREAM_ON, MIX_valve_V201_ToMainTank_SENSOR, MIX_valve_V202_ToMainTank_SENSOR, MIX_valve_V203_ToMainTank_SENSOR;
 
   public static HashMap<Tag, String> TAG_TO_ID_MAPPING = Maps.newHashMap();
 
@@ -60,6 +60,9 @@ public enum Tag {
     TAG_TO_ID_MAPPING.put(MIX_valve_V201_ToMainTank_on, "MixingConnection/M/TP_2M3");
     TAG_TO_ID_MAPPING.put(MIX_valve_V202_ToMainTank_on, "MixingConnection/M/TP_2M4");
     TAG_TO_ID_MAPPING.put(MIX_valve_V203_ToMainTank_on, "MixingConnection/M/TP_2M5");
+    TAG_TO_ID_MAPPING.put(MIX_valve_V201_ToMainTank_SENSOR, "MixingConnection/A/2M3");
+    TAG_TO_ID_MAPPING.put(MIX_valve_V202_ToMainTank_SENSOR, "MixingConnection/A/2M4");
+    TAG_TO_ID_MAPPING.put(MIX_valve_V203_ToMainTank_SENSOR, "MixingConnection/A/2M5");
     TAG_TO_ID_MAPPING.put(MIX_ControlPanel_FLOW_SPEED, "MixingConnection/M/2PV1_TP");
     TAG_TO_ID_MAPPING.put(MIX_PumpToMainTank_P201_on, "MixingConnection/A/2M1");
     TAG_TO_ID_MAPPING.put(MIX_tank_B201_water_top_level_sensor, "MixingConnection/A/2B2");
