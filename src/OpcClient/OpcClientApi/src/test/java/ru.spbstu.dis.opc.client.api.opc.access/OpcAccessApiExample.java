@@ -10,8 +10,8 @@ public class OpcAccessApiExample {
     final AvailableTags availableTags = opcAccessApi.availableTags();
     final TagValueBoolean tag = opcAccessApi.readBoolean("tag");
     final TagValueFloat tag1 = opcAccessApi.readFloat("tag");
-    final TagWriteStatus tagWriteStatus = opcAccessApi.writeValueForTag("omg", new Float(5.5));
-    final TagWriteStatus omg = opcAccessApi.writeValueForTag("omg", new Boolean(true));
+    final ValueWritten valueWritten = opcAccessApi.writeValueForTag("omg", new Float(5.5));
+    final ValueWritten omg = opcAccessApi.writeValueForTag("omg", new Boolean(true));
     int i = 0;
   }
 }

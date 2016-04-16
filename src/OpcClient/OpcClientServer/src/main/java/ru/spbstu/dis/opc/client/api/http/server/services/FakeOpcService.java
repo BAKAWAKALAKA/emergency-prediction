@@ -11,13 +11,11 @@ public class FakeOpcService implements OpcService {
   }
 
   @Override
-  public Integer writeValueForTag(final String tag, final Boolean value) {
-    return new Random().nextInt();
+  public void writeValueForTag(final String tag, final Boolean value) {
   }
 
   @Override
-  public Integer writeValueForTag(final String tag, final Float value) {
-    return new Random().nextInt();
+  public void writeValueForTag(final String tag, final Float value) {
   }
 
   @Override

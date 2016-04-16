@@ -6,10 +6,7 @@ import ru.spbstu.dis.opc.client.api.opc.access.AvailableTags;
 import ru.spbstu.dis.opc.client.api.opc.access.OpcAccessApi;
 import ru.spbstu.dis.opc.client.api.opc.access.TagValueBoolean;
 import ru.spbstu.dis.opc.client.api.opc.access.TagValueFloat;
-import ru.spbstu.dis.opc.client.api.opc.access.TagWriteStatus;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import javax.ws.rs.FormParam;
+import ru.spbstu.dis.opc.client.api.opc.access.ValueWritten;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -28,12 +25,12 @@ public class OpcAccessResource implements OpcAccessApi {
     return new AvailableTags(opcService.tags());
   }
 
-  public TagWriteStatus writeValueForTag(final String tag, final Boolean value) {
-    return new TagWriteStatus(opcService.writeValueForTag(tag, value));
+  public ValueWritten writeValueForTag(final String tag, final Boolean value) {
+    return new ValueWritten();
   }
 
-  public TagWriteStatus writeValueForTag(final String tag, final Float value) {
-    return new TagWriteStatus(opcService.writeValueForTag(tag, value));
+  public ValueWritten writeValueForTag(final String tag, final Float value) {
+    return new ValueWritten();
   }
 
   public TagValueBoolean readBoolean(final String tag) {

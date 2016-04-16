@@ -6,9 +6,9 @@ public interface OpcService {
 
   Set<String> tags();
 
-  Integer writeValueForTag(String tag, Boolean value);
+  void writeValueForTag(String tag, Boolean value);
 
-  Integer writeValueForTag(String tag, Float value);
+  void writeValueForTag(String tag, Float value);
 
   Boolean readBoolean(String tag);
 

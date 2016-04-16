@@ -14,14 +14,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "type")
-public class TagWriteStatus {
-  public Integer status;
+public class ValueWritten {
 
-  private TagWriteStatus() {
+  public ValueWritten() {
   }
 
-  public TagWriteStatus(final Integer status) {
-
-    this.status = status;
-  }
 }
