@@ -2,14 +2,15 @@ package ru.spbstu.dis.opc.client.api.http.server;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.google.inject.Module;
 import com.hubspot.dropwizard.guice.GuiceBundle;
-import com.typesafe.config.Config;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 import static org.eclipse.jetty.servlets.CrossOriginFilter.*;
 import org.glassfish.jersey.server.validation.ValidationFeature;
+import org.glassfish.jersey.server.wadl.WadlFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.spbstu.dis.opc.client.api.http.server.guice.OpcWrapperGuiceModule;
@@ -24,7 +25,12 @@ public class OpcWrapperApplication
 
   private static final String RESOURCES_PACKAGE = OpcAccessResource.class.getPackage().getName();
 
-  public OpcWrapperApplication() {
+  private final Module module;
+
+  private Environment environment;
+
+  public OpcWrapperApplication(final Module module) {
+    this.module = module;
   }
 
   @Override
@@ -36,31 +42,15 @@ public class OpcWrapperApplication
   public void initialize(final Bootstrap<OpcWrapperConfiguration> bootstrap) {
     final GuiceBundle<OpcWrapperConfiguration> build = GuiceBundle
         .<OpcWrapperConfiguration>newBuilder()
-        .addModule(new OpcWrapperGuiceModule())
+        .addModule(module)
         .setConfigClass(OpcWrapperConfiguration.class)
         .build();
     bootstrap.addBundle(build);
-    final Config config = build.getInjector().getInstance(Config.class);
-    initSwaggerWithConfig(config);
-  }
-
-  private void initSwaggerWithConfig(Config config) {
-    final Config swagger = config.getConfig("swagger");
-    final String host = swagger.getString("host");
-    final int port = swagger.getInt("port");
-    final String schema = swagger.getString("schema");
-    final String rootPath = swagger.getString("rootPath");
-    //    BeanConfig beanConfig = new BeanConfig();
-    //    beanConfig.setVersion("1.0.0");
-    //    beanConfig.setSchemes(new String[]{schema});
-    //    beanConfig.setHost(String.format("%s:%s", host, port));
-    //    beanConfig.setBasePath(rootPath);
-    //    beanConfig.setResourcePackage(RESOURCES_PACKAGE);
-    //    beanConfig.setScan(true);
   }
 
   @Override
   public void run(final OpcWrapperConfiguration configuration, final Environment environment) {
+    this.environment = environment;
     final ObjectMapper mapper = environment.getObjectMapper();
     mapper.enable(SerializationFeature.INDENT_OUTPUT);
     mapper.findAndRegisterModules();
@@ -71,8 +61,7 @@ public class OpcWrapperApplication
 
   private void registerAndEnableFeatures(final Environment environment) {
     environment.jersey().register(ValidationFeature.class);
-    //    environment.jersey().register(ApiListingResource.class);
-    //    environment.jersey().register(SwaggerSerializers.class);
+    environment.jersey().register(WadlFeature.class);
   }
 
   private void configCors(final Environment environment) {
@@ -86,9 +75,14 @@ public class OpcWrapperApplication
     cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
   }
 
+  public void stop()
+  throws Exception {
+    environment.getApplicationContext().getServer().stop();
+  }
+
   public static void main(String[] args) {
     try {
-      new OpcWrapperApplication().run(args);
+      new OpcWrapperApplication(new OpcWrapperGuiceModule()).run(args);
     } catch (Exception e) {
       LOGGER.error("Unexpected error occurred", e);
     }

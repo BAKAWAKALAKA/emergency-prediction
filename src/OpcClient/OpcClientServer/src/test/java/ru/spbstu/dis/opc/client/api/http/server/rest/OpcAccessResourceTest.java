@@ -1,34 +1,54 @@
 package ru.spbstu.dis.opc.client.api.http.server.rest;
 
+import com.google.common.io.Resources;
 import com.google.common.net.HostAndPort;
-import io.dropwizard.testing.junit.DropwizardClientRule;
+import com.google.inject.Binder;
+import com.google.inject.Module;
+import com.google.inject.util.Modules;
 import static java.util.Collections.singleton;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import org.assertj.core.util.Preconditions;
-import org.junit.ClassRule;
 import org.junit.Test;
 import ru.spbstu.dis.opc.client.api.OpcClientApiFactory;
+import ru.spbstu.dis.opc.client.api.http.server.OpcWrapperApplication;
+import ru.spbstu.dis.opc.client.api.http.server.guice.OpcWrapperGuiceModule;
 import ru.spbstu.dis.opc.client.api.http.server.services.OpcService;
-import ru.spbstu.dis.opc.client.api.opc.access.AvailableTags;
 import ru.spbstu.dis.opc.client.api.opc.access.OpcAccessApi;
-import ru.spbstu.dis.opc.client.api.opc.access.ValueWritten;
-import java.io.IOException;
 import java.util.Set;
 
 public class OpcAccessResourceTest {
 
-  @ClassRule
-  public static final DropwizardClientRule dropwizard =
-      new DropwizardClientRule(new OpcAccessResource(new OpcAccessFake()));
-
   @Test
-  public void shouldPing()
-  throws IOException {
-    final HostAndPort target =
-        HostAndPort.fromParts(dropwizard.baseUri().getHost(), dropwizard.baseUri().getPort());
+  public void opcClientApiWorksAsExpected()
+  throws Exception {
+    //given
+    final String ymlConfig = Resources.getResource("opc.yml").getFile();
+    final Module testModule =
+        Modules.override(new OpcWrapperGuiceModule())
+            .with(new Module() {
+              @Override
+              public void configure(final Binder binder) {
+                binder.bind(OpcService.class).toInstance(new OpcAccessFake());
+              }
+            });
+    final OpcWrapperApplication opcWrapperApplication = new OpcWrapperApplication(testModule);
+    opcWrapperApplication.run("server", ymlConfig);
+    final HostAndPort target = HostAndPort.fromParts("127.0.0.1", 7998);
     final OpcAccessApi opcAccessApi = OpcClientApiFactory.createOpcAccessApi(target);
-    final AvailableTags availableTags = opcAccessApi.availableTags();
-    final ValueWritten any = opcAccessApi.writeValueForTag("any", true);
-    int i = 0;
+    //when
+    opcAccessApi.availableTags();
+    opcAccessApi.writeValueForTag("any", true);
+    opcAccessApi.writeValueForTag("any", 5f);
+    opcAccessApi.readBoolean("any");
+    opcAccessApi.readFloat("any");
+    //then
+    assertThat(OpcAccessFake.readTagsWasCalled).isTrue();
+    assertThat(OpcAccessFake.writeBooleanValueWasCalled).isTrue();
+    assertThat(OpcAccessFake.writeFloatValueWasCalled).isTrue();
+    assertThat(OpcAccessFake.readBooleanWasCalled).isTrue();
+    assertThat(OpcAccessFake.readFloatWasCalled).isTrue();
+    //tear down
+    opcWrapperApplication.stop();
   }
 
   private static class OpcAccessFake implements OpcService {

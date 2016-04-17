@@ -19,13 +19,13 @@ public interface OpcAccessApi {
 
   @Path("/boolean/{value}")
   @POST
-  ValueWritten writeValueForTag(
+  void writeValueForTag(
       @NotNull @Size(min = 1) @QueryParam("tag") String tag,
       @NotNull @QueryParam("value") Boolean value);
 
   @Path("/float/{value}")
   @POST
-  ValueWritten writeValueForTag(
+  void writeValueForTag(
       @NotNull @Size(min = 1) @QueryParam("tag") String tag,
       @NotNull @QueryParam("value") Float value);
 

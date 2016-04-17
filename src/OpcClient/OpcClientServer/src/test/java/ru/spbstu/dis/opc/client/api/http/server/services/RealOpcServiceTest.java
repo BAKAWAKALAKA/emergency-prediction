@@ -2,6 +2,7 @@ package ru.spbstu.dis.opc.client.api.http.server.services;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.typesafe.config.Config;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -14,12 +15,7 @@ import java.util.Set;
 @Ignore
 public class RealOpcServiceTest {
 
-  @BeforeClass
-  public static void setUp()
-  throws Exception {
-    final Injector injector = Guice.createInjector(new OpcWrapperGuiceModule());
-    opcService = injector.getInstance(OpcService.class);
-  }
+  private static RealOpcService opcService;
 
   @Test
   public void availableTagsWorking()
@@ -54,5 +50,10 @@ public class RealOpcServiceTest {
     opcService.writeValueForTag(tag, currentTagValue);
   }
 
-  private static OpcService opcService;
+  @BeforeClass
+  public static void setUp()
+  throws Exception {
+    final Injector injector = Guice.createInjector(new OpcWrapperGuiceModule());
+    opcService = RealOpcService.createForConfig(injector.getInstance(Config.class));
+  }
 }
