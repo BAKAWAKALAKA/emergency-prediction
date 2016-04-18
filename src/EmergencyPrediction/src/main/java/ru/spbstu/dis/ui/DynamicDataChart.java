@@ -50,7 +50,7 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
 
     this.setSeries(new TimeSeries(title, Millisecond.class));
     final TimeSeriesCollection dataset = new TimeSeriesCollection(this.getSeries());
-    final JFreeChart chart = createChart(dataset, title);
+    final JFreeChart chart = createChart(dataset, "Вероятность НС");
     chart.setNotify(true);
     chart.setTextAntiAlias(true);
     chart.setBorderVisible(false);
@@ -62,8 +62,6 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
     getChartPanel().setPreferredSize(new java.awt.Dimension(300, 300));
     setContentPane(content);
     final Random random = new Random();
-    chart.setBackgroundPaint(new GradientPaint(0, 0, Color.white, 0, 1000,
-        new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256))));
     chart.setAntiAlias(true);
     content.setSize(1200, 900);
     setSize(1200, 900);

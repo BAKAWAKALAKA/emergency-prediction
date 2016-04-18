@@ -42,9 +42,9 @@ public class Thermometer extends ApplicationFrame {
     // NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
     plot.setInsets(new RectangleInsets(5, 5, 5, 5));
     plot.setRange(-10.0, 35.0);
-    plot.setSubrangeInfo(0, -50.0, 20.0, -10.0, 22.0);
-    plot.setSubrangeInfo(1, 20.0, 24.0, 18.0, 26.0);
-    plot.setSubrangeInfo(2, 24.0, 100.0, 22.0, 40.0);
+    plot.setSubrangeInfo(0, -50.0, 30.0, -10.0, 32.0);
+    plot.setSubrangeInfo(1, 30.0, 35.0, 28.0, 36.0);
+    plot.setSubrangeInfo(2, 35.0, 100.0, 32.0, 40.0);
 
     plot.setThermometerStroke(new BasicStroke(2.0f));
     plot.setThermometerPaint(Color.lightGray);

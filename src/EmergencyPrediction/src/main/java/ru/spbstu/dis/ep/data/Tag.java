@@ -29,7 +29,12 @@ public enum Tag {
   FILT_downstream_station_pump_P102_on,
   FILT_open_knife_gate_V101_and_close_butte_V103,
   MIX_tank_B201_water_top_level_sensor,
-  MIX_tank_B201_water_bottom_level_sensor, REACTOR_DOWNSTREAM_ON, MIX_valve_V201_ToMainTank_SENSOR, MIX_valve_V202_ToMainTank_SENSOR, MIX_valve_V203_ToMainTank_SENSOR, MIX_TANK_MAN_FLOW_SPEED;
+  MIX_tank_B201_water_bottom_level_sensor,
+  REACTOR_DOWNSTREAM_ON,
+  MIX_valve_V201_ToMainTank_SENSOR,
+  MIX_valve_V202_ToMainTank_SENSOR,
+  MIX_valve_V203_ToMainTank_SENSOR,
+  MIX_TANK_MAN_FLOW_SPEED;
 
   public static HashMap<Tag, String> TAG_TO_ID_MAPPING = Maps.newHashMap();
 

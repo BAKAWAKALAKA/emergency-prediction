@@ -49,8 +49,6 @@ public class OverheatViewPanel {
 
 	static Item reactorTempSensorOPC;
 
-	static Double modellingTemperature;
-
 	public final static Double MAX_TEMPERATURE = 35d;
 
 	static DecisionSupportList decisionSupportList;
@@ -108,7 +106,7 @@ public class OverheatViewPanel {
 	}
 
 	private static void initMeterChart() {
-		final MeterChart demo = new MeterChart("Близость аварии");
+		final MeterChart demo = new MeterChart("Вероятность НС на станциях");
 
 		Thread th = new Thread(() -> {
 			while (true) {
@@ -127,14 +125,13 @@ public class OverheatViewPanel {
 		closenessChartFrame.add(titlePanel);
 	}
 
-	private static DynamicDataChart closenessChartFrame = new DynamicDataChart(
-			"Вероятность " + "переполнения емкостей");
+	private static DynamicDataChart closenessChartFrame = new DynamicDataChart("Вероятность переполнения бака");
 
 	private static void initClosenessValueChart() {
 
 		Thread th = new Thread(() -> {
 			while (true) {
-				closenessChartFrame.setLastValue(overflowRiskVal * MAX_TEMPERATURE);
+				closenessChartFrame.setLastValue((MAX_FLOW_SPEED - overflowRiskVal) / MAX_FLOW_SPEED);
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
@@ -152,11 +149,11 @@ public class OverheatViewPanel {
 	}
 
 	private static void initGrowthValueChart() {
-		final DynamicDataChart demo = new DynamicDataChart("Вероятность аварии");
+		final DynamicDataChart demo = new DynamicDataChart("Вероятность перегрева");
 
 		Thread th = new Thread(() -> {
 			while (true) {
-				demo.setLastValue(temperatureGrowthVal);
+				demo.setLastValue((MAX_TEMPERATURE - temperatureGrowthVal) / MAX_TEMPERATURE);
 				final Millisecond now = new Millisecond();
 				System.out.println("Now = " + now.toString());
 				demo.getSeries().add(new Millisecond(), demo.getLastValue());
@@ -169,13 +166,12 @@ public class OverheatViewPanel {
 		});
 		th.start();
 
-		// closenessChartFrame.addChart(demo.getChartPanel());
 		XYPlot plot = (XYPlot) closenessChartFrame.getChartPanel().getChart().getPlot();
 		plot.setDataset(plot.getDatasetCount(), ((XYPlot) demo.getChartPanel().getChart().getPlot()).getDataset(0));
 	}
 
 	private static void initRiskValueChart() {
-		final DynamicDataChart demo = new DynamicDataChart("Вероятность перегрева");
+		final DynamicDataChart demo = new DynamicDataChart("Вероятность переполнения бака станции смешивания");
 
 		Thread th = new Thread(() -> {
 			while (true) {
@@ -256,8 +252,6 @@ public class OverheatViewPanel {
 		} catch (AddFailedException e) {
 			e.printStackTrace();
 		}
-		;
-		modellingTemperature = new Double(0);
 		Thread th = new Thread(() -> {
 
 			try {
@@ -343,29 +337,16 @@ public class OverheatViewPanel {
 		if (n == 1) {
 
 			try {
-				downstrteamTime = 0;
-				modellingTemperature -= 20;
 				reactorDownStream.write(new JIVariant(true));
 			} catch (JIException e) {
 				e.printStackTrace();
 			}
 		}
 		if (n == 2) {
-			modellingTemperature -= 20;
-			try {
-
-				reactorTempWriterOPC.write(new JIVariant(modellingTemperature));
-			} catch (JIException e) {
-				e.printStackTrace();
-			}
 		}
 		if (n == 3) {
-			modellingTemperature = 0d;
 			try {
-
-				reactorTempWriterOPC.write(new JIVariant(modellingTemperature));
 				reactorCoolerWriterOPC.write(new JIVariant(false));
-				;
 				reactorHeaterItemOPC.write(new JIVariant(false));
 			} catch (JIException e) {
 				e.printStackTrace();
@@ -435,8 +416,6 @@ public class OverheatViewPanel {
 	private static Item reactorHeaterItemOPC;
 
 	private static Item reactorDownStream;
-
-	private static int downstrteamTime;
 
 	private static Item mixerPump1;
 
