@@ -285,19 +285,18 @@ public class EmergencyPredictionWindow {
 			overflowRiskVal = mixerMainPumpRealSpeed.read(true).getValue().getObjectAsFloat();
 			if (tankOverheatClosenessValue >= MAX_TEMPERATURE) {
 				coolDownReactor();
+				notifier(String.format(
+						"Температура реактора=%s,\nВероятность перегрева=%s,\n" + "Рекомендуемое действие=%s",
+						tankOverheatClosenessValue, ((tankOverheatClosenessValue - MAX_TEMPERATURE) / MAX_TEMPERATURE),
+						"Охлаждение реактора"), tankOverheatClosenessValue);
 			}
 			if (overflowRiskVal > MAX_FLOW_SPEED && mixingBottomLevel.read(true).getValue().getObjectAsBoolean()) {
 				stopWaterFlowToMainTank();
+				notifier(String.format("Вероятность переполнения бака=%s " + "->\n" + "Рекомендуемое действие=%s",
+						(overflowRiskVal - MAX_FLOW_SPEED) / MAX_FLOW_SPEED,
+						"Остановка закачки воды, сброс излишков воды", 0.1), overflowRiskVal);
 			}
-			notifier(
-					String.format(
-							"Температура реактора=%s,\nВероятность перегрева=%s,\n"
-									+ "Вероятность переполнения бака=%s " + "->\n" + " RECOMMENDED " + actionName
-									+ "=%s,\nACTIONS=%s",
-							tankOverheatClosenessValue,
-							(tankOverheatClosenessValue - MAX_TEMPERATURE) / MAX_TEMPERATURE,
-							(overflowRiskVal - MAX_FLOW_SPEED) / MAX_FLOW_SPEED, "User action", 0.1),
-					tankOverheatClosenessValue);
+
 		}
 	}
 
@@ -327,7 +326,7 @@ public class EmergencyPredictionWindow {
 
 	private static boolean showUserDecisionDialog() {
 		// show a joptionpane dialog using showMessageDialog
-		Object[] options = { "Turn on coller", "Turn on downstream for 5 sec", "Minus 20 degree from actual temp",
+		Object[] options = { "Включить миксер", "Охладить реактор", "Minus 20 degree from actual temp",
 				"Stop Heating" };
 		int n = JOptionPane.showOptionDialog(closenessChartFrame, "Принятие решений?", "Вывод из НС",
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
