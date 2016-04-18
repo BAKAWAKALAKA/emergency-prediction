@@ -24,7 +24,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>ru.spbstu.dis.ui.reactor.OverheatViewPanel</mainClass>
+                            <mainClass>ru.spbstu.dis.ui.emergency.EmergencyPredictionWindow</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

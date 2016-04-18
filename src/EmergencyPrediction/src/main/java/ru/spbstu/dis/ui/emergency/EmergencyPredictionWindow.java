@@ -1,4 +1,4 @@
-package ru.spbstu.dis.ui.reactor;
+package ru.spbstu.dis.ui.emergency;
 
 import com.fuzzylite.variable.InputVariable;
 import org.jfree.chart.plot.XYPlot;
@@ -11,21 +11,18 @@ import org.openscada.opc.lib.common.AlreadyConnectedException;
 import org.openscada.opc.lib.common.ConnectionInformation;
 import org.openscada.opc.lib.common.NotConnectedException;
 import org.openscada.opc.lib.da.AddFailedException;
-import org.openscada.opc.lib.da.DataCallback;
 import org.openscada.opc.lib.da.DuplicateGroupException;
 import org.openscada.opc.lib.da.Group;
 import org.openscada.opc.lib.da.Item;
-import org.openscada.opc.lib.da.ItemState;
 import org.openscada.opc.lib.da.Server;
-import org.openscada.opc.lib.da.SyncAccess;
 import popup.ssn.NotificationPopup;
 import ru.spbstu.dis.ep.data.Tag;
 import ru.spbstu.dis.ui.DecisionSupportList;
-import ru.spbstu.dis.ui.DynamicDataChart;
+
 import static ru.spbstu.dis.ui.KnowledgeBaseRuleGenerator.*;
-import ru.spbstu.dis.ui.MeterChart;
+
 import ru.spbstu.dis.ui.PopupTester;
-import ru.spbstu.dis.ui.Thermometer;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -35,7 +32,7 @@ import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class OverheatViewPanel {
+public class EmergencyPredictionWindow {
 
 	static double temperatureGrowthVal;
 
@@ -367,15 +364,15 @@ public class OverheatViewPanel {
 	private static void notifier(String term, double dangerLevel) {
 
 		if (dangerLevel > 0.5d) {
-			ImageIcon icon = new ImageIcon(OverheatViewPanel.class.getResource("/alarm.png"));
+			ImageIcon icon = new ImageIcon(EmergencyPredictionWindow.class.getResource("/alarm.png"));
 			showErrorNotif(term, new Color(249, 78, 30), icon);
 		}
 		if (dangerLevel > 0.0d && dangerLevel <= 0.3d) {
-			ImageIcon icon = new ImageIcon(OverheatViewPanel.class.getResource("/info.png"));
+			ImageIcon icon = new ImageIcon(EmergencyPredictionWindow.class.getResource("/info.png"));
 			showErrorNotif(term, new Color(127, 176, 72), icon);
 		}
 		if (dangerLevel > 0.3d && dangerLevel <= 0.5d) {
-			ImageIcon icon = new ImageIcon(OverheatViewPanel.class.getResource("/warning.png"));
+			ImageIcon icon = new ImageIcon(EmergencyPredictionWindow.class.getResource("/warning.png"));
 			showErrorNotif(term, new Color(249, 236, 100), icon);
 		}
 	}
