@@ -34,6 +34,11 @@ public enum Tag {
   MIX_valve_V201_ToMainTank_SENSOR,
   MIX_valve_V202_ToMainTank_SENSOR,
   MIX_valve_V203_ToMainTank_SENSOR,
+  FILT_downstream_valve_V103_on,
+  FILT_ControlPanel_downstream_station_pump_P102_on,
+  FILT_ControlPanel_downstream_valve_V103_on,
+  REACTOR_downstream_station_pump_P302_on,
+  REACTOR_ControlPanel_downstream_station_pump_P302_on,
   MIX_TANK_MAN_FLOW_SPEED;
 
   public static HashMap<Tag, String> TAG_TO_ID_MAPPING = Maps.newHashMap();
@@ -74,8 +79,16 @@ public enum Tag {
     TAG_TO_ID_MAPPING.put(MIX_tank_B201_water_top_level_sensor, "MixingConnection/A/2B2");
     TAG_TO_ID_MAPPING.put(MIX_tank_B201_water_bottom_level_sensor, "MixingConnection/A/2B3");
     TAG_TO_ID_MAPPING.put(FILT_foul_water_pump_P101_on, "FilterConnection/A/1M2");
-    TAG_TO_ID_MAPPING.put(FILT_downstream_station_pump_P102_on, "FilterConnection/A/1M3");
+    TAG_TO_ID_MAPPING.put(FILT_downstream_station_pump_P102_on, "FilterConnection/A/1M3");//from filter to mixing (read)
+    TAG_TO_ID_MAPPING.put(FILT_downstream_valve_V103_on, "FilterConnection/A/1M6");//Ball valve V103 to downstream station (read)
     TAG_TO_ID_MAPPING
         .put(FILT_open_knife_gate_V101_and_close_butte_V103, "FilterConnection/A/1M4_5");
+    TAG_TO_ID_MAPPING.put(FILT_ControlPanel_downstream_station_pump_P102_on,
+                          "FilterConnection/M/TP_1M3");//from filter to mixing (write)
+    TAG_TO_ID_MAPPING.put(FILT_ControlPanel_downstream_valve_V103_on,
+                          "FilterConnection/M/TP_1M6");//Ball valve V103 to downstream station (write)
+    TAG_TO_ID_MAPPING.put(REACTOR_downstream_station_pump_P302_on, "ReactorConnection/A/3M3"); //from reactor to bottling (read)
+    TAG_TO_ID_MAPPING.put(REACTOR_ControlPanel_downstream_station_pump_P302_on,
+                          "ReactorConnection/M/TP_3M3"); //from reactor to bottling (write)
   }
 }
