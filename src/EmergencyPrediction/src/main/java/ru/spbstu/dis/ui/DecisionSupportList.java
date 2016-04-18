@@ -31,10 +31,9 @@ public class DecisionSupportList {
 
     final JFreeChart chart = createCombinedChart("Прирост значения");
     final ChartPanel panel = new ChartPanel(chart, true, true, true, false, true);
-    panel.setSize(new java.awt.Dimension(500, 300));
+    panel.setSize(new java.awt.Dimension(300, 300));
     //        setContentPane(panel);
     frame = new JFrame("Панель контроля нештатных ситуаций");
-    frame.setLayout(new GridLayout(2,1));
     list = new JList();
     list.setCellRenderer(new WhiteYellowCellRenderer());
     Object[] data = new Object[10];
@@ -42,12 +41,19 @@ public class DecisionSupportList {
     list.setListData(data);
     JPanel p = new JPanel(new GridLayout(2,1));
     p.add(panel);
-    p.add(list);
-
+    JPanel messagesPanel = new JPanel(new FlowLayout());
+    messagesPanel.add(new JLabel("Сообщения о близости к НС"));
+    JScrollPane scrollPane = new JScrollPane();
+    scrollPane.setSize(300, 200);
+    list.setFixedCellHeight(50);
+    list.setFixedCellWidth(350);
+    scrollPane.setViewportView(list);
+    messagesPanel.add(scrollPane);
+  p.add(messagesPanel);
     frame.getContentPane().add(p);
 
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setBounds(0, 360, 900, 900);
+    frame.setBounds(0, 360, 400, 400);
     frame.setVisible(true);
   }
 
@@ -62,15 +68,15 @@ public class DecisionSupportList {
 
       if (value != null) {
         if (value.toString()
-            .contains(KnowledgeBaseRuleGenerator.lowLevelName)) {
-          c.setBackground(Color.green);
+            .contains("низкая")) {
+          c.setBackground(new Color(144, 198, 37));
         }
         if (value.toString()
-            .contains(KnowledgeBaseRuleGenerator.normalLevelName)) {
-          c.setBackground(Color.yellow);
+            .contains("средняя")) {
+          c.setBackground(new Color(244, 246, 29));
         } if (value.toString()
-            .contains(KnowledgeBaseRuleGenerator.highLevelName)) {
-          c.setBackground(Color.red);
+            .contains("высокая")) {
+          c.setBackground(new Color(246, 100, 8));
         }
       }
       return c;
