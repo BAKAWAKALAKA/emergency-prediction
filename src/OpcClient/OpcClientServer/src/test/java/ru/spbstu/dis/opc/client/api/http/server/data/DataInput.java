@@ -1,6 +1,7 @@
-package ru.spbstu.dis.ep.data;
+package ru.spbstu.dis.opc.client.api.http.server.data;
 
 import com.google.common.base.Preconditions;
+import ru.spbstu.dis.opc.client.api.opc.access.Tag;
 
 import java.io.Serializable;
 import java.util.HashMap;

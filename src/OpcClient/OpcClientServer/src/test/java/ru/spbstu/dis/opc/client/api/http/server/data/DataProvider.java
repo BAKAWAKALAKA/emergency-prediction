@@ -1,4 +1,4 @@
-package ru.spbstu.dis.ep.data;
+package ru.spbstu.dis.opc.client.api.http.server.data;
 
 import java.util.function.Supplier;
 

@@ -6,7 +6,7 @@ import ru.spbstu.dis.opc.client.api.OpcClientApiFactory;
 public class OpcAccessApiExample {
   public static void main(String[] args) {
     final OpcAccessApi opcAccessApi = OpcClientApiFactory
-        .createOpcAccessApi(HostAndPort.fromParts("127.0.0.1", 7998));
+        .createOpcAccessApi(HostAndPort.fromParts("192.168.11.52", 7998));
     checkPump(opcAccessApi);
 //    checkFloatWrite(opcAccessApi);
   }

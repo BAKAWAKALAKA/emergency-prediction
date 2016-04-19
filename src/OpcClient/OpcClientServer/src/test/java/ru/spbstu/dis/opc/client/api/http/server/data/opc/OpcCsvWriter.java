@@ -1,4 +1,4 @@
-package ru.spbstu.dis.ep.data.opc;
+package ru.spbstu.dis.opc.client.api.http.server.data.opc;
 
 import au.com.bytecode.opencsv.CSVWriter;
 import org.jinterop.dcom.common.JIException;
@@ -6,7 +6,7 @@ import org.openscada.opc.lib.common.AlreadyConnectedException;
 import org.openscada.opc.lib.common.NotConnectedException;
 import org.openscada.opc.lib.da.AddFailedException;
 import org.openscada.opc.lib.da.DuplicateGroupException;
-import ru.spbstu.dis.ep.data.Tag;
+import ru.spbstu.dis.opc.client.api.opc.access.Tag;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;

@@ -8,6 +8,7 @@ import com.google.inject.util.Modules;
 import static java.util.Collections.singleton;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import org.assertj.core.util.Preconditions;
+import org.junit.Ignore;
 import org.junit.Test;
 import ru.spbstu.dis.opc.client.api.OpcClientApiFactory;
 import ru.spbstu.dis.opc.client.api.http.server.OpcWrapperApplication;
@@ -17,7 +18,7 @@ import ru.spbstu.dis.opc.client.api.opc.access.OpcAccessApi;
 import java.util.Set;
 
 public class OpcAccessResourceTest {
-
+  @Ignore
   @Test
   public void opcClientApiWorksAsExpected()
   throws Exception {

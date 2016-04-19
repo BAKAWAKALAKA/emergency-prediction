@@ -1,4 +1,4 @@
-package ru.spbstu.dis.ui;
+package ru.spbstu.dis.opc.client.api.ui.emergency;
 
 /**
  * Created by a.fedorov on 26.03.2016.

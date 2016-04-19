@@ -1,4 +1,4 @@
-package ru.spbstu.dis.ui;
+package ru.spbstu.dis.opc.client.api.ui;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

@@ -1,11 +1,11 @@
-package ru.spbstu.dis.ep.data.opc;
+package ru.spbstu.dis.opc.client.api.http.server.data.opc;
 
 import com.google.common.collect.Maps;
 import org.jinterop.dcom.common.*;
 import org.jinterop.dcom.core.JIVariant;
 import org.openscada.opc.lib.common.*;
 import org.openscada.opc.lib.da.*;
-import ru.spbstu.dis.ep.data.Tag;
+import ru.spbstu.dis.opc.client.api.opc.access.Tag;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.*;

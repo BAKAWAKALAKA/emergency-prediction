@@ -1,4 +1,4 @@
-package ru.spbstu.dis.ep.data.opc;
+package ru.spbstu.dis.opc.client.api.http.server.data.opc;
 
 import org.jinterop.dcom.common.JIException;
 import org.jinterop.dcom.common.JISystem;
@@ -16,7 +16,7 @@ import org.openscada.opc.lib.da.ItemState;
 import org.openscada.opc.lib.da.Server;
 import org.openscada.opc.lib.da.SyncAccess;
 import org.openscada.opc.lib.da.browser.FlatBrowser;
-import ru.spbstu.dis.ep.data.Tag;
+import ru.spbstu.dis.opc.client.api.opc.access.Tag;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.concurrent.Executors;

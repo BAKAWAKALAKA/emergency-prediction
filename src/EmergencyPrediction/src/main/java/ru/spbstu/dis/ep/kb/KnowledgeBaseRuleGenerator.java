@@ -1,4 +1,4 @@
-package ru.spbstu.dis.ui;
+package ru.spbstu.dis.ep.kb;
 
 import com.fuzzylite.Engine;
 import com.fuzzylite.defuzzifier.Bisector;

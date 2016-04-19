@@ -1,4 +1,4 @@
-package ru.spbstu.dis.ep.data;
+package ru.spbstu.dis.opc.client.api.opc.access;
 
 import com.google.common.collect.Maps;
 import java.util.HashMap;

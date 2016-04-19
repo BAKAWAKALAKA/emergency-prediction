@@ -55,6 +55,12 @@
             <groupId>com.typesafe</groupId>
             <artifactId>config</artifactId>
         </dependency>
+        <!--csv-->
+        <dependency>
+            <groupId>net.sf.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>2.3</version>
+        </dependency>
         <!--opc-->
         <dependency>
             <groupId>org.openscada.utgard</groupId>
