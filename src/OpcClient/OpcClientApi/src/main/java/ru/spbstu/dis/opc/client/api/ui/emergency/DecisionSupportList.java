@@ -44,16 +44,16 @@ public class DecisionSupportList {
     JPanel messagesPanel = new JPanel(new FlowLayout());
     messagesPanel.add(new JLabel("Сообщения о близости к НС"));
     JScrollPane scrollPane = new JScrollPane();
-    scrollPane.setSize(300, 200);
+    scrollPane.setSize(600, 200);
     list.setFixedCellHeight(50);
-    list.setFixedCellWidth(350);
+    list.setFixedCellWidth(600);
     scrollPane.setViewportView(list);
     messagesPanel.add(scrollPane);
   p.add(messagesPanel);
     frame.getContentPane().add(p);
 
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setBounds(0, 360, 400, 400);
+    frame.setBounds(0, 360, 600, 400);
     frame.setVisible(true);
   }
 
@@ -67,14 +67,14 @@ public class DecisionSupportList {
           cellHasFocus);
 
       if (value != null) {
-        if (value.toString()
+        if (value.toString().toLowerCase()
             .contains("низкая")) {
           c.setBackground(new Color(144, 198, 37));
         }
-        if (value.toString()
+        if (value.toString().toLowerCase()
             .contains("средняя")) {
           c.setBackground(new Color(244, 246, 29));
-        } if (value.toString()
+        } if (value.toString().toLowerCase()
             .contains("высокая")) {
           c.setBackground(new Color(246, 100, 8));
         }

@@ -9,7 +9,6 @@ import ru.spbstu.dis.opc.client.api.OpcClientApiFactory;
 import ru.spbstu.dis.opc.client.api.opc.access.OpcAccessApi;
 import ru.spbstu.dis.opc.client.api.opc.access.Tag;
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -21,7 +20,7 @@ public class EmergencyPredictionWindow {
       .getLogger(EmergencyPredictionWindow.class);
 
   final OpcAccessApi opcAccessApi = OpcClientApiFactory
-      .createOpcAccessApi(HostAndPort.fromParts("127.0.0.1", 7998));
+      .createOpcAccessApi(HostAndPort.fromParts("10.18.254.254", 7998));
 
   static double temperatureGrowthVal;
 
@@ -29,7 +28,7 @@ public class EmergencyPredictionWindow {
 
   static double tankOverheatClosenessValue;
 
-  public final static Double MAX_TEMPERATURE = 35d;
+  public final static Double MAX_TEMPERATURE = 28d;
 
   static DecisionSupportList decisionSupportList;
 
@@ -119,8 +118,12 @@ public class EmergencyPredictionWindow {
 
     Thread th = new Thread(() -> {
       while (true) {
-        demo.setValue(overflowRiskVal);
-        demo.getDataset().setValue(overflowRiskVal);
+        double v1 = (MAX_TEMPERATURE - temperatureGrowthVal) / MAX_TEMPERATURE;
+        double v = (MAX_FLOW_SPEED - overflowRiskVal) / MAX_FLOW_SPEED;
+        double max = v1 > v ? v1 : v;
+        demo.setValue(max);
+
+        demo.getDataset().setValue(max);
         try {
           Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -147,6 +150,10 @@ public class EmergencyPredictionWindow {
       }
     });
     th.start();
+    XYPlot plot = (XYPlot) closenessChartFrame.getChartPanel().getChart().getPlot();
+    plot.getRenderer().setSeriesPaint(0, Color.red);
+    plot.getRenderer().setSeriesPaint(1, Color.green);
+    plot.getRenderer().setSeriesPaint(2, Color.yellow);
 
     SwingUtilities.invokeLater(() -> {
       closenessChartFrame.addButton();
@@ -184,7 +191,7 @@ public class EmergencyPredictionWindow {
 
     Thread th = new Thread(() -> {
       while (true) {
-        demo.setLastValue(tankOverheatClosenessValue);
+        demo.setLastValue((MAX_FLOW_SPEED - overflowRiskVal) / MAX_FLOW_SPEED);
         final Millisecond now = new Millisecond();
         System.out.println("Now = " + now.toString());
         demo.getSeries().add(new Millisecond(), demo.getLastValue());
@@ -200,6 +207,7 @@ public class EmergencyPredictionWindow {
     XYPlot plot = (XYPlot) closenessChartFrame.getChartPanel().getChart().getPlot();
     plot.setDataset(plot.getDatasetCount(),
         ((XYPlot) demo.getChartPanel().getChart().getPlot()).getDataset(0));
+
   }
 
   private void runSimulation() {
@@ -232,12 +240,23 @@ public class EmergencyPredictionWindow {
             ((tankOverheatClosenessValue - MAX_TEMPERATURE) / MAX_TEMPERATURE),
             "Охлаждение реактора"), tankOverheatClosenessValue);
       }
-      if (overflowRiskVal > MAX_FLOW_SPEED && opcAccessApi.readBoolean(mixerRealSpeed).value) {
+      if (overflowRiskVal > MAX_FLOW_SPEED && opcAccessApi
+          .readBoolean(mixerToMaintTankPump).value) {
         stopWaterFlowToMainTank();
         notifier(String
             .format("Вероятность переполнения бака=%s " + "->\n" + "Рекомендуемое действие=%s",
-                (overflowRiskVal - MAX_FLOW_SPEED) / MAX_FLOW_SPEED,
+                "ВЫСОКАЯ",
                 "Остановка закачки воды, сброс излишков воды", 0.1), overflowRiskVal);
+      }
+
+      if (opcAccessApi.readFloat(mixerRealSpeed).value - opcAccessApi.readFloat(mixerSpeed).value
+          > 10.0f && opcAccessApi.readBoolean(mixerToMaintTankPump).value) {
+        notifier(String
+                .format("Вероятность образования пузырьков в расходомере - ВЫСОКАЯ" + "->\n" +
+                        "Рекомендуемое" +
+                        " действие=%s",
+                    "1. Проверка наличия воды в баках \r\n 2. Проверка, закрыты ли клапаны"),
+            overflowRiskVal);
       }
     }
   }
@@ -315,7 +334,7 @@ public class EmergencyPredictionWindow {
   }
 
   private static DynamicDataChart closenessChartFrame = new DynamicDataChart(
-      "Вероятность переполнения бака");
+      "Вероятность переполнения бака станции смешивания");
 
   private boolean showUserDecisionDialog() {
     // show a joptionpane dialog using showMessageDialog
