@@ -117,7 +117,7 @@
                 <configuration>
                     <filesets>
                         <fileset>
-                            <directory>../../../assembly</directory>
+                            <directory>../../../assembly/http-opc-client</directory>
                             <followSymlinks>false</followSymlinks>
                         </fileset>
                     </filesets>
@@ -139,7 +139,7 @@
                             </excludes>
                         </filter>
                     </filters>
-                    <outputDirectory>../../../assembly</outputDirectory>
+                    <outputDirectory>../../../assembly/http-opc-client</outputDirectory>
                 </configuration>
                 <executions>
                     <execution>

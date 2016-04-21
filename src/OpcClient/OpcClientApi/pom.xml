@@ -23,25 +23,6 @@
         <relativePath>../</relativePath>
     </parent>
 
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>ru.spbstu.dis.opc.client.api.ui.emergency.EmergencyPredictionWindow</mainClass>
-                        </manifest>
-                    </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
     <dependencies>
         <dependency>
@@ -84,23 +65,6 @@
         <dependency>
             <groupId>com.netflix.feign</groupId>
             <artifactId>feign-jaxrs</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>jfree</groupId>
-            <artifactId>jfreechart</artifactId>
-            <version>1.0.12</version>
-        </dependency>
-        <dependency>
-            <groupId>jfree</groupId>
-            <artifactId>jcommon</artifactId>
-            <version>1.0.15</version>
-        </dependency>
-        <dependency>
-            <groupId>org</groupId>
-            <artifactId>Jpoppuper</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/../../../libs/Jpopuper.jar</systemPath>
         </dependency>
     </dependencies>
 </project>

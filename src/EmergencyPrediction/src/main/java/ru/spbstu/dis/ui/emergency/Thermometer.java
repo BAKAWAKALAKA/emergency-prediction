@@ -1,20 +1,19 @@
-package ru.spbstu.dis.opc.client.api.ui.emergency;
+package ru.spbstu.dis.ui.emergency;
+
+import java.awt.*;
 
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.DialShape;
-import org.jfree.chart.plot.MeterInterval;
-import org.jfree.chart.plot.MeterPlot;
-import org.jfree.data.Range;
+import org.jfree.chart.plot.ThermometerPlot;
 import org.jfree.data.general.DefaultValueDataset;
 import org.jfree.ui.ApplicationFrame;
-import java.awt.*;
+import org.jfree.ui.RectangleInsets;
 
 /**
  * A demonstration application for the thermometer plot.
  * @author Bryan Scott
  */
-public class MeterChart extends ApplicationFrame {
+public class Thermometer extends ApplicationFrame {
 
   Double value = 0d;
 
@@ -26,41 +25,32 @@ public class MeterChart extends ApplicationFrame {
    * Creates a new demo.
    * @param title the frame title.
    */
-  public MeterChart(final String title) {
+  public Thermometer(final String title) {
 
     super(title);
 
     // create a dataset...
     dataset = new DefaultValueDataset(value);
 
+    // create the chart...
 
+    final ThermometerPlot plot = new ThermometerPlot(dataset);
+    final JFreeChart chart = new JFreeChart(title,  // chart title
+        JFreeChart.DEFAULT_TITLE_FONT,
+        plot,                 // plot
+        false);               // include legend
+    // NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
+    plot.setInsets(new RectangleInsets(5, 5, 5, 5));
+    plot.setRange(-10.0, 35.0);
+    plot.setSubrangeInfo(0, -50.0, 20, -10.0, 22);
+    plot.setSubrangeInfo(1, 20, 28, 18, 26);
+    plot.setSubrangeInfo(2, 28, 100.0, 22, 30);
 
-    MeterPlot meterplot = new MeterPlot(dataset);
-    meterplot.setRange(new Range(0.0D, 1D));
-    meterplot.addInterval(new MeterInterval("Низкая", new Range(0.0D,0.3D),
-        Color.red, new BasicStroke(2.0F), new Color(255, 0, 0, 128)));
-    meterplot.addInterval(new MeterInterval("Средняя", new Range(0.3D, 0.7D),
-        Color.yellow, new BasicStroke(2.0F), new Color(255, 255, 0, 64)));
-    meterplot.addInterval(new MeterInterval("Высокая", new Range(0.7D, 1D),
-        Color.green, new BasicStroke(2.0F), new Color(0, 255, 0, 64)));
-
-    meterplot.setNeedlePaint(Color.darkGray);
-    meterplot.setDialBackgroundPaint(Color.white);
-    meterplot.setDialOutlinePaint(Color.black);
-    meterplot.setDialShape(DialShape.CHORD);
-    meterplot.setMeterAngle(180);
-    meterplot.setTickLabelsVisible(true);
-    meterplot.setTickLabelFont(new Font("Tachoma", 1, 12));
-    meterplot.setTickLabelPaint(Color.black);
-    meterplot.setTickSize(5D);
-    meterplot.setTickPaint(Color.gray);
-    meterplot.setValuePaint(Color.black);
-    meterplot.setValueFont(new Font("Tachoma", 1, 12));
-    JFreeChart jfreechart = new JFreeChart(title,
-        JFreeChart.DEFAULT_TITLE_FONT, meterplot, true);
+    plot.setThermometerStroke(new BasicStroke(2.0f));
+    plot.setThermometerPaint(Color.lightGray);
     // OPTIONAL CUSTOMISATION COMPLETED.
     // add the chart to a panel...
-    chartPanel = new ChartPanel(jfreechart);
+    chartPanel = new ChartPanel(chart);
     chartPanel.setSize(150, 150);
     chartPanel.setPreferredSize(new java.awt.Dimension(300, 300));
     setContentPane(chartPanel);
@@ -83,7 +73,7 @@ public class MeterChart extends ApplicationFrame {
    */
   public static void main(final String[] args) {
 
-    final MeterChart demo = new MeterChart("Thermometer Demo 2");
+    final Thermometer demo = new Thermometer("Thermometer Demo 2");
     demo.pack();
     demo.setVisible(true);
   }

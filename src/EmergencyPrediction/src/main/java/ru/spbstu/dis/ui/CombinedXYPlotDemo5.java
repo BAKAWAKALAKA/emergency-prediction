@@ -1,4 +1,4 @@
-package ru.spbstu.dis.opc.client.api.ui;
+package ru.spbstu.dis.ui;
 
 
 import java.awt.*;

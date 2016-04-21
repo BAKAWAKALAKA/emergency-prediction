@@ -1,4 +1,4 @@
-package ru.spbstu.dis.opc.client.api.ui.emergency;
+package ru.spbstu.dis.ui.emergency;
 
 import com.google.common.net.HostAndPort;
 import org.jfree.chart.plot.XYPlot;

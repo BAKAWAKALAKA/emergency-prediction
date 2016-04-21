@@ -1,4 +1,4 @@
-package ru.spbstu.dis.opc.client.api.ui.emergency;
+package ru.spbstu.dis.ui.emergency;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
