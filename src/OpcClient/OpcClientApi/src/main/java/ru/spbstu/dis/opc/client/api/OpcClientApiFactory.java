@@ -1,6 +1,5 @@
 package ru.spbstu.dis.opc.client.api;
 
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.net.HostAndPort;

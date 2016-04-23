@@ -1,6 +1,6 @@
 set JAR_NAME=opc-client-server-1.0-SNAPSHOT-shaded.jar
-set HEAP=2600M
-IF EXIST "..\assembly\%JAR_NAME%" del /F %JAR_NAME% & copy "..\assembly\%JAR_NAME%" %JAR_NAME%
+set HEAP=700M
+IF EXIST "..\..\assembly\opc-http-client\%JAR_NAME%" del /F %JAR_NAME% & copy "..\..\assembly\opc-http-client\%JAR_NAME%" %JAR_NAME%
 CALL java ^
 -Xms%HEAP% ^
 -Xmx%HEAP% ^

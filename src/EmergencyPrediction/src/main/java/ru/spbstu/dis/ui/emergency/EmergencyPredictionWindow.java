@@ -1,11 +1,13 @@
 package ru.spbstu.dis.ui.emergency;
 
 import com.google.common.net.HostAndPort;
+import com.typesafe.config.Config;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.time.Millisecond;
 import org.slf4j.LoggerFactory;
 import popup.ssn.NotificationPopup;
+import ru.spbstu.dis.ConfigProvider;
 import ru.spbstu.dis.opc.client.api.OpcClientApiFactory;
 import ru.spbstu.dis.opc.client.api.opc.access.OpcAccessApi;
 import ru.spbstu.dis.opc.client.api.opc.access.Tag;
@@ -19,8 +21,7 @@ import java.util.logging.Logger;
 public class EmergencyPredictionWindow {
 	private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(EmergencyPredictionWindow.class);
 
-	final OpcAccessApi opcAccessApi = OpcClientApiFactory
-			.createOpcAccessApi(HostAndPort.fromParts("10.18.254.254", 7998));
+	private final OpcAccessApi opcAccessApi;
 
 	static double temperatureGrowthVal;
 
@@ -66,7 +67,21 @@ public class EmergencyPredictionWindow {
 
 	static String mixerBottomWaterLvlSensor = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_tank_B204_water_bottom_level_sensor);
 
+	public EmergencyPredictionWindow(final OpcAccessApi opcAccessApi) {
+		this.opcAccessApi = opcAccessApi;
+	}
+
+	private static OpcAccessApi createOpcApi(){
+		final Config config = new ConfigProvider().get().resolve();
+		final Config opcAccessApiConf = config.getConfig("http.opc.client");
+		final String host = opcAccessApiConf.getString("host");
+		final int port = opcAccessApiConf.getInt("port");
+		final HostAndPort hostAndPort = HostAndPort.fromParts(host, port);
+		LOGGER.warn("Opc access api uses {} to connect", hostAndPort);
+		return OpcClientApiFactory.createOpcAccessApi(hostAndPort);
+	}
 	public static void main(String[] args) {
+
 		try {
 			for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 				if ("Nimbus".equals(info.getName())) {
@@ -77,7 +92,8 @@ public class EmergencyPredictionWindow {
 		} catch (Exception e) {
 			// If Nimbus is not available, you can set the GUI to another look and feel.
 		}
-		EmergencyPredictionWindow emergencyPredictionWindow = new EmergencyPredictionWindow();
+		EmergencyPredictionWindow emergencyPredictionWindow =
+				new EmergencyPredictionWindow(createOpcApi());
 		emergencyPredictionWindow.initGrowthValueChart();
 		emergencyPredictionWindow.initRiskValueChart();
 		emergencyPredictionWindow.initThermometerChart();
