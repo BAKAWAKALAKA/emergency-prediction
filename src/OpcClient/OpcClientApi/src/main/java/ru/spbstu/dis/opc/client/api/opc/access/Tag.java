@@ -27,6 +27,8 @@ public enum Tag {
   MIX_PumpToMainTank_P201_on,
   FILT_foul_water_pump_P101_on,
   FILT_downstream_station_pump_P102_on,
+  FILT_pump_101_on,
+  FILT_pump_102_on,
   FILT_open_knife_gate_V101_and_close_butte_V103,
   MIX_tank_B201_water_top_level_sensor,
   MIX_tank_B201_water_bottom_level_sensor,
@@ -85,6 +87,10 @@ public enum Tag {
         .put(FILT_open_knife_gate_V101_and_close_butte_V103, "FilterConnection/A/1M4_5");
     TAG_TO_ID_MAPPING.put(FILT_ControlPanel_downstream_station_pump_P102_on,
                           "FilterConnection/M/TP_1M3");//from filter to mixing (write)
+    TAG_TO_ID_MAPPING.put(FILT_pump_101_on,
+        "FilterConnection/M/TP_1M1");//P101
+    TAG_TO_ID_MAPPING.put(FILT_pump_102_on,
+        "FilterConnection/M/TP_1M2");//P102
     TAG_TO_ID_MAPPING.put(FILT_ControlPanel_downstream_valve_V103_on,
                           "FilterConnection/M/TP_1M6");//Ball valve V103 to downstream station (write)
     TAG_TO_ID_MAPPING.put(REACTOR_downstream_station_pump_P302_on, "ReactorConnection/A/3M3"); //from reactor to bottling (read)
