@@ -31,7 +31,7 @@ public class DecisionSupportList {
 
     final JFreeChart chart = createCombinedChart("Прирост значения");
     final ChartPanel panel = new ChartPanel(chart, true, true, true, false, true);
-    panel.setSize(new java.awt.Dimension(300, 300));
+    panel.setSize(new java.awt.Dimension(400, 300));
     //        setContentPane(panel);
     frame = new JFrame("Панель контроля нештатных ситуаций");
     list = new JList();
@@ -44,16 +44,16 @@ public class DecisionSupportList {
     JPanel messagesPanel = new JPanel(new FlowLayout());
     messagesPanel.add(new JLabel("Сообщения о близости к НС"));
     JScrollPane scrollPane = new JScrollPane();
-    scrollPane.setSize(600, 200);
+    scrollPane.setSize(700, 500);
     list.setFixedCellHeight(50);
-    list.setFixedCellWidth(600);
+    list.setFixedCellWidth(700);
     scrollPane.setViewportView(list);
     messagesPanel.add(scrollPane);
   p.add(messagesPanel);
     frame.getContentPane().add(p);
 
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setBounds(0, 360, 600, 400);
+    frame.setBounds(0, 360, 700, 400);
     frame.setVisible(true);
   }
 

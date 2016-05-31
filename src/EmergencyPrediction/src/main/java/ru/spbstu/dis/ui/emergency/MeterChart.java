@@ -38,11 +38,11 @@ public class MeterChart extends ApplicationFrame {
     MeterPlot meterplot = new MeterPlot(dataset);
     meterplot.setRange(new Range(0.0D, 1D));
     meterplot.addInterval(new MeterInterval("Низкая", new Range(0.0D,0.3D),
-        Color.red, new BasicStroke(2.0F), new Color(255, 0, 0, 128)));
+        Color.green, new BasicStroke(2.0F),new Color(0, 255, 0, 64) ));
     meterplot.addInterval(new MeterInterval("Средняя", new Range(0.3D, 0.7D),
         Color.yellow, new BasicStroke(2.0F), new Color(255, 255, 0, 64)));
     meterplot.addInterval(new MeterInterval("Высокая", new Range(0.7D, 1D),
-        Color.green, new BasicStroke(2.0F), new Color(0, 255, 0, 64)));
+        Color.red, new BasicStroke(2.0F),new Color(255, 0, 0, 128) ));
 
     meterplot.setNeedlePaint(Color.darkGray);
     meterplot.setDialBackgroundPaint(Color.white);
