@@ -6,18 +6,13 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.time.Millisecond;
 import org.slf4j.LoggerFactory;
-import popup.ssn.NotificationPopup;
 import ru.spbstu.dis.ConfigProvider;
 import ru.spbstu.dis.opc.client.api.OpcClientApiFactory;
-import ru.spbstu.dis.opc.client.api.opc.access.OpcAccessApi;
-import ru.spbstu.dis.opc.client.api.opc.access.Tag;
-
+import ru.spbstu.dis.opc.client.api.opc.access.*;
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.*;
+import java.util.logging.*;
 
 public class EmergencyPredictionWindow {
   private static final org.slf4j.Logger LOGGER = LoggerFactory
@@ -72,6 +67,11 @@ public class EmergencyPredictionWindow {
 
   static String mixerBottomWaterLvlSensor = Tag.TAG_TO_ID_MAPPING
       .get(Tag.MIX_tank_B204_water_bottom_level_sensor);
+
+  static String filter_TP_1M6 = Tag.TAG_TO_ID_MAPPING.get(Tag
+                                                            .FILT_ControlPanel_downstream_valve_V103_on);
+  static String filter_TP_1M7 = Tag.TAG_TO_ID_MAPPING.get(Tag
+                                                              .FILT_ControlPanel_WARING);
 
   static String filter_p101 = Tag.TAG_TO_ID_MAPPING.get(Tag
       .FILT_pump_101_on);
@@ -190,12 +190,12 @@ public class EmergencyPredictionWindow {
     plot.setRenderer(0, renderer0);
     plot.setRenderer(1, renderer1);
     plot.setRenderer(2, renderer2);
-    plot.getRendererForDataset(plot.getDataset(0)).setSeriesPaint(0, Color.red);
-    plot.getRendererForDataset(plot.getDataset(1)).setSeriesPaint(0, Color.blue);
-    plot.getRendererForDataset(plot.getDataset(2)).setSeriesPaint(0, Color.green);
-    plot.getRenderer().setSeriesPaint(0, Color.red);
-    plot.getRenderer().setSeriesPaint(1, Color.green);
-    plot.getRenderer().setSeriesPaint(2, Color.yellow);
+    plot.getRendererForDataset(plot.getDataset(0)).setSeriesPaint(0, Color.green);
+    plot.getRendererForDataset(plot.getDataset(1)).setSeriesPaint(0, Color.lightGray);
+    plot.getRendererForDataset(plot.getDataset(2)).setSeriesPaint(0, Color.red);
+    plot.getRenderer().setSeriesPaint(0, Color.green);
+    plot.getRenderer().setSeriesPaint(1, Color.red);
+    plot.getRenderer().setSeriesPaint(2, Color.blue);
 
     SwingUtilities.invokeLater(() -> {
       closenessChartFrame.addButton();
@@ -209,7 +209,8 @@ public class EmergencyPredictionWindow {
 
     Thread th = new Thread(() -> {
       while (true) {
-        demo.setLastValue((MAX_TEMPERATURE - temperatureGrowthVal) / MAX_TEMPERATURE);
+        //demo.setLastValue((MAX_TEMPERATURE - temperatureGrowthVal) / MAX_TEMPERATURE);
+        demo.setLastValue(1.1);
         final Millisecond now = new Millisecond();
         System.out.println("Now = " + now.toString());
         demo.getSeries().add(new Millisecond(), demo.getLastValue());
@@ -224,12 +225,12 @@ public class EmergencyPredictionWindow {
 
     XYPlot plot = (XYPlot) closenessChartFrame.getChartPanel().getChart().getPlot();
     plot.setDataset(plot.getDatasetCount(),
-        ((XYPlot) demo.getChartPanel().getChart().getPlot()).getDataset(0));
+                    ((XYPlot) demo.getChartPanel().getChart().getPlot()).getDataset(0));
   }
 
   private void initRiskValueChart() {
     final DynamicDataChart demo = new DynamicDataChart(
-        "Вероятность переполнения бака станции смешивания");
+        "Вероятность засора фильтра станции фильтрации");
 
     Thread th = new Thread(() -> {
       while (true) {
@@ -251,7 +252,7 @@ public class EmergencyPredictionWindow {
 
     XYPlot plot = (XYPlot) closenessChartFrame.getChartPanel().getChart().getPlot();
     plot.setDataset(plot.getDatasetCount(),
-        ((XYPlot) demo.getChartPanel().getChart().getPlot()).getDataset(0));
+                    ((XYPlot) demo.getChartPanel().getChart().getPlot()).getDataset(0));
   }
 
   private void runSimulation() {
@@ -269,19 +270,41 @@ public class EmergencyPredictionWindow {
 
   private void getDataFromOPC()
   throws InterruptedException {
-
+//int k=0;
     while (true) {
+      //if(k==0) {
+        opcAccessApi.writeValueForTag(filter_p102, Boolean.TRUE);
+      //  k=1;
+     // }
       Thread.sleep(2000);
-      if (filter_fake_risk_value > 1.0d) {
+      if (filter_fake_risk_value > 0.3d)
+      {
+        opcAccessApi.writeValueForTag(filter_TP_1M7, Boolean.TRUE);}
+
+
+      if (filter_fake_risk_value > 0.9d) {
         filter_fake_risk_value = 0.3d;
         filter_fake_active_flag = false;
+        opcAccessApi.writeValueForTag(filter_p102, Boolean.FALSE);
+
         notifier(String.format("Вероятность аварии на станции фильтрации =%s " + "->\n" +
                     "Рекомендуемое действие=%s",
                 "ВЫСОКАЯ", "Сброс давления в фильтре, отключение насосов", 0.1),
             filter_fake_risk_value) ;
 
-        opcAccessApi.writeValueForTag(filter_p101, opcAccessApi.readBoolean(filter_p101).value);
-        opcAccessApi.writeValueForTag(filter_p102, opcAccessApi.readBoolean(filter_p102).value);
+
+        opcAccessApi.writeValueForTag(filter_TP_1M6, Boolean.TRUE);
+        opcAccessApi.writeValueForTag(filter_TP_1M6, Boolean.FALSE);
+        opcAccessApi.writeValueForTag(filter_p101, Boolean.TRUE);
+        opcAccessApi.writeValueForTag(filter_TP_1M7, Boolean.FALSE);
+        Thread.sleep(5000);
+        opcAccessApi.writeValueForTag(filter_p101, Boolean.FALSE);
+        opcAccessApi.writeValueForTag(filter_p102, Boolean.TRUE);
+        Thread.sleep(10000);
+        opcAccessApi.writeValueForTag(filter_p102, Boolean.FALSE);
+
+
+return;
       }
 //      tankOverheatClosenessValue = opcAccessApi.readFloat(reactorTemperatureSensor).value;
 //      temperatureGrowthVal = opcAccessApi.readFloat(reactorTemperature).value;
@@ -368,7 +391,7 @@ public class EmergencyPredictionWindow {
       decisionSupportList.getList().updateUI();
       decisionSupportList.getFrame().repaint();
     }
-    NotificationPopup nf = new NotificationPopup(term);
+  /*  NotificationPopup nf = new NotificationPopup(term);
     nf.setIcon(icon);
     nf.setWIDTH(650);
     nf.setHEIGHT(100);
@@ -381,7 +404,7 @@ public class EmergencyPredictionWindow {
     nf.setBackgroundColor1(Color.white);
     nf.setBackGroundColor2(color);
     nf.setForegroundColor(java.awt.Color.darkGray);
-    nf.display();
+    nf.display();*/
     try {
       Thread.sleep(1000);
     } catch (InterruptedException ex) {

@@ -44,16 +44,16 @@ public class DecisionSupportList {
     JPanel messagesPanel = new JPanel(new FlowLayout());
     messagesPanel.add(new JLabel("Сообщения о близости к НС"));
     JScrollPane scrollPane = new JScrollPane();
-    scrollPane.setSize(700, 500);
+    scrollPane.setSize(900, 500);
     list.setFixedCellHeight(50);
-    list.setFixedCellWidth(700);
+    list.setFixedCellWidth(900);
     scrollPane.setViewportView(list);
     messagesPanel.add(scrollPane);
   p.add(messagesPanel);
     frame.getContentPane().add(p);
 
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setBounds(0, 360, 700, 400);
+    frame.setBounds(0, 360, 1023, 400);
     frame.setVisible(true);
   }
 
