@@ -40,19 +40,19 @@ public class Thermometer extends ApplicationFrame {
         plot,                 // plot
         false);               // include legend
     // NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
-    plot.setInsets(new RectangleInsets(5, 5, 5, 5));
+//    plot.setInsets(new RectangleInsets(5, 5, 5, 5));
     plot.setRange(-10.0, 35.0);
     plot.setSubrangeInfo(0, -50.0, 20, -10.0, 22);
     plot.setSubrangeInfo(1, 20, 28, 18, 26);
     plot.setSubrangeInfo(2, 28, 100.0, 22, 30);
 
-    plot.setThermometerStroke(new BasicStroke(2.0f));
+    plot.setThermometerStroke(new BasicStroke(3.0f));
     plot.setThermometerPaint(Color.lightGray);
     // OPTIONAL CUSTOMISATION COMPLETED.
     // add the chart to a panel...
     chartPanel = new ChartPanel(chart);
-    chartPanel.setSize(150, 150);
-    chartPanel.setPreferredSize(new java.awt.Dimension(300, 300));
+    chartPanel.setSize(100, 100);
+    chartPanel.setPreferredSize(new java.awt.Dimension(160, 250));
     setContentPane(chartPanel);
   }
 

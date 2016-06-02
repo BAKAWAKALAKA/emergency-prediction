@@ -32,9 +32,6 @@ public class MeterChart extends ApplicationFrame {
 
     // create a dataset...
     dataset = new DefaultValueDataset(value);
-
-
-
     MeterPlot meterplot = new MeterPlot(dataset);
     meterplot.setRange(new Range(0.0D, 1D));
     meterplot.addInterval(new MeterInterval("Низкая", new Range(0.0D,0.3D),
@@ -56,13 +53,14 @@ public class MeterChart extends ApplicationFrame {
     meterplot.setTickPaint(Color.gray);
     meterplot.setValuePaint(Color.black);
     meterplot.setValueFont(new Font("Tachoma", 1, 12));
+    meterplot.setUnits("Вероятность");
     JFreeChart jfreechart = new JFreeChart(title,
         JFreeChart.DEFAULT_TITLE_FONT, meterplot, true);
     // OPTIONAL CUSTOMISATION COMPLETED.
     // add the chart to a panel...
     chartPanel = new ChartPanel(jfreechart);
-    chartPanel.setSize(150, 150);
-    chartPanel.setPreferredSize(new java.awt.Dimension(300, 300));
+    chartPanel.setSize(100, 90);
+    chartPanel.setPreferredSize(new java.awt.Dimension(210, 180));
     setContentPane(chartPanel);
   }
 

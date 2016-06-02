@@ -2,9 +2,12 @@ package ru.spbstu.dis.ui.emergency;
 
 import com.google.common.net.HostAndPort;
 import com.typesafe.config.Config;
+import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.chart.title.LegendTitle;
 import org.jfree.data.time.Millisecond;
+import org.jfree.ui.RectangleEdge;
 import org.slf4j.LoggerFactory;
 import ru.spbstu.dis.ConfigProvider;
 import ru.spbstu.dis.opc.client.api.OpcClientApiFactory;
@@ -191,8 +194,8 @@ public class EmergencyPredictionWindow {
     plot.setRenderer(1, renderer1);
     plot.setRenderer(2, renderer2);
     plot.getRendererForDataset(plot.getDataset(0)).setSeriesPaint(0, Color.green);
-    plot.getRendererForDataset(plot.getDataset(1)).setSeriesPaint(0, Color.lightGray);
-    plot.getRendererForDataset(plot.getDataset(2)).setSeriesPaint(0, Color.red);
+    plot.getRendererForDataset(plot.getDataset(1)).setSeriesPaint(0, Color.red);
+    plot.getRendererForDataset(plot.getDataset(2)).setSeriesPaint(0, Color.blue);
     plot.getRenderer().setSeriesPaint(0, Color.green);
     plot.getRenderer().setSeriesPaint(1, Color.red);
     plot.getRenderer().setSeriesPaint(2, Color.blue);
@@ -226,6 +229,11 @@ public class EmergencyPredictionWindow {
     XYPlot plot = (XYPlot) closenessChartFrame.getChartPanel().getChart().getPlot();
     plot.setDataset(plot.getDatasetCount(),
                     ((XYPlot) demo.getChartPanel().getChart().getPlot()).getDataset(0));
+    LegendTitle lt = new LegendTitle(plot);
+    lt.setItemFont(new Font("Dialog", Font.PLAIN, 9));
+    lt.setBackgroundPaint(new Color(200, 200, 255, 100));
+    lt.setFrame(new BlockBorder(Color.white));
+    lt.setPosition(RectangleEdge.LEFT);
   }
 
   private void initRiskValueChart() {

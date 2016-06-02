@@ -15,12 +15,16 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.title.LegendTitle;
 import org.jfree.data.time.Millisecond;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.ui.ApplicationFrame;
+import org.jfree.ui.RectangleEdge;
+import org.jfree.ui.RectangleInsets;
 import org.jfree.ui.RefineryUtilities;
 
 /**
@@ -59,7 +63,7 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
     content.add(titlePanel);
     content.add(getChartPanel());
 
-    getChartPanel().setPreferredSize(new java.awt.Dimension(300, 300));
+    getChartPanel().setPreferredSize(new java.awt.Dimension(500, 300));
     setContentPane(content);
     final Random random = new Random();
     chart.setAntiAlias(true);
@@ -96,11 +100,17 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
         false
     );
     plot = result.getXYPlot();
+    plot.setRangeGridlinesVisible(true);
     ValueAxis axis = plot.getDomainAxis();
     axis.setAutoRange(true);
     axis.setFixedAutoRange(60000.0);  // 60 seconds
     axis = plot.getRangeAxis();
     axis.setAutoRange(true);
+    LegendTitle legend = new LegendTitle(this.plot);
+    legend.setMargin(new RectangleInsets(1.0, 1.0, 1.0, 1.0));
+    legend.setBorder(new BlockBorder());
+    legend.setBackgroundPaint(Color.white);
+    legend.setPosition(RectangleEdge.LEFT);
     return result;
   }
 
