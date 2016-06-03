@@ -13,9 +13,13 @@ import org.slf4j.LoggerFactory;
 import ru.spbstu.dis.ConfigProvider;
 import ru.spbstu.dis.opc.client.api.OpcClientApiFactory;
 import ru.spbstu.dis.opc.client.api.opc.access.*;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.font.TextAttribute;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.logging.*;
 
@@ -271,6 +275,23 @@ public class EmergencyPredictionWindow {
       statePanel.add(stateLbl);
       closenessChartFrame.add(statePanel);
 
+      JPanel finishedActionsPnl = new JPanel(new FlowLayout());
+      BufferedImage myPicture = null;
+      try {
+        myPicture = ImageIO.read(EmergencyPredictionWindow.class.getResource("/image_station.PNG"));
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+      finishedActionsPnl.add(picLabel);
+
+      final String[] actionsFinished = {"1 - выполнено",
+          "2 - выполнено",
+          "3 - ..."};
+      JList actionsFinishedList = new JList(actionsFinished);
+      finishedActionsPnl.add(actionsFinishedList);
+
+      closenessChartFrame.add(finishedActionsPnl);
       closenessChartFrame.addButton();
 
       closenessChartFrame.pack();
