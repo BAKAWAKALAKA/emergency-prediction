@@ -1,14 +1,10 @@
 package ru.spbstu.dis.ui.emergency;
 
 import com.google.common.net.HostAndPort;
-import com.sun.javafx.font.FontFactory;
 import com.typesafe.config.Config;
-import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.chart.title.LegendTitle;
 import org.jfree.data.time.Millisecond;
-import org.jfree.ui.RectangleEdge;
 import org.slf4j.LoggerFactory;
 import ru.spbstu.dis.ConfigProvider;
 import ru.spbstu.dis.opc.client.api.OpcClientApiFactory;
@@ -18,7 +14,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.font.TextAttribute;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.*;
@@ -36,8 +31,6 @@ public class EmergencyPredictionWindow {
   static double tankOverheatClosenessValue;
 
   public final static Double MAX_TEMPERATURE = 28d;
-
-  static DecisionSupportList decisionSupportList;
 
   static ArrayList notifications = new ArrayList();
 
@@ -119,9 +112,6 @@ public class EmergencyPredictionWindow {
     //need to be called last!
     emergencyPredictionWindow.composeAllChartsIntoOne();
 
-    SwingUtilities.invokeLater(
-        () -> emergencyPredictionWindow.decisionSupportList = new DecisionSupportList(
-            "Прогноз развития НС"));
     emergencyPredictionWindow.runSimulation();
   }
 
@@ -292,7 +282,7 @@ public class EmergencyPredictionWindow {
       finishedActionsPnl.add(actionsFinishedList);
 
       closenessChartFrame.add(finishedActionsPnl);
-      closenessChartFrame.addButton();
+      closenessChartFrame.addDecisionsAndCloseButton();
 
       closenessChartFrame.pack();
       closenessChartFrame.setVisible(true);
@@ -371,8 +361,13 @@ public class EmergencyPredictionWindow {
       // }
       Thread.sleep(2000);
       if (filter_fake_risk_value > 0.3d) {
+        notifier(String.format("Вероятность аварии на станции фильтрации =%s " + "->\n" +
+                    "Рекомендуемое действие=%s",
+                "СРЕДНЯЯ", "Проверка станции", 0.1),
+            0.3);
         opcAccessApi.writeValueForTag(filter_TP_1M7, Boolean.TRUE);
       }
+
 
       if (filter_fake_risk_value > 0.9d) {
         filter_fake_risk_value = 0.3d;
@@ -453,11 +448,9 @@ public class EmergencyPredictionWindow {
       Logger.getLogger(PopupTester.class.getName()).log(Level.SEVERE, null, ex);
     }
     notifications.add(term);
-    if (decisionSupportList != null) {
-      decisionSupportList.getList().setListData(notifications.toArray());
-      decisionSupportList.getList().updateUI();
-      decisionSupportList.getFrame().repaint();
-    }
+      closenessChartFrame.getList().setListData(notifications.toArray());
+    closenessChartFrame.getList().updateUI();
+    closenessChartFrame.repaint();
   /*  NotificationPopup nf = new NotificationPopup(term);
     nf.setIcon(icon);
     nf.setWIDTH(650);

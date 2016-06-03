@@ -44,6 +44,8 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
 
   private double lastValue = 0;
 
+  private JList list;
+
   final JPanel content = new JPanel(new FlowLayout());
 
   /**
@@ -66,10 +68,10 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
     JLabel esType = new JLabel("ТИП НС1");
     Map<TextAttribute, Integer> fontAttributes = new HashMap<TextAttribute, Integer>();
     fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-    Font boldUnderline = new Font("Tachoma",Font.BOLD, 28).deriveFont(fontAttributes);
+    Font boldUnderline = new Font("Tachoma", Font.BOLD, 28).deriveFont(fontAttributes);
     esType.setFont(boldUnderline);
 
-    titlePanel.add(esType,BorderLayout.CENTER);
+    titlePanel.add(esType, BorderLayout.CENTER);
     content.add(titlePanel);
     content.add(getChartPanel(), BorderLayout.NORTH);
 
@@ -78,21 +80,6 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
     chart.setAntiAlias(true);
     content.setSize(250, 900);
     setSize(250, 900);
-  }
-
-  public void addChart(ChartPanel chart) {
-    content.add(chart);
-  }
-
-  public void addButton() {
-    final JButton button = new JButton("Exit");
-    button.setBackground(new Color(223, 203, 201));
-    button.setSize(300, 80);
-    button.setActionCommand("ADD_DATA");
-    button.addActionListener(this);
-    final JPanel titlePanel = new JPanel(new FlowLayout());
-    titlePanel.add(button);
-    content.add(titlePanel);
   }
 
   /**
@@ -125,7 +112,14 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
     return result;
   }
 
+  /** The time series data. */
+  public TimeSeries getSeries() {
+    return series;
+  }
 
+  public void setSeries(final TimeSeries series) {
+    this.series = series;
+  }
 
   // ****************************************************************************
   // * JFREECHART DEVELOPER GUIDE                                               *
@@ -137,6 +131,46 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
   // * Sales are used to provide funding for the JFreeChart project - please    *
   // * support us so that we can continue developing free software.             *
   // ****************************************************************************
+
+  public ChartPanel getChartPanel() {
+    return chartPanel;
+  }
+
+  public void setChartPanel(final ChartPanel chartPanel) {
+    this.chartPanel = chartPanel;
+  }
+
+  public void addChart(ChartPanel chart) {
+    content.add(chart);
+  }
+
+  public void addDecisionsAndCloseButton() {
+    //        setContentPane(panel);
+    list = new JList();
+    list.setCellRenderer(new WhiteYellowCellRenderer());
+    Object[] data = new Object[10];
+
+    list.setListData(data);
+    JPanel p = new JPanel();
+    p.setLayout(new BoxLayout(p,BoxLayout.Y_AXIS));
+    p.add(new JLabel("Сообщения о близости к НС"));
+    JScrollPane scrollPane = new JScrollPane();
+    scrollPane.setSize(50, 50);
+    list.setFixedCellHeight(25);
+    list.setFixedCellWidth(50);
+    scrollPane.setViewportView(list);
+    p.add(scrollPane);
+    content.add(p);
+
+    final JButton button = new JButton("Exit");
+    button.setBackground(new Color(223, 203, 201));
+    button.setSize(300, 80);
+    button.setActionCommand("ADD_DATA");
+    button.addActionListener(this);
+    final JPanel titlePanel = new JPanel(new FlowLayout());
+    titlePanel.add(button);
+    content.add(titlePanel);
+  }
 
   /**
    * Handles a click on the button by adding new (random) data.
@@ -190,25 +224,42 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
     this.lastValue = lastValue;
   }
 
-  /** The time series data. */
-  public TimeSeries getSeries() {
-    return series;
-  }
+  private static class WhiteYellowCellRenderer extends DefaultListCellRenderer {
+    public Component getListCellRendererComponent(JList list, Object value, int index,
+        boolean isSelected, boolean cellHasFocus) {
+      Component c = super.getListCellRendererComponent(list,
+          value,
+          index,
+          isSelected,
+          cellHasFocus);
 
-  public void setSeries(final TimeSeries series) {
-    this.series = series;
-  }
-
-  public ChartPanel getChartPanel() {
-    return chartPanel;
-  }
-
-  public void setChartPanel(final ChartPanel chartPanel) {
-    this.chartPanel = chartPanel;
+      if (value != null) {
+        if (value.toString().toLowerCase()
+            .contains("низкая")) {
+          c.setBackground(new Color(144, 198, 37));
+        }
+        if (value.toString().toLowerCase()
+            .contains("средняя")) {
+          c.setBackground(new Color(244, 246, 29));
+        } if (value.toString().toLowerCase()
+            .contains("высокая")) {
+          c.setBackground(new Color(246, 100, 8));
+        }
+      }
+      return c;
+    }
   }
 
   public XYPlot getPlot() {
     return plot;
+  }
+
+  public JList getList() {
+    return list;
+  }
+
+  public void setList(JList list) {
+    this.list = list;
   }
 
   public void setPlot(final XYPlot plot) {
