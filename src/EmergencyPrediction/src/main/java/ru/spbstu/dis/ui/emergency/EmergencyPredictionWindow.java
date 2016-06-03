@@ -72,9 +72,10 @@ public class EmergencyPredictionWindow {
       .get(Tag.MIX_tank_B204_water_bottom_level_sensor);
 
   static String filter_TP_1M6 = Tag.TAG_TO_ID_MAPPING.get(Tag
-                                                            .FILT_ControlPanel_downstream_valve_V103_on);
+      .FILT_ControlPanel_downstream_valve_V103_on);
+
   static String filter_TP_1M7 = Tag.TAG_TO_ID_MAPPING.get(Tag
-                                                              .FILT_ControlPanel_WARING);
+      .FILT_ControlPanel_WARING);
 
   static String filter_p101 = Tag.TAG_TO_ID_MAPPING.get(Tag
       .FILT_pump_101_on);
@@ -108,11 +109,38 @@ public class EmergencyPredictionWindow {
     emergencyPredictionWindow.initRiskValueChart();
     emergencyPredictionWindow.initThermometerChart();
     emergencyPredictionWindow.initMeterChart();
-    emergencyPredictionWindow.initClosenessValueChart();
+    emergencyPredictionWindow.initBottleStationRiskChart();
+    //need to be called last!
+    emergencyPredictionWindow.composeAllChartsIntoOne();
+
     SwingUtilities.invokeLater(
         () -> emergencyPredictionWindow.decisionSupportList = new DecisionSupportList(
             "Прогноз развития НС"));
     emergencyPredictionWindow.runSimulation();
+  }
+
+  private static void initBottleStationRiskChart() {
+    final DynamicDataChart dynamicDataChart = new DynamicDataChart("Вероятность НС на станции " +
+        "розлива");
+
+    Thread th = new Thread(() -> {
+      while (true) {
+        //demo.setLastValue((MAX_TEMPERATURE - temperatureGrowthVal) / MAX_TEMPERATURE);
+        dynamicDataChart.setLastValue(0.22d);
+        dynamicDataChart.getSeries().add(new Millisecond(), dynamicDataChart.getLastValue());
+        try {
+          Thread.sleep(1000);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
+    });
+    th.start();
+
+    XYPlot plot = (XYPlot) closenessChartFrame.getChartPanel().getChart().getPlot();
+    plot.setDataset(plot.getDatasetCount(),
+        ((XYPlot) dynamicDataChart.getChartPanel().getChart().getPlot()).getDataset(0));
+
   }
 
   private static OpcAccessApi createOpcApi() {
@@ -142,7 +170,7 @@ public class EmergencyPredictionWindow {
     th.start();
     final JPanel titlePanel = new JPanel(new FlowLayout());
     titlePanel.add(demo.getChartPanel());
-    closenessChartFrame.add(titlePanel);
+    //    closenessChartFrame.add(titlePanel);
   }
 
   private void initMeterChart() {
@@ -150,9 +178,9 @@ public class EmergencyPredictionWindow {
 
     Thread th = new Thread(() -> {
       while (true) {
-//        double v1 = (MAX_TEMPERATURE - temperatureGrowthVal) / MAX_TEMPERATURE;
-//        double v = (MAX_FLOW_SPEED - overflowRiskVal) / MAX_FLOW_SPEED;
-//        double max = v1 > v ? v1 : v;
+        //        double v1 = (MAX_TEMPERATURE - temperatureGrowthVal) / MAX_TEMPERATURE;
+        //        double v = (MAX_FLOW_SPEED - overflowRiskVal) / MAX_FLOW_SPEED;
+        //        double max = v1 > v ? v1 : v;
         double max = filter_fake_risk_value;
         demo.setValue(max);
 
@@ -170,11 +198,13 @@ public class EmergencyPredictionWindow {
     closenessChartFrame.add(titlePanel);
   }
 
-  private void initClosenessValueChart() {
+  private void composeAllChartsIntoOne() {
 
     Thread th = new Thread(() -> {
       while (true) {
-        closenessChartFrame.setLastValue((MAX_FLOW_SPEED - overflowRiskVal) / MAX_FLOW_SPEED);
+        //demo.setLastValue((MAX_TEMPERATURE - temperatureGrowthVal) / MAX_TEMPERATURE);
+        closenessChartFrame.setLastValue((3 - new Random().nextInt(3))*0.1);
+        closenessChartFrame.getSeries().add(new Millisecond(), closenessChartFrame.getLastValue());
         try {
           Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -190,15 +220,20 @@ public class EmergencyPredictionWindow {
     renderer1.setBaseShapesVisible(false);
     XYLineAndShapeRenderer renderer2 = new XYLineAndShapeRenderer();
     renderer2.setBaseShapesVisible(false);
+    XYLineAndShapeRenderer renderer3 = new XYLineAndShapeRenderer();
+    renderer3.setBaseShapesVisible(false);
     plot.setRenderer(0, renderer0);
     plot.setRenderer(1, renderer1);
     plot.setRenderer(2, renderer2);
+    plot.setRenderer(3, renderer3);
     plot.getRendererForDataset(plot.getDataset(0)).setSeriesPaint(0, Color.green);
     plot.getRendererForDataset(plot.getDataset(1)).setSeriesPaint(0, Color.red);
     plot.getRendererForDataset(plot.getDataset(2)).setSeriesPaint(0, Color.blue);
+    plot.getRendererForDataset(plot.getDataset(3)).setSeriesPaint(0, Color.magenta);
     plot.getRenderer().setSeriesPaint(0, Color.green);
     plot.getRenderer().setSeriesPaint(1, Color.red);
     plot.getRenderer().setSeriesPaint(2, Color.blue);
+    plot.getRenderer().setSeriesPaint(3, Color.magenta);
 
     SwingUtilities.invokeLater(() -> {
       closenessChartFrame.addButton();
@@ -208,15 +243,13 @@ public class EmergencyPredictionWindow {
   }
 
   private void initGrowthValueChart() {
-    final DynamicDataChart demo = new DynamicDataChart("Вероятность перегрева");
+    final DynamicDataChart dynamicDataChart = new DynamicDataChart("Вероятность НС на реакторе");
 
     Thread th = new Thread(() -> {
       while (true) {
         //demo.setLastValue((MAX_TEMPERATURE - temperatureGrowthVal) / MAX_TEMPERATURE);
-        demo.setLastValue(1.1);
-        final Millisecond now = new Millisecond();
-        System.out.println("Now = " + now.toString());
-        demo.getSeries().add(new Millisecond(), demo.getLastValue());
+        dynamicDataChart.setLastValue(0.45d);
+        dynamicDataChart.getSeries().add(new Millisecond(), dynamicDataChart.getLastValue());
         try {
           Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -228,17 +261,12 @@ public class EmergencyPredictionWindow {
 
     XYPlot plot = (XYPlot) closenessChartFrame.getChartPanel().getChart().getPlot();
     plot.setDataset(plot.getDatasetCount(),
-                    ((XYPlot) demo.getChartPanel().getChart().getPlot()).getDataset(0));
-    LegendTitle lt = new LegendTitle(plot);
-    lt.setItemFont(new Font("Dialog", Font.PLAIN, 9));
-    lt.setBackgroundPaint(new Color(200, 200, 255, 100));
-    lt.setFrame(new BlockBorder(Color.white));
-    lt.setPosition(RectangleEdge.LEFT);
+        ((XYPlot) dynamicDataChart.getChartPanel().getChart().getPlot()).getDataset(0));
   }
 
   private void initRiskValueChart() {
     final DynamicDataChart demo = new DynamicDataChart(
-        "Вероятность засора фильтра станции фильтрации");
+        "Вероятность НС на станции фильтрации");
 
     Thread th = new Thread(() -> {
       while (true) {
@@ -260,7 +288,7 @@ public class EmergencyPredictionWindow {
 
     XYPlot plot = (XYPlot) closenessChartFrame.getChartPanel().getChart().getPlot();
     plot.setDataset(plot.getDatasetCount(),
-                    ((XYPlot) demo.getChartPanel().getChart().getPlot()).getDataset(0));
+        ((XYPlot) demo.getChartPanel().getChart().getPlot()).getDataset(0));
   }
 
   private void runSimulation() {
@@ -278,17 +306,16 @@ public class EmergencyPredictionWindow {
 
   private void getDataFromOPC()
   throws InterruptedException {
-//int k=0;
+    //int k=0;
     while (true) {
       //if(k==0) {
-        opcAccessApi.writeValueForTag(filter_p102, Boolean.TRUE);
+      opcAccessApi.writeValueForTag(filter_p102, Boolean.TRUE);
       //  k=1;
-     // }
+      // }
       Thread.sleep(2000);
-      if (filter_fake_risk_value > 0.3d)
-      {
-        opcAccessApi.writeValueForTag(filter_TP_1M7, Boolean.TRUE);}
-
+      if (filter_fake_risk_value > 0.3d) {
+        opcAccessApi.writeValueForTag(filter_TP_1M7, Boolean.TRUE);
+      }
 
       if (filter_fake_risk_value > 0.9d) {
         filter_fake_risk_value = 0.3d;
@@ -298,8 +325,7 @@ public class EmergencyPredictionWindow {
         notifier(String.format("Вероятность аварии на станции фильтрации =%s " + "->\n" +
                     "Рекомендуемое действие=%s",
                 "ВЫСОКАЯ", "Сброс давления в фильтре, отключение насосов", 0.1),
-            filter_fake_risk_value) ;
-
+            filter_fake_risk_value);
 
         opcAccessApi.writeValueForTag(filter_TP_1M6, Boolean.TRUE);
         opcAccessApi.writeValueForTag(filter_TP_1M6, Boolean.FALSE);
@@ -311,64 +337,40 @@ public class EmergencyPredictionWindow {
         Thread.sleep(10000);
         opcAccessApi.writeValueForTag(filter_p102, Boolean.FALSE);
 
-
-return;
+        return;
       }
-//      tankOverheatClosenessValue = opcAccessApi.readFloat(reactorTemperatureSensor).value;
-//      temperatureGrowthVal = opcAccessApi.readFloat(reactorTemperature).value;
-//      decisionSupportList.getSeries().add(new Millisecond(), tankOverheatClosenessValue);
-//      overflowRiskVal = opcAccessApi.readFloat(mixerRealSpeed).value;
-//      if (tankOverheatClosenessValue >= MAX_TEMPERATURE) {
-//        coolDownReactor();
-//        notifier(String.format(
-//            "Температура реактора=%s,\nВероятность перегрева=%s,\n" + "Рекомендуемое действие=%s",
-//            tankOverheatClosenessValue,
-//            ((tankOverheatClosenessValue - MAX_TEMPERATURE) / MAX_TEMPERATURE),
-//            "Охлаждение реактора"), tankOverheatClosenessValue);
-//      }
-//      if (overflowRiskVal > MAX_FLOW_SPEED && opcAccessApi
-//          .readBoolean(mixerToMaintTankPump).value) {
-//        stopWaterFlowToMainTank();
-//        notifier(String
-//            .format("Вероятность переполнения бака=%s " + "->\n" + "Рекомендуемое действие=%s",
-//                "ВЫСОКАЯ", "Остановка закачки воды, сброс излишков воды", 0.1), overflowRiskVal);
-//      }
-//
-//      if (opcAccessApi.readFloat(mixerRealSpeed).value - opcAccessApi.readFloat(mixerSpeed).value
-//          > 10.0f
-//          && opcAccessApi.readBoolean(mixerToMaintTankPump).value) {
-//        notifier(
-//            String.format(
-//                "Вероятность образования пузырьков в расходомере - ВЫСОКАЯ" + "->\n"
-//                    + "Рекомендуемое"
-//                    + " действие=%s",
-//                "1. Проверка наличия воды в баках \r\n 2. Проверка, закрыты ли клапаны"),
-//            overflowRiskVal);
-//      }
+      //      tankOverheatClosenessValue = opcAccessApi.readFloat(reactorTemperatureSensor).value;
+      //      temperatureGrowthVal = opcAccessApi.readFloat(reactorTemperature).value;
+      //      decisionSupportList.getSeries().add(new Millisecond(), tankOverheatClosenessValue);
+      //      overflowRiskVal = opcAccessApi.readFloat(mixerRealSpeed).value;
+      //      if (tankOverheatClosenessValue >= MAX_TEMPERATURE) {
+      //        coolDownReactor();
+      //        notifier(String.format(
+      //            "Температура реактора=%s,\nВероятность перегрева=%s,\n" + "Рекомендуемое действие=%s",
+      //            tankOverheatClosenessValue,
+      //            ((tankOverheatClosenessValue - MAX_TEMPERATURE) / MAX_TEMPERATURE),
+      //            "Охлаждение реактора"), tankOverheatClosenessValue);
+      //      }
+      //      if (overflowRiskVal > MAX_FLOW_SPEED && opcAccessApi
+      //          .readBoolean(mixerToMaintTankPump).value) {
+      //        stopWaterFlowToMainTank();
+      //        notifier(String
+      //            .format("Вероятность переполнения бака=%s " + "->\n" + "Рекомендуемое действие=%s",
+      //                "ВЫСОКАЯ", "Остановка закачки воды, сброс излишков воды", 0.1), overflowRiskVal);
+      //      }
+      //
+      //      if (opcAccessApi.readFloat(mixerRealSpeed).value - opcAccessApi.readFloat(mixerSpeed).value
+      //          > 10.0f
+      //          && opcAccessApi.readBoolean(mixerToMaintTankPump).value) {
+      //        notifier(
+      //            String.format(
+      //                "Вероятность образования пузырьков в расходомере - ВЫСОКАЯ" + "->\n"
+      //                    + "Рекомендуемое"
+      //                    + " действие=%s",
+      //                "1. Проверка наличия воды в баках \r\n 2. Проверка, закрыты ли клапаны"),
+      //            overflowRiskVal);
+      //      }
     }
-  }
-
-  private void stopWaterFlowToMainTank()
-  throws InterruptedException {
-    opcAccessApi.writeValueForTag(mixerRealSpeed, 0f);
-    opcAccessApi.writeValueForTag(mixerToMaintTankPump, false);
-    opcAccessApi.writeValueForTag(downstream, true);
-    Thread.sleep(1000);
-    opcAccessApi.writeValueForTag(downstream, false);
-  }
-
-  private void coolDownReactor()
-  throws InterruptedException {
-    opcAccessApi.writeValueForTag(reactorTemperature, 0f);
-    opcAccessApi.writeValueForTag(reactorHeater, false);
-    opcAccessApi.writeValueForTag(mixerValve1, true);
-    opcAccessApi.writeValueForTag(mixerValve2, true);
-    opcAccessApi.writeValueForTag(mixerValve3, true);
-    opcAccessApi.writeValueForTag(mixerRealSpeed, 40f);
-    opcAccessApi.writeValueForTag(downstream, true);
-    Thread.sleep(1000);
-    opcAccessApi.writeValueForTag(downstream, false);
-    opcAccessApi.writeValueForTag(reactorCooler, true);
   }
 
   private static void notifier(String term, double dangerLevel) {
@@ -420,8 +422,31 @@ return;
     }
   }
 
+  private void stopWaterFlowToMainTank()
+  throws InterruptedException {
+    opcAccessApi.writeValueForTag(mixerRealSpeed, 0f);
+    opcAccessApi.writeValueForTag(mixerToMaintTankPump, false);
+    opcAccessApi.writeValueForTag(downstream, true);
+    Thread.sleep(1000);
+    opcAccessApi.writeValueForTag(downstream, false);
+  }
+
+  private void coolDownReactor()
+  throws InterruptedException {
+    opcAccessApi.writeValueForTag(reactorTemperature, 0f);
+    opcAccessApi.writeValueForTag(reactorHeater, false);
+    opcAccessApi.writeValueForTag(mixerValve1, true);
+    opcAccessApi.writeValueForTag(mixerValve2, true);
+    opcAccessApi.writeValueForTag(mixerValve3, true);
+    opcAccessApi.writeValueForTag(mixerRealSpeed, 40f);
+    opcAccessApi.writeValueForTag(downstream, true);
+    Thread.sleep(1000);
+    opcAccessApi.writeValueForTag(downstream, false);
+    opcAccessApi.writeValueForTag(reactorCooler, true);
+  }
+
   private static DynamicDataChart closenessChartFrame = new DynamicDataChart(
-      "Вероятность возникновения аварийной ситуации для ст.фильт.");
+      "Вероятность НС на станции смешивания");
 
   private boolean showUserDecisionDialog() {
     // show a joptionpane dialog using showMessageDialog
