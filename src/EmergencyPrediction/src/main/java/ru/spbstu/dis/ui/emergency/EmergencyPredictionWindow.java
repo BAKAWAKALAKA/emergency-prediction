@@ -1,6 +1,7 @@
 package ru.spbstu.dis.ui.emergency;
 
 import com.google.common.net.HostAndPort;
+import com.sun.javafx.font.FontFactory;
 import com.typesafe.config.Config;
 import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.plot.XYPlot;
@@ -14,6 +15,7 @@ import ru.spbstu.dis.opc.client.api.OpcClientApiFactory;
 import ru.spbstu.dis.opc.client.api.opc.access.*;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.font.TextAttribute;
 import java.util.*;
 import java.util.logging.*;
 
@@ -140,7 +142,6 @@ public class EmergencyPredictionWindow {
     XYPlot plot = (XYPlot) closenessChartFrame.getChartPanel().getChart().getPlot();
     plot.setDataset(plot.getDatasetCount(),
         ((XYPlot) dynamicDataChart.getChartPanel().getChart().getPlot()).getDataset(0));
-
   }
 
   private static OpcAccessApi createOpcApi() {
@@ -193,7 +194,8 @@ public class EmergencyPredictionWindow {
       }
     });
     th.start();
-    final JPanel titlePanel = new JPanel(new FlowLayout());
+    final JPanel titlePanel = new JPanel();
+    titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.X_AXIS));
     titlePanel.add(demo.getChartPanel());
     closenessChartFrame.add(titlePanel);
   }
@@ -203,7 +205,7 @@ public class EmergencyPredictionWindow {
     Thread th = new Thread(() -> {
       while (true) {
         //demo.setLastValue((MAX_TEMPERATURE - temperatureGrowthVal) / MAX_TEMPERATURE);
-        closenessChartFrame.setLastValue((3 - new Random().nextInt(3))*0.1);
+        closenessChartFrame.setLastValue((3 - new Random().nextInt(3)) * 0.1);
         closenessChartFrame.getSeries().add(new Millisecond(), closenessChartFrame.getLastValue());
         try {
           Thread.sleep(1000);
@@ -213,6 +215,7 @@ public class EmergencyPredictionWindow {
       }
     });
     th.start();
+
     XYPlot plot = (XYPlot) closenessChartFrame.getChartPanel().getChart().getPlot();
     XYLineAndShapeRenderer renderer0 = new XYLineAndShapeRenderer();
     renderer0.setBaseShapesVisible(false);
@@ -236,7 +239,40 @@ public class EmergencyPredictionWindow {
     plot.getRenderer().setSeriesPaint(3, Color.magenta);
 
     SwingUtilities.invokeLater(() -> {
+
+      final JPanel actionRecoms = new JPanel(new FlowLayout());
+      JLabel actionRecommLabel = new JLabel("Рекомендуемые действия");
+      Map<TextAttribute, Integer> fontAttributes = new HashMap<>();
+      fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+      Font boldUnderline = new Font("Tachoma", Font.BOLD, 15).deriveFont(fontAttributes);
+      actionRecommLabel.setFont(boldUnderline);
+      actionRecoms.add(actionRecommLabel);
+      closenessChartFrame.add(actionRecoms);
+
+      final String[] actions = {"1. Отключить станцию", "2. Выключить насос",
+          "3. Проверить соединение"};
+      JList recomActions = new JList(actions);
+
+      final JPanel actionsPanel = new JPanel(new FlowLayout());
+      actionsPanel.setBorder(BorderFactory.createCompoundBorder());
+      actionsPanel.add(recomActions, BorderLayout.CENTER);
+      closenessChartFrame.add(actionsPanel);
+
+      final JPanel actionOutput = new JPanel(new FlowLayout());
+      JLabel esType = new JLabel("ОТРАБОТКА НС1");
+      Font boldUnderlineBig = new Font("Tachoma", Font.BOLD, 25).deriveFont(fontAttributes);
+      esType.setFont(boldUnderlineBig);
+      actionOutput.add(esType);
+      closenessChartFrame.add(actionOutput);
+
+      final JPanel statePanel = new JPanel(new FlowLayout());
+      JLabel stateLbl = new JLabel("Текущее состояние зоны:");
+      stateLbl.setFont(new Font("Tachoma", Font.PLAIN, 10));
+      statePanel.add(stateLbl);
+      closenessChartFrame.add(statePanel);
+
       closenessChartFrame.addButton();
+
       closenessChartFrame.pack();
       closenessChartFrame.setVisible(true);
     });

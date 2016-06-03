@@ -7,6 +7,9 @@ package ru.spbstu.dis.ui.emergency;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.font.TextAttribute;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import javax.swing.*;
@@ -49,9 +52,9 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
    */
   public DynamicDataChart(final String title) {
     super(title);
-    content.setLayout(new FlowLayout());
-    final JPanel titlePanel = new JPanel();
-
+    content.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(1), Color.black));
+    content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
+    final JPanel titlePanel = new JPanel(new FlowLayout());
     this.setSeries(new TimeSeries(title, Millisecond.class));
     final TimeSeriesCollection dataset = new TimeSeriesCollection(this.getSeries());
     final JFreeChart chart = createChart(dataset, "");
@@ -60,8 +63,15 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
     chart.setBorderVisible(false);
     setChartPanel(new ChartPanel(chart));
 
+    JLabel esType = new JLabel("ТИП НС1");
+    Map<TextAttribute, Integer> fontAttributes = new HashMap<TextAttribute, Integer>();
+    fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+    Font boldUnderline = new Font("Tachoma",Font.BOLD, 28).deriveFont(fontAttributes);
+    esType.setFont(boldUnderline);
+
+    titlePanel.add(esType,BorderLayout.CENTER);
     content.add(titlePanel);
-    content.add(getChartPanel());
+    content.add(getChartPanel(), BorderLayout.NORTH);
 
     getChartPanel().setPreferredSize(new java.awt.Dimension(250, 170));
     setContentPane(content);
@@ -76,11 +86,13 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
 
   public void addButton() {
     final JButton button = new JButton("Exit");
-    button.setBackground(new Color(180, 11, 0));
+    button.setBackground(new Color(223, 203, 201));
     button.setSize(300, 80);
     button.setActionCommand("ADD_DATA");
     button.addActionListener(this);
-    content.add(button);
+    final JPanel titlePanel = new JPanel(new FlowLayout());
+    titlePanel.add(button);
+    content.add(titlePanel);
   }
 
   /**
