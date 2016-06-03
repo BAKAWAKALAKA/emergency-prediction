@@ -361,7 +361,7 @@ public class EmergencyPredictionWindow {
       // }
       Thread.sleep(2000);
       if (filter_fake_risk_value > 0.3d) {
-        notifier(String.format("Вероятность аварии на станции фильтрации =%s " + "->\n" +
+        notifier(String.format("Вероятность НС на ст.фильтр. =%s " + "->\n" +
                     "Рекомендуемое действие=%s",
                 "СРЕДНЯЯ", "Проверка станции", 0.1),
             0.3);
@@ -374,7 +374,7 @@ public class EmergencyPredictionWindow {
         filter_fake_active_flag = false;
         opcAccessApi.writeValueForTag(filter_p102, Boolean.FALSE);
 
-        notifier(String.format("Вероятность аварии на станции фильтрации =%s " + "->\n" +
+        notifier(String.format("Вероятность НС на ст.фильтр. =%s " + "->\n" +
                     "Рекомендуемое действие=%s",
                 "ВЫСОКАЯ", "Сброс давления в фильтре, отключение насосов", 0.1),
             filter_fake_risk_value);
@@ -388,7 +388,10 @@ public class EmergencyPredictionWindow {
         opcAccessApi.writeValueForTag(filter_p102, Boolean.TRUE);
         Thread.sleep(10000);
         opcAccessApi.writeValueForTag(filter_p102, Boolean.FALSE);
-
+        notifier(String.format("Вероятность НС на ст.фильтр. =%s " + "->\n" +
+                    "Рекомендуемое действие=%s",
+                "НИЗКАЯ", "Штатный режим", 0.1),
+            0.1);
         return;
       }
       //      tankOverheatClosenessValue = opcAccessApi.readFloat(reactorTemperatureSensor).value;
