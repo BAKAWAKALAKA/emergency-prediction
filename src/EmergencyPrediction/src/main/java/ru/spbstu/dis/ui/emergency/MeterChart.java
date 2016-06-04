@@ -59,8 +59,8 @@ public class MeterChart extends ApplicationFrame {
     // OPTIONAL CUSTOMISATION COMPLETED.
     // add the chart to a panel...
     chartPanel = new ChartPanel(jfreechart);
-    chartPanel.setSize(100, 90);
-    chartPanel.setPreferredSize(new java.awt.Dimension(100, 120));
+    chartPanel.setSize(220, 180);
+    chartPanel.setPreferredSize(new java.awt.Dimension(220, 180));
     setContentPane(chartPanel);
   }
 

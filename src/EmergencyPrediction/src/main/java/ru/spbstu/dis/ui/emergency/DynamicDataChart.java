@@ -56,7 +56,7 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
     super(title);
     content.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(1), Color.black));
     content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
-    final JPanel titlePanel = new JPanel(new FlowLayout());
+
     this.setSeries(new TimeSeries(title, Millisecond.class));
     final TimeSeriesCollection dataset = new TimeSeriesCollection(this.getSeries());
     final JFreeChart chart = createChart(dataset, "");
@@ -65,14 +65,6 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
     chart.setBorderVisible(false);
     setChartPanel(new ChartPanel(chart));
 
-    JLabel esType = new JLabel("ТИП НС1");
-    Map<TextAttribute, Integer> fontAttributes = new HashMap<TextAttribute, Integer>();
-    fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-    Font boldUnderline = new Font("Tachoma", Font.BOLD, 28).deriveFont(fontAttributes);
-    esType.setFont(boldUnderline);
-
-    titlePanel.add(esType, BorderLayout.CENTER);
-    content.add(titlePanel);
     content.add(getChartPanel(), BorderLayout.NORTH);
 
     getChartPanel().setPreferredSize(new java.awt.Dimension(250, 170));

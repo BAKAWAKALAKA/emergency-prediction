@@ -215,6 +215,14 @@ public class FilterStationEmergencyPrediction4 {
     });
     th.start();
 
+    JLabel esType = new JLabel("ТИП НС1");
+    Map<TextAttribute, Integer> fontAttributes = new HashMap<TextAttribute, Integer>();
+    fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+    Font boldUnderline = new Font("Tachoma", Font.BOLD, 28).deriveFont(fontAttributes);
+    esType.setFont(boldUnderline);
+    final JPanel titlePanel = new JPanel(new FlowLayout());
+    titlePanel.add(esType, BorderLayout.CENTER);
+    closenessChartFrame.add(titlePanel);
     XYPlot plot = (XYPlot) closenessChartFrame.getChartPanel().getChart().getPlot();
     XYLineAndShapeRenderer renderer0 = new XYLineAndShapeRenderer();
     renderer0.setBaseShapesVisible(false);
@@ -241,10 +249,8 @@ public class FilterStationEmergencyPrediction4 {
 
       final JPanel actionRecoms = new JPanel(new FlowLayout());
       JLabel actionRecommLabel = new JLabel("Рекомендуемые действия");
-      Map<TextAttribute, Integer> fontAttributes = new HashMap<>();
-      fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-      Font boldUnderline = new Font("Tachoma", Font.BOLD, 15).deriveFont(fontAttributes);
-      actionRecommLabel.setFont(boldUnderline);
+      Font boldUnderlineAction = new Font("Tachoma", Font.BOLD, 15).deriveFont(fontAttributes);
+      actionRecommLabel.setFont(boldUnderlineAction);
       actionRecoms.add(actionRecommLabel);
       closenessChartFrame.add(actionRecoms);
 
@@ -258,10 +264,10 @@ public class FilterStationEmergencyPrediction4 {
       closenessChartFrame.add(actionsPanel);
 
       final JPanel actionOutput = new JPanel(new FlowLayout());
-      JLabel esType = new JLabel("ОТРАБОТКА НС1");
+      JLabel esTypeAction = new JLabel("ОТРАБОТКА НС1");
       Font boldUnderlineBig = new Font("Tachoma", Font.BOLD, 25).deriveFont(fontAttributes);
-      esType.setFont(boldUnderlineBig);
-      actionOutput.add(esType);
+      esTypeAction.setFont(boldUnderlineBig);
+      actionOutput.add(esTypeAction);
       closenessChartFrame.add(actionOutput);
 
       final JPanel statePanel = new JPanel(new FlowLayout());
@@ -273,7 +279,7 @@ public class FilterStationEmergencyPrediction4 {
       JPanel finishedActionsPnl = new JPanel(new FlowLayout());
       BufferedImage myPicture = null;
       try {
-        myPicture = ImageIO.read(FilterStationEmergencyPrediction4.class.getResource("/image_station.PNG"));
+        myPicture = ImageIO.read(EmergencyPredictionWindow.class.getResource("/image_station.PNG"));
       } catch (IOException e) {
         e.printStackTrace();
       }
@@ -290,6 +296,7 @@ public class FilterStationEmergencyPrediction4 {
       closenessChartFrame.addDecisionsAndCloseButton();
 
       closenessChartFrame.pack();
+      closenessChartFrame.setLocation(1050,0);
       closenessChartFrame.setVisible(true);
     });
   }
