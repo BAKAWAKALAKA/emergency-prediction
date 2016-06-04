@@ -83,6 +83,9 @@ public class FilterStationEmergencyPredictionFoulBlockage {
 
   static String filter_p101 = Tag.TAG_TO_ID_MAPPING.get(Tag
       .FILT_pump_101_on);
+  static String filter_open_rev_valve = Tag.TAG_TO_ID_MAPPING.get(Tag.FILT_open_rev_valve);
+  static String filter_open_rev_pump = Tag.TAG_TO_ID_MAPPING.get(Tag
+                                                                      .FILT_ControlPanel_downstream_station_pump_P102_on);
 
   static String filter_p102 = Tag.TAG_TO_ID_MAPPING.get(Tag
       .FILT_pump_102_on);
@@ -215,7 +218,7 @@ public class FilterStationEmergencyPredictionFoulBlockage {
     });
     th.start();
 
-    JLabel esType = new JLabel("ТИП НС1");
+    JLabel esType = new JLabel("Засор фильтра (нарушение состава)");
     Map<TextAttribute, Integer> fontAttributes = new HashMap<TextAttribute, Integer>();
     fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
     Font boldUnderline = new Font("Tachoma", Font.BOLD, 28).deriveFont(fontAttributes);
@@ -254,8 +257,9 @@ public class FilterStationEmergencyPredictionFoulBlockage {
       actionRecoms.add(actionRecommLabel);
       closenessChartFrame.add(actionRecoms);
 
-      final String[] actions = {"1. Отключить станцию", "2. Выключить насос",
-          "3. Проверить соединение"};
+      final String[] actions = {"1. Отключить подачу жидкости", "2. Закрыть выпускной клапан",
+          "3. Открыть обратный клапан", "4. Включить резервный насос",
+          "5. Задать обратное направление течения жидкости"};
       JList recomActions = new JList(actions);
 
       final JPanel actionsPanel = new JPanel(new FlowLayout());
@@ -264,14 +268,14 @@ public class FilterStationEmergencyPredictionFoulBlockage {
       closenessChartFrame.add(actionsPanel);
 
       final JPanel actionOutput = new JPanel(new FlowLayout());
-      JLabel esTypeAction = new JLabel("ОТРАБОТКА НС1");
+      JLabel esTypeAction = new JLabel("ОТРАБОТКА НС: Очистка фильтра");
       Font boldUnderlineBig = new Font("Tachoma", Font.BOLD, 25).deriveFont(fontAttributes);
       esTypeAction.setFont(boldUnderlineBig);
       actionOutput.add(esTypeAction);
       closenessChartFrame.add(actionOutput);
 
       final JPanel statePanel = new JPanel(new FlowLayout());
-      JLabel stateLbl = new JLabel("Текущее состояние зоны:");
+      JLabel stateLbl = new JLabel("Текущее состояние фильтра:");
       stateLbl.setFont(new Font("Tachoma", Font.PLAIN, 10));
       statePanel.add(stateLbl);
       closenessChartFrame.add(statePanel);
@@ -365,38 +369,36 @@ public class FilterStationEmergencyPredictionFoulBlockage {
 
   private void getDataFromOPC()
   throws InterruptedException {
-    //int k=0;
     while (true) {
-      //if(k==0) {
-      opcAccessApi.writeValueForTag(filter_p102, Boolean.TRUE);
-      //  k=1;
-      // }
-      Thread.sleep(2000);
+      opcAccessApi.writeValueForTag(filter_p102, Boolean.TRUE); //water filtering
+
+      Thread.sleep(1000);
       if (filter_fake_risk_value > 0.3d) {
         notifier(String.format("Вероятность НС на ст.фильтр. =%s " + "->\n" +
                     "Рекомендуемое действие=%s",
                 "СРЕДНЯЯ", "Проверка станции", 0.1),
             0.3);
-        opcAccessApi.writeValueForTag(filter_TP_1M7, Boolean.TRUE);
+        opcAccessApi.writeValueForTag(filter_TP_1M7, Boolean.TRUE); //Warning
       }
 
 
       if (filter_fake_risk_value > 0.9d) {
         filter_fake_risk_value = 0.3d;
         filter_fake_active_flag = false;
-        opcAccessApi.writeValueForTag(filter_p102, Boolean.FALSE);
+        opcAccessApi.writeValueForTag(filter_p102, Boolean.FALSE); //water filtering
 
         notifier(String.format("Вероятность НС на ст.фильтр. =%s " + "->\n" +
                     "Рекомендуемое действие=%s",
                 "ВЫСОКАЯ", "Сброс давления в фильтре, отключение насосов", 0.1),
             filter_fake_risk_value);
 
-        opcAccessApi.writeValueForTag(filter_TP_1M6, Boolean.TRUE);
-        opcAccessApi.writeValueForTag(filter_TP_1M6, Boolean.FALSE);
-        opcAccessApi.writeValueForTag(filter_p101, Boolean.TRUE);
-        opcAccessApi.writeValueForTag(filter_TP_1M7, Boolean.FALSE);
-        Thread.sleep(5000);
-        opcAccessApi.writeValueForTag(filter_p101, Boolean.FALSE);
+        opcAccessApi.writeValueForTag(filter_open_rev_valve, Boolean.TRUE);
+        opcAccessApi.writeValueForTag(filter_open_rev_pump, Boolean.TRUE);
+        opcAccessApi.writeValueForTag(filter_TP_1M7, Boolean.FALSE); //warning FALSE
+        Thread.sleep(10000);
+        opcAccessApi.writeValueForTag(filter_open_rev_pump, Boolean.FALSE);
+        opcAccessApi.writeValueForTag(filter_open_rev_valve, Boolean.FALSE);
+        Thread.sleep(2000);
         opcAccessApi.writeValueForTag(filter_p102, Boolean.TRUE);
         Thread.sleep(10000);
         opcAccessApi.writeValueForTag(filter_p102, Boolean.FALSE);
@@ -406,6 +408,9 @@ public class FilterStationEmergencyPredictionFoulBlockage {
             0.1);
         return;
       }
+      else {opcAccessApi.writeValueForTag(filter_TP_1M7, !opcAccessApi.readBoolean(filter_TP_1M7)
+          .value); //warning
+          }
       //      tankOverheatClosenessValue = opcAccessApi.readFloat(reactorTemperatureSensor).value;
       //      temperatureGrowthVal = opcAccessApi.readFloat(reactorTemperature).value;
       //      decisionSupportList.getSeries().add(new Millisecond(), tankOverheatClosenessValue);
