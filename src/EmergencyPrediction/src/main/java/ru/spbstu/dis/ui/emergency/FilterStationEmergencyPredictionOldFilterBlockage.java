@@ -57,26 +57,11 @@ public class FilterStationEmergencyPredictionOldFilterBlockage {
 
   static String mixerValve3 = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_valve_V203_ToMainTank_on);
 
-  static String mixerSpeed = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_ControlPanel_FLOW_SPEED);
 
   static String mixerRealSpeed = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_TANK_MAN_FLOW_SPEED);
 
-  static String mixerValveSensor1 = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_valve_V201_ToMainTank_SENSOR);
-
-  static String mixerValveSensor2 = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_valve_V202_ToMainTank_SENSOR);
-
-  static String mixerValveSensor3 = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_valve_V203_ToMainTank_SENSOR);
-
   static String mixerToMaintTankPump = Tag.TAG_TO_ID_MAPPING
       .get(Tag.MIX_ControlPanel_PumpToMainTank_P201_on);
-
-  static String mixerTopWaterLvlSensor = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_tank_B204_top);
-
-  static String mixerBottomWaterLvlSensor = Tag.TAG_TO_ID_MAPPING
-      .get(Tag.MIX_tank_B204_water_bottom_level_sensor);
-
-  static String filter_TP_1M6 = Tag.TAG_TO_ID_MAPPING.get(Tag
-      .FILT_ControlPanel_downstream_valve_V103_on);
 
   static String filter_TP_1M7 = Tag.TAG_TO_ID_MAPPING.get(Tag
       .FILT_ControlPanel_WARING);
@@ -222,7 +207,7 @@ public class FilterStationEmergencyPredictionOldFilterBlockage {
       JPanel finishedActionsPnl = new JPanel(new FlowLayout());
       BufferedImage myPicture = null;
       try {
-        myPicture = ImageIO.read(EmergencyPredictionWindow.class.getResource("/filter.png"));
+        myPicture = ImageIO.read(FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.class.getResource("/filter.png"));
       } catch (IOException e) {
         e.printStackTrace();
       }

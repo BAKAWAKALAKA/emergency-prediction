@@ -1,9 +1,6 @@
 package ru.spbstu.dis.ui.emergency;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class EmergencyPredictionWindowRunner {
   public static void main(String[] args) {
@@ -24,29 +21,43 @@ public class EmergencyPredictionWindowRunner {
     panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
     JLabel label = new JLabel("Типы нештатных ситуаций:");
-
+    panel.add(label);
     JButton button = new JButton();
     button.setText("Симуляция засора фильтра");
-    button.addActionListener(e -> EmergencyPredictionWindow.main(args));
+    button.addActionListener(e -> FilterStationEmergencyPredictionFilterDestructionAfterOuterValve
+        .main(args));
+    panel.add(button);
 
     JButton button1 = new JButton();
     button1.setText("Симуляция старого фильтра");
     button1.addActionListener(e -> FilterStationEmergencyPredictionOldFilterBlockage.main(args));
+    panel.add(button1);
 
     JButton button2 = new JButton();
     button2.setText("Симуляция неисправности фильтра");
     button2.addActionListener(e -> FilterStationEmergencyPredictionFoulBlockage.main(args));
-
-
-    panel.add(label);
-    panel.add(button);
-    panel.add(button1);
     panel.add(button2);
 
+    JButton button3 = new JButton();
+    button3.setText("Симуляция неисправности фильтра");
+    button3.addActionListener(e -> FilterStationEmergencyPredictionFoulBlockage.main(args));
+    panel.add(button3);
+
+    JButton button4 = new JButton();
+    button4.setText("Симуляция неисправности фильтра");
+    button4.addActionListener(e -> FilterStationEmergencyPredictionFoulBlockage.main(args));
+    panel.add(button4);
+
+    JButton button5 = new JButton();
+    button5.setText("Симуляция неисправности фильтра");
+    button5.addActionListener(e -> FilterStationEmergencyPredictionFoulBlockage.main(args));
+    panel.add(button5);
+
+
+
     frame.add(panel);
-    frame.setSize(250, 600);
-    frame.setLocation(1600,0);
-    frame.setLocationRelativeTo(null);
+    frame.setSize(330, 600);
+    frame.setLocation(1115, 0);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setVisible(true);
 

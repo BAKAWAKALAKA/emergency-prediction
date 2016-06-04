@@ -18,9 +18,9 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.*;
 
-public class EmergencyPredictionWindow {
+public class FilterStationEmergencyPredictionFilterDestructionAfterOuterValve {
   private static final org.slf4j.Logger LOGGER = LoggerFactory
-      .getLogger(EmergencyPredictionWindow.class);
+      .getLogger(FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.class);
 
   private final OpcAccessApi opcAccessApi;
 
@@ -50,7 +50,8 @@ public class EmergencyPredictionWindow {
 
   static boolean filter_fake_active_flag = true;
 
-  public EmergencyPredictionWindow(final OpcAccessApi opcAccessApi) {
+  public FilterStationEmergencyPredictionFilterDestructionAfterOuterValve(
+      final OpcAccessApi opcAccessApi) {
     this.opcAccessApi = opcAccessApi;
   }
 
@@ -66,13 +67,14 @@ public class EmergencyPredictionWindow {
     } catch (Exception e) {
       // If Nimbus is not available, you can set the GUI to another look and feel.
     }
-    EmergencyPredictionWindow emergencyPredictionWindow =
-        new EmergencyPredictionWindow(createOpcApi());
-    emergencyPredictionWindow.initMeterChart();
+    FilterStationEmergencyPredictionFilterDestructionAfterOuterValve
+        filterStationEmergencyPredictionFilterDestructionAfterOuterValve =
+        new FilterStationEmergencyPredictionFilterDestructionAfterOuterValve(createOpcApi());
+    filterStationEmergencyPredictionFilterDestructionAfterOuterValve.initMeterChart();
     //need to be called last!s
-    emergencyPredictionWindow.composeAllChartsIntoOne();
+    filterStationEmergencyPredictionFilterDestructionAfterOuterValve.composeAllChartsIntoOne();
 
-    emergencyPredictionWindow.runSimulation();
+    filterStationEmergencyPredictionFilterDestructionAfterOuterValve.runSimulation();
   }
 
   private static OpcAccessApi createOpcApi() {
@@ -175,7 +177,7 @@ public class EmergencyPredictionWindow {
       JPanel finishedActionsPnl = new JPanel(new FlowLayout());
       BufferedImage myPicture = null;
       try {
-        myPicture = ImageIO.read(EmergencyPredictionWindow.class.getResource("/filter.png"));
+        myPicture = ImageIO.read(FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.class.getResource("/filter.png"));
       } catch (IOException e) {
         e.printStackTrace();
       }
@@ -262,15 +264,15 @@ public class EmergencyPredictionWindow {
   private static void notifier(String term, double dangerLevel) {
 
     if (dangerLevel > 0.5d) {
-      ImageIcon icon = new ImageIcon(EmergencyPredictionWindow.class.getResource("/alarm.png"));
+      ImageIcon icon = new ImageIcon(FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.class.getResource("/alarm.png"));
       showErrorNotif(term, new Color(249, 78, 30), icon);
     }
     if (dangerLevel > 0.0d && dangerLevel <= 0.3d) {
-      ImageIcon icon = new ImageIcon(EmergencyPredictionWindow.class.getResource("/info.png"));
+      ImageIcon icon = new ImageIcon(FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.class.getResource("/info.png"));
       showErrorNotif(term, new Color(127, 176, 72), icon);
     }
     if (dangerLevel > 0.3d && dangerLevel <= 0.5d) {
-      ImageIcon icon = new ImageIcon(EmergencyPredictionWindow.class.getResource("/warning.png"));
+      ImageIcon icon = new ImageIcon(FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.class.getResource("/warning.png"));
       showErrorNotif(term, new Color(249, 236, 100), icon);
     }
   }

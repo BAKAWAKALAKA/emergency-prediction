@@ -6,7 +6,7 @@ import ru.spbstu.dis.opc.client.api.OpcClientApiFactory;
 public class OpcAccessApiExample {
   public static void main(String[] args) {
     final OpcAccessApi opcAccessApi = OpcClientApiFactory
-        .createOpcAccessApi(HostAndPort.fromParts("192.168.11.52", 7998));
+        .createOpcAccessApi(HostAndPort.fromParts("10.18.129.6", 7998));
     checkPump(opcAccessApi);
 //    checkFloatWrite(opcAccessApi);
   }
@@ -18,8 +18,8 @@ public class OpcAccessApiExample {
 
   private static void checkPump(final OpcAccessApi opcAccessApi) {
     final AvailableTags availableTags = opcAccessApi.availableTags();
-    final String pumpName = "MixingConnection/M/TP_2M5";
+    final String pumpName = "FilterConnection/M/TP_1M2";
     final TagValueBoolean pumpStatus = opcAccessApi.readBoolean(pumpName);
-    opcAccessApi.writeValueForTag("MixingConnection/M/TP_2M5", !pumpStatus.value);
+    opcAccessApi.writeValueForTag("FilterConnection/M/TP_1M1", !pumpStatus.value);
   }
 }

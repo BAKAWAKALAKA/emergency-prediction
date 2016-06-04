@@ -279,7 +279,7 @@ public class FilterStationEmergencyPrediction4 {
       JPanel finishedActionsPnl = new JPanel(new FlowLayout());
       BufferedImage myPicture = null;
       try {
-        myPicture = ImageIO.read(EmergencyPredictionWindow.class.getResource("/image_station.PNG"));
+        myPicture = ImageIO.read(FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.class.getResource("/image_station.PNG"));
       } catch (IOException e) {
         e.printStackTrace();
       }
@@ -296,7 +296,7 @@ public class FilterStationEmergencyPrediction4 {
       closenessChartFrame.addDecisionsAndCloseButton();
 
       closenessChartFrame.pack();
-      closenessChartFrame.setLocation(1050,0);
+      closenessChartFrame.setLocation(1050, 0);
       closenessChartFrame.setVisible(true);
     });
   }
