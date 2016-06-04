@@ -8,35 +8,34 @@ import org.jfree.data.time.Millisecond;
 import org.slf4j.LoggerFactory;
 import ru.spbstu.dis.ConfigProvider;
 import ru.spbstu.dis.opc.client.api.OpcClientApiFactory;
-import ru.spbstu.dis.opc.client.api.opc.access.OpcAccessApi;
-import ru.spbstu.dis.opc.client.api.opc.access.Tag;
+import ru.spbstu.dis.opc.client.api.opc.access.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.font.TextAttribute;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.*;
+import java.util.logging.*;
 
-public class FilterStationEmergencyPredictionFoulBlockage {
+public class FilterStationEmergencyPredictionFilterDestructionAfterInnerValve {
   private static final org.slf4j.Logger LOGGER = LoggerFactory
-      .getLogger(FilterStationEmergencyPredictionFoulBlockage.class);
+      .getLogger(FilterStationEmergencyPredictionFilterDestructionAfterInnerValve.class);
+
 
   private final OpcAccessApi opcAccessApi;
 
   static ArrayList notifications = new ArrayList();
 
   static String filter_TP_1M7 = Tag.TAG_TO_ID_MAPPING.get(Tag
-      .FILT_ControlPanel_WARNING);
-
+                                                              .FILT_ControlPanel_WARNING);
   static String filter_open_rev_valve = Tag.TAG_TO_ID_MAPPING.get(Tag.FILT_open_rev_valve);
   static String filter_open_rev_pump = Tag.TAG_TO_ID_MAPPING.get(Tag
-                                                                      .FILT_ControlPanel_downstream_station_pump_P102_on);
+                                                                     .FILT_ControlPanel_downstream_station_pump_P102_on);
+
+
+  static String filter_p101 = Tag.TAG_TO_ID_MAPPING.get(Tag
+                                                            .FILT_pump_101_on);
 
   static String filter_p102 = Tag.TAG_TO_ID_MAPPING.get(Tag
                                                             .FILT_pump_102_on);
@@ -47,10 +46,12 @@ public class FilterStationEmergencyPredictionFoulBlockage {
 
   static JList actionsFinishedList;
 
+  static JLabel picLabel;
   static JLabel progressText = new JLabel();
   static DefaultListModel listModel = new DefaultListModel();
-  static  JLabel picLabel;
-  public FilterStationEmergencyPredictionFoulBlockage(final OpcAccessApi opcAccessApi) {
+
+  public FilterStationEmergencyPredictionFilterDestructionAfterInnerValve(final OpcAccessApi
+                                                                              opcAccessApi) {
     this.opcAccessApi = opcAccessApi;
   }
 
@@ -66,8 +67,8 @@ public class FilterStationEmergencyPredictionFoulBlockage {
     } catch (Exception e) {
       // If Nimbus is not available, you can set the GUI to another look and feel.
     }
-    FilterStationEmergencyPredictionFoulBlockage emergencyPredictionWindow =
-        new FilterStationEmergencyPredictionFoulBlockage(createOpcApi());
+    FilterStationEmergencyPredictionFilterDestructionAfterInnerValve emergencyPredictionWindow =
+        new FilterStationEmergencyPredictionFilterDestructionAfterInnerValve(createOpcApi());
     emergencyPredictionWindow.initMeterChart();
     //need to be called last!
     emergencyPredictionWindow.composeAllChartsIntoOne();
@@ -86,7 +87,7 @@ public class FilterStationEmergencyPredictionFoulBlockage {
   }
 
   private void initMeterChart() {
-    final MeterChart demo = new MeterChart("Вероятность НС на фильтре");
+    final MeterChart demo = new MeterChart("");
 
     Thread th = new Thread(() -> {
       while (true) {
@@ -112,8 +113,9 @@ public class FilterStationEmergencyPredictionFoulBlockage {
 
     Thread th = new Thread(() -> {
       while (true) {
-        //demo.setLastValue((MAX_TEMPERATURE - temperatureGrowthVal) / MAX_TEMPERATURE);
-        filter_fake_risk_value += 0.2 * new Random().nextDouble();
+        if (filter_fake_active_flag) {
+          filter_fake_risk_value += 0.1 * new Random().nextDouble();
+        }
         closenessChartFrame.setLastValue(filter_fake_risk_value);
         closenessChartFrame.getSeries().add(new Millisecond(), closenessChartFrame.getLastValue());
         try {
@@ -124,24 +126,30 @@ public class FilterStationEmergencyPredictionFoulBlockage {
       }
     });
     th.start();
-    JLabel esType = new JLabel("<html>Засор фильтра<br>(механический засор)</html>",
-                               SwingConstants.CENTER);
-    Map<TextAttribute, Integer> fontAttributes = new HashMap<TextAttribute, Integer>();
+
+    JLabel esType = new JLabel("<html>Блокировка клапана<br>" +"(входного)</html>");
+    Map<TextAttribute, Integer> fontAttributes = new HashMap<>();
     fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-    Font boldUnderline = new Font("Tachoma", Font.BOLD, 22).deriveFont(fontAttributes);
+    Font boldUnderline = new Font("Tachoma", Font.BOLD, 24).deriveFont(fontAttributes);
     esType.setFont(boldUnderline);
     final JPanel titlePanel = new JPanel(new FlowLayout());
     titlePanel.add(esType, BorderLayout.CENTER);
-    closenessChartFrame.add(titlePanel);
+    closenessChartFrame.add(titlePanel, 0);
+
+    esType = new JLabel("Вероятность блокировки клапана:");
+    boldUnderline = new Font("Tachoma", Font.PLAIN, 19).deriveFont(fontAttributes);
+    esType.setFont(boldUnderline);
+    final JPanel chartPanel = new JPanel(new FlowLayout());
+    chartPanel.add(esType, BorderLayout.CENTER);
+    closenessChartFrame.add(chartPanel, 1);
+
     XYPlot plot = (XYPlot) closenessChartFrame.getChartPanel().getChart().getPlot();
     XYLineAndShapeRenderer renderer0 = new XYLineAndShapeRenderer();
     renderer0.setBaseShapesVisible(false);
-    XYLineAndShapeRenderer renderer1 = new XYLineAndShapeRenderer();
-    renderer1.setBaseShapesVisible(false);
     plot.setRenderer(0, renderer0);
-    plot.getRendererForDataset(plot.getDataset(0)).setSeriesPaint(0, Color.red);
-    plot.getRenderer().setSeriesPaint(0, Color.red);
-
+    plot.getRendererForDataset(plot.getDataset(0)).setSeriesPaint(0, Color.BLUE);
+    plot.getRenderer().setSeriesPaint(0, Color.BLUE);
+    plot.getRenderer().setSeriesStroke(0, new BasicStroke(3.0f));
     SwingUtilities.invokeLater(() -> {
 
       final JPanel actionRecoms = new JPanel(new FlowLayout());
@@ -151,9 +159,10 @@ public class FilterStationEmergencyPredictionFoulBlockage {
       actionRecoms.add(actionRecommLabel);
       closenessChartFrame.add(actionRecoms);
 
-      final String[] actions = {"1. Отключить подачу жидкости", "2. Закрыть выпускной клапан",
-          "3. Открыть реверсный клапан", "4. Включить резервный насос",
-          "5. Задать обратное направление течения жидкости"};
+      final String[] actions = {"1. Отключить подачу жидкости", "2. Задать обратное направление " +
+          "течения жидкости",
+          "3. Включить резервный насос", "4.  Включить продув в обратном направлении",
+          "5. Включить подачу жидкости в штатном режиме"};
       JList recomActions = new JList(actions);
 
       final JPanel actionsPanel = new JPanel(new FlowLayout());
@@ -162,14 +171,15 @@ public class FilterStationEmergencyPredictionFoulBlockage {
       closenessChartFrame.add(actionsPanel);
 
       final JPanel actionOutput = new JPanel(new FlowLayout());
-      JLabel esTypeAction = new JLabel("<html>ОТРАБОТКА НС:<br>Очистка фильтра</html>", SwingConstants.CENTER);
+      JLabel esTypeAction = new JLabel("<html>ОТРАБОТКА НС:<br>Очистка клапана</html>",
+                                       SwingConstants.CENTER);
       Font boldUnderlineBig = new Font("Tachoma", Font.BOLD, 18).deriveFont(fontAttributes);
       esTypeAction.setFont(boldUnderlineBig);
       actionOutput.add(esTypeAction);
       closenessChartFrame.add(actionOutput);
 
       final JPanel statePanel = new JPanel(new FlowLayout());
-      JLabel stateLbl = new JLabel("Текущее состояние фильтра:");
+      JLabel stateLbl = new JLabel("Текущее состояние входного клапана:");
       stateLbl.setFont(new Font("Tachoma", Font.PLAIN, 10));
       statePanel.add(stateLbl);
       closenessChartFrame.add(statePanel);
@@ -189,7 +199,7 @@ public class FilterStationEmergencyPredictionFoulBlockage {
       picLabel.add(new JLabel("       "));
       picLabel.add(progressText);
       actionsFinishedList = new JList(listModel);
-      actionsFinishedList.setSize(60, 80);
+      actionsFinishedList.setSize(60,80);
       finishedActionsPnl.add(actionsFinishedList);
 
       closenessChartFrame.add(finishedActionsPnl);
@@ -221,9 +231,9 @@ public class FilterStationEmergencyPredictionFoulBlockage {
       Thread.sleep(1000);
       if (filter_fake_risk_value > 0.3d) {
         notifier(String.format("Вероятность НС на ст.фильтр. =%s " + "->\n" +
-                    "Рекомендуемое действие=%s",
-                "СРЕДНЯЯ", "Проверка станции", 0.1),
-            0.3);
+                                   "Рекомендуемое действие=%s",
+                               "СРЕДНЯЯ", "Проверка станции", 0.1),
+                 0.3);
         opcAccessApi.writeValueForTag(filter_TP_1M7, Boolean.TRUE); //Warning
       }
       else {
@@ -247,9 +257,9 @@ public class FilterStationEmergencyPredictionFoulBlockage {
         progressText.setText("0%");
         listModel.addElement("<html>1.Отключить подачу<br> жидкости</html>");
         notifier(String.format("Вероятность НС на ст.фильтр. =%s " + "->\n" +
-                    "Рекомендуемое действие=%s",
-                "ВЫСОКАЯ", "Сброс давления в фильтре, отключение насосов", 0.1),
-            filter_fake_risk_value);
+                                   "Рекомендуемое действие=%s",
+                               "ВЫСОКАЯ", "Сброс давления в фильтре, отключение насосов", 0.1),
+                 filter_fake_risk_value);
         picLabel.updateUI();
         closenessChartFrame.revalidate();
         closenessChartFrame.repaint();
@@ -258,25 +268,29 @@ public class FilterStationEmergencyPredictionFoulBlockage {
 
 
         opcAccessApi.writeValueForTag(filter_open_rev_valve, Boolean.TRUE);
-        listModel.addElement("<html>2.Закрыть выпускной<br>клапан</html>");
+        listModel.addElement("<html>2.Задать обратное<br>направление течения<br>жидкости</html>");
         progressText.setText("50%");
         opcAccessApi.writeValueForTag(filter_open_rev_pump, Boolean.TRUE);
-        listModel.addElement("<html>3.Открыть реверсный<br>клапан</html>");
         Thread.sleep(10000);
-        listModel.addElement("<html>4.Включить резервный<br>насос</html>");
         opcAccessApi.writeValueForTag(filter_open_rev_pump, Boolean.FALSE);
+        listModel.addElement("<html>3. Включить резервный<br>насос</html>");
+        opcAccessApi.writeValueForTag(filter_p101, Boolean.TRUE); //turn on blowing
+        Thread.sleep(5000);
+        listModel.addElement("<html>4.Включить продув в<br>обратном направлении</html>");
+        opcAccessApi.writeValueForTag(filter_p101, Boolean.FALSE);//turn off blowing
         opcAccessApi.writeValueForTag(filter_open_rev_valve, Boolean.FALSE);
-        progressText.setText("70%");
         Thread.sleep(2000);
-        listModel.addElement("<html>5.Задать обратное<br>направление</html>" +
-            "течения<br>жидкости</html>");
+        progressText.setText("70%");
+
+        listModel.addElement("<html>5.Включить подачу жидкости в<br>штатном режиме</html>");
+
         opcAccessApi.writeValueForTag(filter_p102, Boolean.TRUE);
 
-        Thread.sleep(10000);
+        Thread.sleep(5000);
         progressText.setText("100%");
         try {
           myPicture = ImageIO.read(FilterStationEmergencyPredictionFoulBlockage
-              .class.getResource("/pump_inactive.png"));
+                                       .class.getResource("/pump_inactive.png"));
         } catch (IOException e) {
           e.printStackTrace();
         }
@@ -285,9 +299,9 @@ public class FilterStationEmergencyPredictionFoulBlockage {
 
         opcAccessApi.writeValueForTag(filter_p102, Boolean.FALSE);
         notifier(String.format("Вероятность НС на ст.фильтр. =%s " + "->\n" +
-                    "Рекомендуемое действие=%s",
-                "НИЗКАЯ", "Штатный режим", 0.1),
-            0.1);
+                                   "Рекомендуемое действие=%s",
+                               "НИЗКАЯ", "Штатный режим", 0.1),
+                 0.1);
         filter_fake_risk_value = 0.3d;
         filter_fake_active_flag = false;
         opcAccessApi.writeValueForTag(filter_TP_1M7,  Boolean.FALSE); //warning
@@ -320,7 +334,7 @@ public class FilterStationEmergencyPredictionFoulBlockage {
       Logger.getLogger(PopupTester.class.getName()).log(Level.SEVERE, null, ex);
     }
     notifications.add(term);
-      closenessChartFrame.getList().setListData(notifications.toArray());
+    closenessChartFrame.getList().setListData(notifications.toArray());
     closenessChartFrame.getList().updateUI();
     closenessChartFrame.repaint();
     try {
@@ -331,7 +345,7 @@ public class FilterStationEmergencyPredictionFoulBlockage {
   }
 
   private static DynamicDataChart closenessChartFrame = new DynamicDataChart(
-      "Вероятность НС засора фильтра");
+      "Вероятность блокировки входного клапана");
 
 
   private static final int MAX_FLOW_SPEED = 50;

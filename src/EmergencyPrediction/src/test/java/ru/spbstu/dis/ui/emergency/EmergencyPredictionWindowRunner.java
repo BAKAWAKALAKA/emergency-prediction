@@ -23,24 +23,25 @@ public class EmergencyPredictionWindowRunner {
     JLabel label = new JLabel("Типы нештатных ситуаций:");
     panel.add(label);
     JButton button = new JButton();
-    button.setText("Симуляция разрушения фильтра");
+    button.setText("Симуляция блокировки выпускного клапана");
     button.addActionListener(e -> FilterStationEmergencyPredictionFilterDestructionAfterOuterValve
         .main(args));
     panel.add(button);
 
     JButton button1 = new JButton();
-    button1.setText("Симуляция старого фильтра");
+    button1.setText("Симуляция эксплуатационного засора");
     button1.addActionListener(e -> FilterStationEmergencyPredictionOldFilterBlockage.main(args));
     panel.add(button1);
 
     JButton button2 = new JButton();
-    button2.setText("Симуляция неисправности фильтра");
+    button2.setText("Симуляция механического засора");
     button2.addActionListener(e -> FilterStationEmergencyPredictionFoulBlockage.main(args));
     panel.add(button2);
 
     JButton button3 = new JButton();
-    button3.setText("Симуляция неисправности фильтра");
-    button3.addActionListener(e -> FilterStationEmergencyPredictionFoulBlockage.main(args));
+    button3.setText("Симуляция блокировки входного клапана");
+    button3.addActionListener(e -> FilterStationEmergencyPredictionFilterDestructionAfterInnerValve
+        .main(args));
     panel.add(button3);
 
     JButton button4 = new JButton();

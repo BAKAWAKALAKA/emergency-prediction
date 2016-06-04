@@ -32,7 +32,7 @@ public class FilterStationEmergencyPredictionOldFilterBlockage {
   static ArrayList notifications = new ArrayList();
 
   static String filter_TP_1M7 = Tag.TAG_TO_ID_MAPPING.get(Tag
-      .FILT_ControlPanel_WARING);
+      .FILT_ControlPanel_WARNING);
 
   static String filter_p101 = Tag.TAG_TO_ID_MAPPING.get(Tag
       .FILT_pump_101_on);
@@ -237,6 +237,9 @@ public class FilterStationEmergencyPredictionOldFilterBlockage {
             0.3);
         opcAccessApi.writeValueForTag(filter_TP_1M7, Boolean.TRUE); //Warning
       }
+      else {
+        opcAccessApi.writeValueForTag(filter_TP_1M7,  Boolean.FALSE); //warning
+      }
 
       if (filter_fake_risk_value > 0.9d) {
         progressText.setText("0%");
@@ -267,11 +270,9 @@ public class FilterStationEmergencyPredictionOldFilterBlockage {
             0.1);
         progressText.setText("100%");
         filter_fake_risk_value = 0.3d;
+        opcAccessApi.writeValueForTag(filter_TP_1M7,  Boolean.FALSE); //warning
         Thread.sleep(1000);
         return;
-      } else {
-        opcAccessApi.writeValueForTag(filter_TP_1M7, !opcAccessApi.readBoolean(filter_TP_1M7)
-            .value); //warning
       }
     }
   }
@@ -313,6 +314,6 @@ public class FilterStationEmergencyPredictionOldFilterBlockage {
   }
 
   private static DynamicDataChart closenessChartFrame = new DynamicDataChart(
-      "Вероятность НС на станции смешивания");
+      "Вероятность засора фильтра");
 
 }

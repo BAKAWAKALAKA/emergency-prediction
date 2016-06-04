@@ -42,7 +42,7 @@ public enum Tag {
   REACTOR_downstream_station_pump_P302_on,
   REACTOR_ControlPanel_downstream_station_pump_P302_on,
   MIX_TANK_MAN_FLOW_SPEED,
-  FILT_ControlPanel_WARING,
+  FILT_ControlPanel_WARNING,
   FILT_open_rev_valve;
 
   public static HashMap<Tag, String> TAG_TO_ID_MAPPING = Maps.newHashMap();
@@ -95,7 +95,7 @@ public enum Tag {
         "FilterConnection/M/TP_1M1");//P101
     TAG_TO_ID_MAPPING.put(FILT_pump_102_on,
         "FilterConnection/M/TP_1M2");//P102
-    TAG_TO_ID_MAPPING.put(FILT_ControlPanel_WARING,
+    TAG_TO_ID_MAPPING.put(FILT_ControlPanel_WARNING,
                           "FilterConnection/M/TP_1M7");//WARING(write)
 
     TAG_TO_ID_MAPPING.put(FILT_ControlPanel_downstream_valve_V103_on,
