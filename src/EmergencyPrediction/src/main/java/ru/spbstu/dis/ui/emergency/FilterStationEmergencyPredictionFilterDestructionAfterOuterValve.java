@@ -255,7 +255,6 @@ public class FilterStationEmergencyPredictionFilterDestructionAfterOuterValve {
                     "Рекомендуемое действие=%s",
                 "НИЗКАЯ", "Штатный режим", 0.1),
             0.1);
-        closenessChartFrame.hide();
         return;
       }
     }

@@ -23,7 +23,7 @@ public class EmergencyPredictionWindowRunner {
     JLabel label = new JLabel("Типы нештатных ситуаций:");
     panel.add(label);
     JButton button = new JButton();
-    button.setText("Симуляция засора фильтра");
+    button.setText("Симуляция разрушения фильтра");
     button.addActionListener(e -> FilterStationEmergencyPredictionFilterDestructionAfterOuterValve
         .main(args));
     panel.add(button);

@@ -162,8 +162,8 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
     final JPanel titlePanel = new JPanel(new FlowLayout());
     titlePanel.add(button);
     content.add(titlePanel);
-    setSize(330, 600);
-    setLocation(1115,0);
+    setSize(360, 600);
+    setLocation(1090,0);
   }
 
   /**
