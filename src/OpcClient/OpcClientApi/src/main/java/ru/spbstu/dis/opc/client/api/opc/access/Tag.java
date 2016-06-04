@@ -42,7 +42,8 @@ public enum Tag {
   REACTOR_downstream_station_pump_P302_on,
   REACTOR_ControlPanel_downstream_station_pump_P302_on,
   MIX_TANK_MAN_FLOW_SPEED,
-  FILT_ControlPanel_WARING;
+  FILT_ControlPanel_WARING,
+  FILT_open_rev_valve;
 
   public static HashMap<Tag, String> TAG_TO_ID_MAPPING = Maps.newHashMap();
 
@@ -86,6 +87,8 @@ public enum Tag {
     TAG_TO_ID_MAPPING.put(FILT_downstream_valve_V103_on, "FilterConnection/A/1M6");//Ball valve V103 to downstream station (read)
     TAG_TO_ID_MAPPING
         .put(FILT_open_knife_gate_V101_and_close_butte_V103, "FilterConnection/A/1M4_5");
+    TAG_TO_ID_MAPPING
+        .put(FILT_open_rev_valve, "FilterConnection/M/TP_1M4_5");
     TAG_TO_ID_MAPPING.put(FILT_ControlPanel_downstream_station_pump_P102_on,
                           "FilterConnection/M/TP_1M3");//from filter to mixing (write)
     TAG_TO_ID_MAPPING.put(FILT_pump_101_on,

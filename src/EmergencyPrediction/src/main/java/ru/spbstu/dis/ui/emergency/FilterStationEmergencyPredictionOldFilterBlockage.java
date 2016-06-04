@@ -377,7 +377,7 @@ public class FilterStationEmergencyPredictionOldFilterBlockage {
                     "Рекомендуемое действие=%s",
                 "СРЕДНЯЯ", "Проверка станции", 0.1),
             0.3);
-        opcAccessApi.writeValueForTag(filter_TP_1M7, Boolean.TRUE);
+        opcAccessApi.writeValueForTag(filter_TP_1M7, Boolean.TRUE); //Warning
       }
 
 
@@ -387,25 +387,27 @@ public class FilterStationEmergencyPredictionOldFilterBlockage {
         opcAccessApi.writeValueForTag(filter_p102, Boolean.FALSE);
 
         notifier(String.format("Вероятность НС на ст.фильтр. =%s " + "->\n" +
-                    "Рекомендуемое действие=%s",
-                "ВЫСОКАЯ", "Сброс давления в фильтре, отключение насосов", 0.1),
-            filter_fake_risk_value);
+                                   "Рекомендуемое действие=%s",
+                               "ВЫСОКАЯ", "Сброс давления в фильтре, отключение насосов", 0.1),
+                 filter_fake_risk_value);
 
-        opcAccessApi.writeValueForTag(filter_TP_1M6, Boolean.TRUE);
-        opcAccessApi.writeValueForTag(filter_TP_1M6, Boolean.FALSE);
         opcAccessApi.writeValueForTag(filter_p101, Boolean.TRUE);
-        opcAccessApi.writeValueForTag(filter_TP_1M7, Boolean.FALSE);
+        opcAccessApi.writeValueForTag(filter_TP_1M7, Boolean.FALSE); //warning
         Thread.sleep(5000);
         opcAccessApi.writeValueForTag(filter_p101, Boolean.FALSE);
         opcAccessApi.writeValueForTag(filter_p102, Boolean.TRUE);
         Thread.sleep(10000);
         opcAccessApi.writeValueForTag(filter_p102, Boolean.FALSE);
         notifier(String.format("Вероятность НС на ст.фильтр. =%s " + "->\n" +
-                    "Рекомендуемое действие=%s",
-                "НИЗКАЯ", "Штатный режим", 0.1),
-            0.1);
+                                   "Рекомендуемое действие=%s",
+                               "НИЗКАЯ", "Штатный режим", 0.1),
+                 0.1);
         return;
       }
+      else {opcAccessApi.writeValueForTag(filter_TP_1M7, !opcAccessApi.readBoolean(filter_TP_1M7)
+          .value); //warning
+
+           }
       //      tankOverheatClosenessValue = opcAccessApi.readFloat(reactorTemperatureSensor).value;
       //      temperatureGrowthVal = opcAccessApi.readFloat(reactorTemperature).value;
       //      decisionSupportList.getSeries().add(new Millisecond(), tankOverheatClosenessValue);
