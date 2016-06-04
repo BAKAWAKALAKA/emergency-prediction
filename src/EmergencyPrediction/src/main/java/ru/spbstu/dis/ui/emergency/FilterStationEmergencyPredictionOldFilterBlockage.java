@@ -23,9 +23,9 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class FilterStationEmergencyPrediction2 {
+public class FilterStationEmergencyPredictionOldFilterBlockage {
   private static final org.slf4j.Logger LOGGER = LoggerFactory
-      .getLogger(FilterStationEmergencyPrediction2.class);
+      .getLogger(FilterStationEmergencyPredictionOldFilterBlockage.class);
 
   private final OpcAccessApi opcAccessApi;
 
@@ -91,7 +91,7 @@ public class FilterStationEmergencyPrediction2 {
 
   static boolean filter_fake_active_flag = true;
 
-  public FilterStationEmergencyPrediction2(final OpcAccessApi opcAccessApi) {
+  public FilterStationEmergencyPredictionOldFilterBlockage(final OpcAccessApi opcAccessApi) {
     this.opcAccessApi = opcAccessApi;
   }
 
@@ -107,8 +107,8 @@ public class FilterStationEmergencyPrediction2 {
     } catch (Exception e) {
       // If Nimbus is not available, you can set the GUI to another look and feel.
     }
-    FilterStationEmergencyPrediction2 emergencyPredictionWindow =
-        new FilterStationEmergencyPrediction2(createOpcApi());
+    FilterStationEmergencyPredictionOldFilterBlockage emergencyPredictionWindow =
+        new FilterStationEmergencyPredictionOldFilterBlockage(createOpcApi());
     emergencyPredictionWindow.initGrowthValueChart();
     emergencyPredictionWindow.initRiskValueChart();
     emergencyPredictionWindow.initThermometerChart();
@@ -258,7 +258,7 @@ public class FilterStationEmergencyPrediction2 {
       closenessChartFrame.add(actionsPanel);
 
       final JPanel actionOutput = new JPanel(new FlowLayout());
-      JLabel esType = new JLabel("ОТРАБОТКА НС1");
+      JLabel esType = new JLabel("ПРОЦЕСС ОЧИСТКИ");
       Font boldUnderlineBig = new Font("Tachoma", Font.BOLD, 25).deriveFont(fontAttributes);
       esType.setFont(boldUnderlineBig);
       actionOutput.add(esType);
@@ -273,7 +273,7 @@ public class FilterStationEmergencyPrediction2 {
       JPanel finishedActionsPnl = new JPanel(new FlowLayout());
       BufferedImage myPicture = null;
       try {
-        myPicture = ImageIO.read(FilterStationEmergencyPrediction2.class.getResource("/image_station.PNG"));
+        myPicture = ImageIO.read(FilterStationEmergencyPredictionOldFilterBlockage.class.getResource("/image_station.PNG"));
       } catch (IOException e) {
         e.printStackTrace();
       }
@@ -436,15 +436,15 @@ public class FilterStationEmergencyPrediction2 {
   private static void notifier(String term, double dangerLevel) {
 
     if (dangerLevel > 0.5d) {
-      ImageIcon icon = new ImageIcon(FilterStationEmergencyPrediction2.class.getResource("/alarm.png"));
+      ImageIcon icon = new ImageIcon(FilterStationEmergencyPredictionOldFilterBlockage.class.getResource("/alarm.png"));
       showErrorNotif(term, new Color(249, 78, 30), icon);
     }
     if (dangerLevel > 0.0d && dangerLevel <= 0.3d) {
-      ImageIcon icon = new ImageIcon(FilterStationEmergencyPrediction2.class.getResource("/info.png"));
+      ImageIcon icon = new ImageIcon(FilterStationEmergencyPredictionOldFilterBlockage.class.getResource("/info.png"));
       showErrorNotif(term, new Color(127, 176, 72), icon);
     }
     if (dangerLevel > 0.3d && dangerLevel <= 0.5d) {
-      ImageIcon icon = new ImageIcon(FilterStationEmergencyPrediction2.class.getResource("/warning.png"));
+      ImageIcon icon = new ImageIcon(FilterStationEmergencyPredictionOldFilterBlockage.class.getResource("/warning.png"));
       showErrorNotif(term, new Color(249, 236, 100), icon);
     }
   }
