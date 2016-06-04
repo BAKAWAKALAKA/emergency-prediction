@@ -170,7 +170,7 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
    */
   public void actionPerformed(final ActionEvent e) {
     if (e.getActionCommand().equals("ADD_DATA")) {
-      System.exit(0);
+      this.hide();
     }
   }
 
