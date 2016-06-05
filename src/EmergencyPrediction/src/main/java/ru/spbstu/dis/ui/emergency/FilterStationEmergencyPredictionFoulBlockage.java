@@ -23,49 +23,16 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class FilterStationEmergencyPredictionFoulBlockage {
+public class FilterStationEmergencyPredictionFoulBlockage extends EmergencyPrediction{
   private static final org.slf4j.Logger LOGGER = LoggerFactory
       .getLogger(FilterStationEmergencyPredictionFoulBlockage.class);
-
-  private final OpcAccessApi opcAccessApi;
-
-  static ArrayList notifications = new ArrayList();
-
-  static String filter_TP_1M7 = Tag.TAG_TO_ID_MAPPING.get(Tag
-      .FILT_ControlPanel_WARNING);
-
-  static String filter_open_rev_valve = Tag.TAG_TO_ID_MAPPING.get(Tag.FILT_open_rev_valve);
-  static String filter_open_rev_pump = Tag.TAG_TO_ID_MAPPING.get(Tag
-                                                                      .FILT_ControlPanel_downstream_station_pump_P102_on);
-
-  static String filter_p102 = Tag.TAG_TO_ID_MAPPING.get(Tag
-                                                            .FILT_pump_102_on);
-
-  static double filter_fake_risk_value = 0d;
-
-  static boolean filter_fake_active_flag = true;
-
-  static JList actionsFinishedList;
-
-  static JLabel progressText = new JLabel();
-  static DefaultListModel listModel = new DefaultListModel();
-  static  JLabel picLabel;
   public FilterStationEmergencyPredictionFoulBlockage(final OpcAccessApi opcAccessApi) {
-    this.opcAccessApi = opcAccessApi;
+    super(opcAccessApi);
   }
 
   public static void main(String[] args) {
 
-    try {
-      for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-        if ("Nimbus".equals(info.getName())) {
-          UIManager.setLookAndFeel(info.getClassName());
-          break;
-        }
-      }
-    } catch (Exception e) {
-      // If Nimbus is not available, you can set the GUI to another look and feel.
-    }
+    setLookAndFeelType();
     FilterStationEmergencyPredictionFoulBlockage emergencyPredictionWindow =
         new FilterStationEmergencyPredictionFoulBlockage(createOpcApi());
     emergencyPredictionWindow.initMeterChart();
@@ -73,39 +40,6 @@ public class FilterStationEmergencyPredictionFoulBlockage {
     emergencyPredictionWindow.composeAllChartsIntoOne();
 
     emergencyPredictionWindow.runSimulation();
-  }
-
-  private static OpcAccessApi createOpcApi() {
-    final Config config = new ConfigProvider().get().resolve();
-    final Config opcAccessApiConf = config.getConfig("http.opc.client");
-    final String host = opcAccessApiConf.getString("host");
-    final int port = opcAccessApiConf.getInt("port");
-    final HostAndPort hostAndPort = HostAndPort.fromParts(host, port);
-    LOGGER.warn("Opc access api uses {} to connect", hostAndPort);
-    return OpcClientApiFactory.createOpcAccessApi(hostAndPort);
-  }
-
-  private void initMeterChart() {
-    final MeterChart demo = new MeterChart("Вероятность НС на фильтре");
-
-    Thread th = new Thread(() -> {
-      while (true) {
-        double max = filter_fake_risk_value;
-        demo.setValue(max);
-
-        demo.getDataset().setValue(max);
-        try {
-          Thread.sleep(1000);
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
-      }
-    });
-    th.start();
-    final JPanel titlePanel = new JPanel();
-    titlePanel.setLayout(new FlowLayout());
-    titlePanel.add(demo.getChartPanel());
-    closenessChartFrame.add(titlePanel);
   }
 
   private void composeAllChartsIntoOne() {
@@ -162,8 +96,8 @@ public class FilterStationEmergencyPredictionFoulBlockage {
       closenessChartFrame.add(actionsPanel);
 
       final JPanel actionOutput = new JPanel(new FlowLayout());
-      JLabel esTypeAction = new JLabel("<html>ОТРАБОТКА НС:<br>Очистка фильтра</html>", SwingConstants.CENTER);
-      Font boldUnderlineBig = new Font("Tachoma", Font.BOLD, 18).deriveFont(fontAttributes);
+      JLabel esTypeAction = new JLabel("<html><div style='text-align: center;'>ОТРАБОТКА НС:<br>Очистка фильтра</html>", SwingConstants.CENTER);
+      Font boldUnderlineBig = new Font("Tachoma", Font.BOLD, 22).deriveFont(fontAttributes);
       esTypeAction.setFont(boldUnderlineBig);
       actionOutput.add(esTypeAction);
       closenessChartFrame.add(actionOutput);
@@ -200,20 +134,8 @@ public class FilterStationEmergencyPredictionFoulBlockage {
     });
   }
 
-  private void runSimulation() {
 
-    Thread th = new Thread(() -> {
-
-      try {
-        getDataFromOPC();
-      } catch (InterruptedException e) {
-        LOGGER.error("Error during data retrieving", e);
-      }
-    });
-    th.start();
-  }
-
-  private void getDataFromOPC()
+  void getDataFromOPC()
   throws InterruptedException {
     while (true) {
       opcAccessApi.writeValueForTag(filter_p102, Boolean.TRUE); //water filtering
@@ -297,42 +219,4 @@ public class FilterStationEmergencyPredictionFoulBlockage {
     }
   }
 
-  private static void notifier(String term, double dangerLevel) {
-
-    if (dangerLevel > 0.5d) {
-      ImageIcon icon = new ImageIcon(FilterStationEmergencyPredictionFoulBlockage.class.getResource("/alarm.png"));
-      showErrorNotif(term, new Color(249, 78, 30), icon);
-    }
-    if (dangerLevel > 0.0d && dangerLevel <= 0.3d) {
-      ImageIcon icon = new ImageIcon(FilterStationEmergencyPredictionFoulBlockage.class.getResource("/info.png"));
-      showErrorNotif(term, new Color(127, 176, 72), icon);
-    }
-    if (dangerLevel > 0.3d && dangerLevel <= 0.5d) {
-      ImageIcon icon = new ImageIcon(FilterStationEmergencyPredictionFoulBlockage.class.getResource("/warning.png"));
-      showErrorNotif(term, new Color(249, 236, 100), icon);
-    }
-  }
-
-  private static void showErrorNotif(String term, Color color, ImageIcon icon) {
-    try {
-      Thread.sleep(2000);
-    } catch (InterruptedException ex) {
-      Logger.getLogger(PopupTester.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    notifications.add(term);
-      closenessChartFrame.getList().setListData(notifications.toArray());
-    closenessChartFrame.getList().updateUI();
-    closenessChartFrame.repaint();
-    try {
-      Thread.sleep(1000);
-    } catch (InterruptedException ex) {
-      Logger.getLogger(PopupTester.class.getName()).log(Level.SEVERE, null, ex);
-    }
-  }
-
-  private static DynamicDataChart closenessChartFrame = new DynamicDataChart(
-      "Вероятность НС засора фильтра");
-
-
-  private static final int MAX_FLOW_SPEED = 50;
 }

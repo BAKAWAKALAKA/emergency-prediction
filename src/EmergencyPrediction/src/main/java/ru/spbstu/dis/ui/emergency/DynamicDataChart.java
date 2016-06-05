@@ -54,6 +54,7 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
    */
   public DynamicDataChart(final String title) {
     super(title);
+    this.setDefaultCloseOperation(HIDE_ON_CLOSE);
     content.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(1), Color.black));
     content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
 

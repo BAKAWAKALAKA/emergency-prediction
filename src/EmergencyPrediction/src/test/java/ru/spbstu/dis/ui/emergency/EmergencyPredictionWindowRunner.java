@@ -1,12 +1,13 @@
 package ru.spbstu.dis.ui.emergency;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class EmergencyPredictionWindowRunner {
   public static void main(String[] args) {
     try {
       for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-        if ("Nimbus".equals(info.getName())) {
+        if ("Windows".equals(info.getName())) {
           UIManager.setLookAndFeel(info.getClassName());
           break;
         }
@@ -17,10 +18,10 @@ public class EmergencyPredictionWindowRunner {
 
     JFrame frame = new JFrame("Типы НС");
 
-    JPanel panel = new JPanel();
-    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+    JPanel panel = new JPanel(new GridLayout(10,1));
 
     JLabel label = new JLabel("Типы нештатных ситуаций:");
+    label.setHorizontalAlignment(SwingConstants.CENTER);
     panel.add(label);
     JButton button = new JButton();
     button.setText("Симуляция блокировки выпускного клапана");
