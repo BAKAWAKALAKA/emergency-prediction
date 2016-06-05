@@ -156,10 +156,11 @@ public class FilterStationEmergencyPredictionOldFilterBlockage extends Emergency
       picLabel = new JLabel(new ImageIcon(myPicture));
       finishedActionsPnl.add(picLabel);
       picLabel.setLayout(new FlowLayout(FlowLayout.LEFT, 2, 2));
-      picLabel.add(new JLabel("<html><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>      " +
+      picLabel.add(new JLabel("<html><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>" +
+          "        " +
           "    " +
           "   </html>"));
-      picLabel.add(new JLabel("       "));
+      picLabel.add(new JLabel("         "));
       picLabel.add(progressText);
       actionsFinishedList = new JList(listModel);
       actionsFinishedList.setSize(60,80);

@@ -54,7 +54,8 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
    */
   public DynamicDataChart(final String title) {
     super(title);
-    this.setDefaultCloseOperation(HIDE_ON_CLOSE);
+    super.setDefaultCloseOperation(HIDE_ON_CLOSE);
+    setDefaultCloseOperation(HIDE_ON_CLOSE);
     content.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(1), Color.black));
     content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
 
@@ -149,7 +150,7 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
     p.add(new JLabel("Сообщения о близости к НС"));
     JScrollPane scrollPane = new JScrollPane();
     scrollPane.setSize(50, 50);
-    list.setFixedCellHeight(25);
+    list.setFixedCellHeight(20);
     list.setFixedCellWidth(50);
     scrollPane.setViewportView(list);
     p.add(scrollPane);
@@ -165,6 +166,7 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
     content.add(titlePanel);
     setSize(360, 600);
     setLocation(1090,0);
+    setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
   }
 
   /**

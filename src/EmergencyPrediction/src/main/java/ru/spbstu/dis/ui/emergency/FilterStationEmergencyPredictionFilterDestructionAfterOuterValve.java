@@ -178,7 +178,6 @@ public class FilterStationEmergencyPredictionFilterDestructionAfterOuterValve
         closenessChartFrame.revalidate();
         closenessChartFrame.repaint();
         progressText.setText("20%");
-        listModel.addElement("<html>1.Отключить подачу<br>жидкости</html>");
 
         opcAccessApi.writeValueForTag(filter_open_rev_valve, Boolean.TRUE);
         opcAccessApi.writeValueForTag(filter_p101, Boolean.TRUE);
