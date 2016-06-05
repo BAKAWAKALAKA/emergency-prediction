@@ -51,7 +51,7 @@ public class EmergencyPrediction {
   DefaultListModel listModel = new DefaultListModel();
 
   DynamicDataChart closenessChartFrame = new DynamicDataChart(
-      "Вероятность блокировки входного клапана");
+      "Нештатная ситуация на фильтре");
 
   public EmergencyPrediction(final OpcAccessApi opcAccessApi) {
     this.opcAccessApi = opcAccessApi;

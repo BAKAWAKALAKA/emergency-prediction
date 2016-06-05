@@ -46,8 +46,9 @@ public class FilterStationEmergencyPredictionFoulBlockage extends EmergencyPredi
 
     Thread th = new Thread(() -> {
       while (true) {
-        //demo.setLastValue((MAX_TEMPERATURE - temperatureGrowthVal) / MAX_TEMPERATURE);
-        filter_fake_risk_value += 0.2 * new Random().nextDouble();
+        if (filter_fake_active_flag) {
+          filter_fake_risk_value += 0.2 * new Random().nextDouble();
+        }
         closenessChartFrame.setLastValue(filter_fake_risk_value);
         closenessChartFrame.getSeries().add(new Millisecond(), closenessChartFrame.getLastValue());
         try {
@@ -58,15 +59,25 @@ public class FilterStationEmergencyPredictionFoulBlockage extends EmergencyPredi
       }
     });
     th.start();
-    JLabel esType = new JLabel("<html>Засор фильтра<br>(механический засор)</html>",
-                               SwingConstants.CENTER);
-    Map<TextAttribute, Integer> fontAttributes = new HashMap<TextAttribute, Integer>();
+    JLabel esType = new JLabel("<html><div style='text-align: center;'>Засор фильтра<br>" +
+        "(механический" +
+        " засор)</html>");
+    Map<TextAttribute, Integer> fontAttributes = new HashMap<>();
     fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
     Font boldUnderline = new Font("Tachoma", Font.BOLD, 22).deriveFont(fontAttributes);
     esType.setFont(boldUnderline);
     final JPanel titlePanel = new JPanel(new FlowLayout());
     titlePanel.add(esType, BorderLayout.CENTER);
-    closenessChartFrame.add(titlePanel);
+    closenessChartFrame.add(titlePanel, 0);
+
+    esType = new JLabel("Вероятность засора:");
+    boldUnderline = new Font("Tachoma", Font.PLAIN, 19).deriveFont(fontAttributes);
+    esType.setFont(boldUnderline);
+    final JPanel chartPanel = new JPanel(new FlowLayout());
+    chartPanel.add(esType, BorderLayout.CENTER);
+    closenessChartFrame.add(chartPanel, 1);
+
+
     XYPlot plot = (XYPlot) closenessChartFrame.getChartPanel().getChart().getPlot();
     XYLineAndShapeRenderer renderer0 = new XYLineAndShapeRenderer();
     renderer0.setBaseShapesVisible(false);
@@ -119,8 +130,8 @@ public class FilterStationEmergencyPredictionFoulBlockage extends EmergencyPredi
       picLabel = new JLabel(new ImageIcon(myPicture));
       finishedActionsPnl.add(picLabel);
       picLabel.setLayout(new FlowLayout(FlowLayout.LEFT, 2, 2));
-      picLabel.add(new JLabel("        "));
-      picLabel.add(new JLabel("       "));
+      picLabel.add(new JLabel("         "));
+      picLabel.add(new JLabel("         "));
       picLabel.add(progressText);
       actionsFinishedList = new JList(listModel);
       actionsFinishedList.setSize(60, 80);
@@ -141,7 +152,7 @@ public class FilterStationEmergencyPredictionFoulBlockage extends EmergencyPredi
       opcAccessApi.writeValueForTag(filter_p102, Boolean.TRUE); //water filtering
 
       Thread.sleep(1000);
-      if (filter_fake_risk_value > 0.3d) {
+      if (filter_fake_risk_value > 0.8d) {
         notifier(String.format("Вероятность НС на ст.фильтр. =%s " + "->\n" +
                     "Рекомендуемое действие=%s",
                 "СРЕДНЯЯ", "Проверка станции", 0.1),
@@ -153,8 +164,9 @@ public class FilterStationEmergencyPredictionFoulBlockage extends EmergencyPredi
       }
 
 
-      if (filter_fake_risk_value > 0.9d) {
-
+      if (filter_fake_risk_value > 0.8d) {
+        filter_fake_risk_value = 0.1d;
+        filter_fake_active_flag = false;
         opcAccessApi.writeValueForTag(filter_p102, Boolean.FALSE); //water filtering
         BufferedImage myPicture = null;
         try {
@@ -210,8 +222,7 @@ public class FilterStationEmergencyPredictionFoulBlockage extends EmergencyPredi
                     "Рекомендуемое действие=%s",
                 "НИЗКАЯ", "Штатный режим", 0.1),
             0.1);
-        filter_fake_risk_value = 0.3d;
-        filter_fake_active_flag = false;
+
         opcAccessApi.writeValueForTag(filter_TP_1M7,  Boolean.FALSE); //warning
         Thread.sleep(1000);
         return;

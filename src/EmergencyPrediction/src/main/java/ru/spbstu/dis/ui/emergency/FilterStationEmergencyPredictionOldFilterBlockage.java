@@ -83,7 +83,9 @@ public class FilterStationEmergencyPredictionOldFilterBlockage extends Emergency
     });
     th.start();
 
-    JLabel esType = new JLabel("Засор фильтра");
+    JLabel esType = new JLabel("<html><div style='text-align: center;'>Засор фильтра<br>" +
+        "(эксплуатационный" +
+        " засор)</html>");
     Map<TextAttribute, Integer> fontAttributes = new HashMap<>();
     fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
     Font boldUnderline = new Font("Tachoma", Font.BOLD, 22).deriveFont(fontAttributes);
@@ -92,7 +94,7 @@ public class FilterStationEmergencyPredictionOldFilterBlockage extends Emergency
     titlePanel.add(esType, BorderLayout.CENTER);
     closenessChartFrame.add(titlePanel, 0);
 
-    esType = new JLabel("Вероятность НС на фильтре:");
+    esType = new JLabel("Вероятность засора:");
     boldUnderline = new Font("Tachoma", Font.PLAIN, 19).deriveFont(fontAttributes);
     esType.setFont(boldUnderline);
     final JPanel chartPanel = new JPanel(new FlowLayout());
@@ -102,9 +104,11 @@ public class FilterStationEmergencyPredictionOldFilterBlockage extends Emergency
     XYPlot plot = (XYPlot) closenessChartFrame.getChartPanel().getChart().getPlot();
     XYLineAndShapeRenderer renderer0 = new XYLineAndShapeRenderer();
     renderer0.setBaseShapesVisible(false);
+    XYLineAndShapeRenderer renderer1 = new XYLineAndShapeRenderer();
+    renderer1.setBaseShapesVisible(false);
     plot.setRenderer(0, renderer0);
-    plot.getRendererForDataset(plot.getDataset(0)).setSeriesPaint(0, Color.BLUE);
-    plot.getRenderer().setSeriesPaint(0, Color.BLUE);
+    plot.getRendererForDataset(plot.getDataset(0)).setSeriesPaint(0, Color.red);
+    plot.getRenderer().setSeriesPaint(0, Color.red);
     plot.getRenderer().setSeriesStroke(0, new BasicStroke(3.0f));
     SwingUtilities.invokeLater(() -> {
 
@@ -126,8 +130,8 @@ public class FilterStationEmergencyPredictionOldFilterBlockage extends Emergency
       closenessChartFrame.add(actionsPanel);
 
       final JPanel actionOutput = new JPanel(new FlowLayout());
-      JLabel esTypeAction = new JLabel("<html><div style='text-align: center;'>ОТРАБОТКА НС<br>" +
-          "(очистка фильтра)</html>");
+      JLabel esTypeAction = new JLabel("<html><div style='text-align: center;'>ОТРАБОТКА НС:<br>" +
+          "очистка фильтра</html>");
       Font boldUnderlineBig = new Font("Tachoma", Font.BOLD, 19).deriveFont(fontAttributes);
       esTypeAction.setFont(boldUnderlineBig);
       actionOutput.add(esTypeAction);
@@ -151,7 +155,12 @@ public class FilterStationEmergencyPredictionOldFilterBlockage extends Emergency
 
       picLabel = new JLabel(new ImageIcon(myPicture));
       finishedActionsPnl.add(picLabel);
-      picLabel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+      picLabel.setLayout(new FlowLayout(FlowLayout.LEFT, 2, 2));
+      picLabel.add(new JLabel("<html><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>      " +
+          "    " +
+          "   </html>"));
+      picLabel.add(new JLabel("       "));
+      picLabel.add(progressText);
       actionsFinishedList = new JList(listModel);
       actionsFinishedList.setSize(60,80);
       finishedActionsPnl.add(actionsFinishedList);
@@ -175,6 +184,7 @@ public class FilterStationEmergencyPredictionOldFilterBlockage extends Emergency
       // }
       Thread.sleep(2000);
       if (filter_fake_risk_value > 0.3d) {
+
         notifier(String.format("Вероятность НС на ст.фильтр. =%s " + "->\n" +
                     "Рекомендуемое действие=%s",
                 "СРЕДНЯЯ", "Проверка станции", 0.1),
@@ -185,14 +195,16 @@ public class FilterStationEmergencyPredictionOldFilterBlockage extends Emergency
         opcAccessApi.writeValueForTag(filter_TP_1M7,  Boolean.FALSE); //warning
       }
 
-      if (filter_fake_risk_value > 0.9d) {
+      if (filter_fake_risk_value > 0.8d) {
+        filter_fake_risk_value = 0.01d;
+        filter_fake_active_flag = false;
         progressText.setText("0%");
         notifier(String.format("Вероятность НС на ст.фильтр. =%s " + "->\n" +
                     "Рекомендуемое действие=%s",
                 "ВЫСОКАЯ", "Сброс давления в фильтре, отключение насосов", 0.1),
             filter_fake_risk_value);
 
-        filter_fake_active_flag = false;
+
         opcAccessApi.writeValueForTag(filter_p102, Boolean.FALSE);
         progressText.setText("20%");
         listModel.addElement("<html>1.Отключить подачу<br>жидкости</html>");
@@ -213,7 +225,7 @@ public class FilterStationEmergencyPredictionOldFilterBlockage extends Emergency
                 "НИЗКАЯ", "Штатный режим", 0.1),
             0.1);
         progressText.setText("100%");
-        filter_fake_risk_value = 0.3d;
+
         opcAccessApi.writeValueForTag(filter_TP_1M7,  Boolean.FALSE); //warning
         Thread.sleep(1000);
         return;

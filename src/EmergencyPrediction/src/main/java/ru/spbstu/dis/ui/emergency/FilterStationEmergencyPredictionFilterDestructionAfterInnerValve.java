@@ -120,15 +120,19 @@ public class FilterStationEmergencyPredictionFilterDestructionAfterInnerValve
       BufferedImage myPicture = null;
       try {
         myPicture = ImageIO.read(
-            FilterStationEmergencyPredictionFoulBlockage.class.getResource("/pump_inactive.png"));
+            FilterStationEmergencyPredictionFoulBlockage.class.getResource("/filter_input_error.png"));
       } catch (IOException e) {
         e.printStackTrace();
       }
       picLabel = new JLabel(new ImageIcon(myPicture));
       finishedActionsPnl.add(picLabel);
       picLabel.setLayout(new FlowLayout(FlowLayout.LEFT, 2, 2));
-      picLabel.add(new JLabel("        "));
-      picLabel.add(new JLabel("       "));
+      picLabel.add(new JLabel("<html><br><br><br><br><br><br><br><br><br><br><br><br><br><br>    " +
+          " " +
+          "      " +
+          "    " +
+          "   </html>"));
+      picLabel.add(new JLabel("                 "));
       picLabel.add(progressText);
       actionsFinishedList = new JList(listModel);
       actionsFinishedList.setSize(60, 80);
@@ -158,19 +162,11 @@ public class FilterStationEmergencyPredictionFilterDestructionAfterInnerValve
         opcAccessApi.writeValueForTag(filter_TP_1M7, Boolean.FALSE); //warning
       }
 
-      if (filter_fake_risk_value > 0.9d) {
-
+      if (filter_fake_risk_value > 0.8d) {
+        filter_fake_risk_value = 0.3d;
+        filter_fake_active_flag = false;
         opcAccessApi.writeValueForTag(filter_p102, Boolean.FALSE); //water filtering
-        BufferedImage myPicture = null;
-        try {
-          myPicture = ImageIO.read(
-              FilterStationEmergencyPredictionOldFilterBlockage.class
-                  .getResource("/pump_active.png"));
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
 
-        picLabel.setIcon(new ImageIcon(myPicture));
         progressText.setText("0%");
         listModel.addElement("<html>1.Отключить подачу<br> жидкости</html>");
         notifier(String.format("Вероятность НС на ст.фильтр. =%s " + "->\n" +
@@ -204,21 +200,13 @@ public class FilterStationEmergencyPredictionFilterDestructionAfterInnerValve
 
         Thread.sleep(5000);
         progressText.setText("100%");
-        try {
-          myPicture = ImageIO.read(FilterStationEmergencyPredictionFoulBlockage
-              .class.getResource("/pump_inactive.png"));
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-        picLabel.setIcon(new ImageIcon(myPicture));
 
         opcAccessApi.writeValueForTag(filter_p102, Boolean.FALSE);
         notifier(String.format("Вероятность НС на ст.фильтр. =%s " + "->\n" +
                     "Рекомендуемое действие=%s",
                 "НИЗКАЯ", "Штатный режим", 0.1),
             0.1);
-        filter_fake_risk_value = 0.3d;
-        filter_fake_active_flag = false;
+
         opcAccessApi.writeValueForTag(filter_TP_1M7, Boolean.FALSE); //warning
         Thread.sleep(1000);
         return;
