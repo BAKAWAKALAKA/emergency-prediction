@@ -69,11 +69,11 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
 
     content.add(getChartPanel(), BorderLayout.NORTH);
 
-    getChartPanel().setPreferredSize(new java.awt.Dimension(250, 170));
+    getChartPanel().setPreferredSize(new java.awt.Dimension(300, 170));
     setContentPane(content);
     chart.setAntiAlias(true);
-    content.setSize(250, 900);
-    setSize(250, 900);
+    content.setSize(300, 900);
+    setSize(300, 900);
   }
 
   /**
@@ -164,8 +164,9 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
     final JPanel titlePanel = new JPanel(new FlowLayout());
     titlePanel.add(button);
     content.add(titlePanel);
-    setSize(360, 600);
-    setLocation(1090,0);
+    setSize(480, 900);
+    setPreferredSize(new Dimension(430,900));
+    setLocation(1030,0);
     setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
   }
 

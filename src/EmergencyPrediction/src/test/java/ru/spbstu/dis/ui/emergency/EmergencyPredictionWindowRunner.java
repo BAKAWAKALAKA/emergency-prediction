@@ -18,7 +18,7 @@ public class EmergencyPredictionWindowRunner {
 
     JFrame frame = new JFrame("Типы НС");
 
-    JPanel panel = new JPanel(new GridLayout(10,1));
+    JPanel panel = new JPanel(new GridLayout(20,1));
 
     JLabel label = new JLabel("Типы нештатных ситуаций:");
     label.setHorizontalAlignment(SwingConstants.CENTER);
@@ -126,9 +126,10 @@ public class EmergencyPredictionWindowRunner {
     button17.setEnabled(false);
     panel.add(button17);
 
-    frame.add(panel);
-    frame.setSize(330, 600);
-    frame.setLocation(1115, 0);
+    JScrollPane panelPane = new JScrollPane(panel);
+    frame.add(panelPane);
+    frame.setSize(new Dimension(430,900));
+    frame.setLocation(1030,0);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setVisible(true);
 
