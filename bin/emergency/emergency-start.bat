@@ -6,4 +6,4 @@ CALL java ^
 -Xmx%HEAP% ^
 -Dfile.encoding=UTF-8 ^
 -cp "%JAR_NAME%;." ^
-ru.spbstu.dis.ui.emergency.EmergencyPredictionWindow
+ru.spbstu.dis.ui.emergency.EmergencyPredictionWindowRunner

@@ -102,6 +102,12 @@ public class EmergencyPredictionWindowRunner {
     button13.setEnabled(false);
     panel.add(button13);
 
+    JButton buttonX = new JButton();
+    buttonX.setText("Симуляция блокировки выпускного клапана");
+    buttonX.addActionListener(e -> FilterStationEmergencyPredictionFilterDestructionAfterOuterValve
+        .main(args));
+    panel.add(buttonX);
+
     JButton button14 = new JButton();
     button14.setText("Симуляция отказа расходомера");
     button14.addActionListener(e -> FilterStationEmergencyPredictionFoulBlockage.main(args));
