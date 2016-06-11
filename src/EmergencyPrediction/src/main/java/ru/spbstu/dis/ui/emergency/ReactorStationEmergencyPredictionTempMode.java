@@ -187,7 +187,7 @@ public class ReactorStationEmergencyPredictionTempMode extends EmergencyPredicti
 
 
         listModel.addElement("<html>3.Включить миксер</html>");
-        opcAccessApi.writeValueForTag(REAC_3M3, Boolean.TRUE);//3M3
+        opcAccessApi.writeValueForTag(REAC_3M2, Boolean.TRUE);//3M3
 
         listModel.addElement("<html>4.Включить циркуляцию<br>в реакторе</html>");
         progressText.setText("70%");
@@ -202,7 +202,7 @@ public class ReactorStationEmergencyPredictionTempMode extends EmergencyPredicti
         }
         picLabel.setIcon(new ImageIcon(myPicture));
         opcAccessApi.writeValueForTag(REAC_3M4, Boolean.FALSE); //mixer
-        opcAccessApi.writeValueForTag(REAC_3M3, Boolean.FALSE);//3M3
+        opcAccessApi.writeValueForTag(REAC_3M2, Boolean.FALSE);//3M3
         notifier(String.format("Вероятность НС на станции нагрева =%s " + "->\n" +
                     "Рекомендуемое действие=%s",
                 "НИЗКАЯ", "Штатный режим", 0.1),

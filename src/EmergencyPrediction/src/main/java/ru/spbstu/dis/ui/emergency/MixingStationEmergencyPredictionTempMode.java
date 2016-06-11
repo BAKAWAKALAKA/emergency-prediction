@@ -175,9 +175,9 @@ public class MixingStationEmergencyPredictionTempMode extends EmergencyPredictio
         progressText.setText("0%");
         listModel.addElement("<html>1.Отключить фильтрацию</html>");
         notifier(String.format("Вероятность НС на станциях =%s " + "->\n" +
-                    "Рекомендуемое действие=%s",
-                "ВЫСОКАЯ", "Сброс давления в фильтре, отключение насосов", 0.1),
-            filter_fake_risk_value);
+                                   "Рекомендуемое действие=%s",
+                               "ВЫСОКАЯ", "Сброс давления в фильтре, отключение насосов", 0.1),
+                 filter_fake_risk_value);
         picLabel.updateUI();
         closenessChartFrame.revalidate();
         closenessChartFrame.repaint();
@@ -188,7 +188,7 @@ public class MixingStationEmergencyPredictionTempMode extends EmergencyPredictio
 
         opcAccessApi.writeValueForTag(MIX_2M2, Boolean.FALSE); //mixing pump p202
         listModel.addElement("<html>3.Открыть соседние<br>станции</html>");
-        opcAccessApi.writeValueForTag(REAC_3M3, Boolean.TRUE);//3M3
+        opcAccessApi.writeValueForTag(REAC_3M2, Boolean.TRUE);//3M3
 
         listModel.addElement("<html>4.Включить циркуляцию<br>в реакторе</html>");
         opcAccessApi.writeValueForTag(FILT_1M6, Boolean.FALSE);
@@ -208,7 +208,7 @@ public class MixingStationEmergencyPredictionTempMode extends EmergencyPredictio
         picLabel.setIcon(new ImageIcon(myPicture));
 
 
-        opcAccessApi.writeValueForTag(REAC_3M3, Boolean.FALSE);//3M3
+        opcAccessApi.writeValueForTag(REAC_3M2, Boolean.FALSE);//3M3
         opcAccessApi.writeValueForTag(filter_open_rev_pump, Boolean.FALSE);//1M3
         notifier(String.format("Вероятность НС на станциях =%s " + "->\n" +
                     "Рекомендуемое действие=%s",
