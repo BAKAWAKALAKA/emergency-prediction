@@ -279,14 +279,16 @@ GridBagConstraints c =new GridBagConstraints();
 
   private static void addButtonToPanel(final JPanel panel, final GridBagConstraints c,
       final JButton button2) {
+    c.fill = GridBagConstraints.HORIZONTAL;
     c.weightx = 0.5;
     c.anchor = GridBagConstraints
-        .WEST;
+        .CENTER;
     panel.add(button2,c);
   }
 
   private static DynamicDataChart getDynamicDataChart(final JPanel panel,
       final GridBagConstraints c) {
+    c.fill = GridBagConstraints.NONE;
     DynamicDataChart dynamicDataChart = new DynamicDataChart(
         "");
     dynamicDataChart.getChartPanel().setPreferredSize(new Dimension(110, 50));

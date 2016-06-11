@@ -115,7 +115,7 @@ public class MixingStationEmergencyPredictionWaterOverflow extends EmergencyPred
       BufferedImage myPicture = null;
       try {
         myPicture = ImageIO.read(
-            MixingStationEmergencyPredictionWaterOverflow.class.getResource("/pump_inactive.png"));
+            MixingStationEmergencyPredictionWaterOverflow.class.getResource("/water_good.png"));
       } catch (IOException e) {
         e.printStackTrace();
       }
@@ -151,6 +151,15 @@ public class MixingStationEmergencyPredictionWaterOverflow extends EmergencyPred
                     "Рекомендуемое действие=%s",
                 "СРЕДНЯЯ", "Проверка станций", 0.1),
             0.3);
+        BufferedImage myPicture = null;
+        try {
+          myPicture = ImageIO.read(MixingStationEmergencyPredictionWaterOverflow
+              .class.getResource("/water_middle.png"));
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+        picLabel.setIcon(new ImageIcon(myPicture));
+
         opcAccessApi.writeValueForTag(filter_TP_1M7, Boolean.TRUE); //Warning
       }
       else {
@@ -169,7 +178,7 @@ public class MixingStationEmergencyPredictionWaterOverflow extends EmergencyPred
         try {
           myPicture = ImageIO.read(
               FilterStationEmergencyPredictionOldFilterBlockage.class
-                  .getResource("/pump_active.png"));
+                  .getResource("/water_bad.png"));
         } catch (IOException e) {
           e.printStackTrace();
         }
@@ -204,7 +213,7 @@ public class MixingStationEmergencyPredictionWaterOverflow extends EmergencyPred
         progressText.setText("100%");
         try {
           myPicture = ImageIO.read(MixingStationEmergencyPredictionWaterOverflow
-              .class.getResource("/pump_inactive.png"));
+              .class.getResource("/water_good.png"));
         } catch (IOException e) {
           e.printStackTrace();
         }

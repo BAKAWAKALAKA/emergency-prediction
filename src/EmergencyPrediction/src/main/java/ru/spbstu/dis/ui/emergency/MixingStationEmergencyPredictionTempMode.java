@@ -115,15 +115,15 @@ public class MixingStationEmergencyPredictionTempMode extends EmergencyPredictio
       BufferedImage myPicture = null;
       try {
         myPicture = ImageIO.read(
-            MixingStationEmergencyPredictionTempMode.class.getResource("/pump_inactive.png"));
+            MixingStationEmergencyPredictionTempMode.class.getResource("/term_good.jpg"));
       } catch (IOException e) {
         e.printStackTrace();
       }
       picLabel = new JLabel(new ImageIcon(myPicture));
       finishedActionsPnl.add(picLabel);
       picLabel.setLayout(new FlowLayout(FlowLayout.LEFT, 2, 2));
-      picLabel.add(new JLabel("         "));
-      picLabel.add(new JLabel("         "));
+      picLabel.add(new JLabel("             "));
+      picLabel.add(new JLabel("             "));
       picLabel.add(progressText);
       actionsFinishedList = new JList(listModel);
       actionsFinishedList.setSize(60, 80);
@@ -153,6 +153,15 @@ public class MixingStationEmergencyPredictionTempMode extends EmergencyPredictio
                 "СРЕДНЯЯ", "Проверка станций", 0.1),
             0.3);
         opcAccessApi.writeValueForTag(filter_TP_1M7, Boolean.TRUE); //Warning
+        BufferedImage myPicture = null;
+        try {
+          myPicture = ImageIO.read(
+              FilterStationEmergencyPredictionOldFilterBlockage.class
+                  .getResource("/term_middle.png"));
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+        picLabel.setIcon(new ImageIcon(myPicture));
       }
       else {
         opcAccessApi.writeValueForTag(filter_TP_1M7,  Boolean.FALSE); //warning
@@ -167,7 +176,7 @@ public class MixingStationEmergencyPredictionTempMode extends EmergencyPredictio
         try {
           myPicture = ImageIO.read(
               FilterStationEmergencyPredictionOldFilterBlockage.class
-                  .getResource("/pump_active.png"));
+                  .getResource("/term_bad.jpg"));
         } catch (IOException e) {
           e.printStackTrace();
         }
@@ -201,7 +210,7 @@ public class MixingStationEmergencyPredictionTempMode extends EmergencyPredictio
         progressText.setText("100%");
         try {
           myPicture = ImageIO.read(MixingStationEmergencyPredictionTempMode
-              .class.getResource("/pump_inactive.png"));
+              .class.getResource("/term_good.jpg"));
         } catch (IOException e) {
           e.printStackTrace();
         }
