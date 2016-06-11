@@ -46,13 +46,13 @@ public class EmergencyPredictionWindowRunner {
     panel.add(button3);
 
     JButton button4 = new JButton();
-    button4.setText("Симуляция сбоя направления течения");
-    button4.addActionListener(e -> FilterStationEmergencyPredictionFoulBlockage.main(args));
+    button4.setText("Симуляция сбоя температурного режима");
+    button4.addActionListener(e -> MixingStationEmergencyPredictionTempMode.main(args));
     panel.add(button4);
     button4.setEnabled(false);
     JButton button5 = new JButton();
     button5.setText("Симуляция неисправности нагревателя");
-    button5.addActionListener(e -> FilterStationEmergencyPredictionFoulBlockage.main(args));
+    button5.addActionListener(e -> MixingStationEmergencyPredictionTempMode.main(args));
     panel.add(button5);
     button5.setEnabled(false);
     JButton button6 = new JButton();
