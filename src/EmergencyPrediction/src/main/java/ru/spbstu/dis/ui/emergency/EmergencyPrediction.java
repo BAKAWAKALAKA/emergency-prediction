@@ -42,7 +42,7 @@ public class EmergencyPrediction {
   static String MIX_set_point_man = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_ControlPanel_FLOW_SPEED);
   static String MIX_2M2 = Tag.TAG_TO_ID_MAPPING.get(Tag
                                                         .MIX_ControlPanel_DownstreamStation_pump_P202_on);
-  static String REAC_3M3 = Tag.TAG_TO_ID_MAPPING.get(Tag
+  static String REAC_3M2 = Tag.TAG_TO_ID_MAPPING.get(Tag
                                                         .REACTOR_ControlPanel_downstream_station_pump_P302_on);
   static String FILT_1M6 = Tag.TAG_TO_ID_MAPPING.get(Tag
                                                          .FILT_ControlPanel_downstream_valve_V103_on);
