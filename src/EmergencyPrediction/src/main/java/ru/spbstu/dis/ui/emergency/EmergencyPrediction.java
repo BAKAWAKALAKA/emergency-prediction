@@ -27,17 +27,25 @@ public class EmergencyPrediction {
   static String filter_TP_1M7 = Tag.TAG_TO_ID_MAPPING.get(Tag
       .FILT_ControlPanel_WARNING);
 
-  static String filter_open_rev_valve = Tag.TAG_TO_ID_MAPPING.get(Tag.FILT_open_rev_valve);
+  static String filter_open_rev_valve = Tag.TAG_TO_ID_MAPPING.get(Tag.FILT_open_rev_valve);//1M45
 
   static String filter_open_rev_pump = Tag.TAG_TO_ID_MAPPING.get(Tag
-      .FILT_ControlPanel_downstream_station_pump_P102_on);
+      .FILT_ControlPanel_downstream_station_pump_P102_on);//1M3
 
   static String filter_p101 = Tag.TAG_TO_ID_MAPPING.get(Tag
       .FILT_pump_101_on);
 
   static String filter_p102 = Tag.TAG_TO_ID_MAPPING.get(Tag
       .FILT_pump_102_on);
-
+  static String MIX_2M3 = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_valve_V201_ToMainTank_on);
+  static String MIX_2M1 = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_ControlPanel_PumpToMainTank_P201_on);
+  static String MIX_set_point_man = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_ControlPanel_FLOW_SPEED);
+  static String MIX_2M2 = Tag.TAG_TO_ID_MAPPING.get(Tag
+                                                        .MIX_ControlPanel_DownstreamStation_pump_P202_on);
+  static String REAC_3M3 = Tag.TAG_TO_ID_MAPPING.get(Tag
+                                                        .REACTOR_ControlPanel_downstream_station_pump_P302_on);
+  static String FILT_1M6 = Tag.TAG_TO_ID_MAPPING.get(Tag
+                                                         .FILT_ControlPanel_downstream_valve_V103_on);
   double filter_fake_risk_value = 0d;
 
   boolean filter_fake_active_flag = true;
