@@ -48,6 +48,10 @@ public class EmergencyPrediction {
                                                          .FILT_ControlPanel_downstream_valve_V103_on);
   static String MIX_2B2_sensor = Tag.TAG_TO_ID_MAPPING.get(Tag
                                                                .MIX_tank_B201_water_top_level_sensor);
+  static String REAC_3M1 = Tag.TAG_TO_ID_MAPPING.get(Tag
+                                                               .REACTOR_ControlPanel_mixing_pump_P201_on);
+  static String REAC_3M4 = Tag.TAG_TO_ID_MAPPING.get(Tag
+                                                         .REACTOR_ControlPanel_Mixing_on);
 
   double filter_fake_risk_value = 0d;
 
