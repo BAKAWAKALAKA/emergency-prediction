@@ -99,7 +99,7 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
     axis = plot.getRangeAxis();
     axis.setAutoRange(true);
     LegendTitle legend = new LegendTitle(this.plot);
-    legend.setMargin(new RectangleInsets(1.0, 1.0, 1.0, 1.0));
+//    legend.setMargin(new RectangleInsets(1.0, 1.0, 1.0, 1.0));
     legend.setBorder(new BlockBorder());
     legend.setBackgroundPaint(Color.white);
     legend.setPosition(RectangleEdge.LEFT);
