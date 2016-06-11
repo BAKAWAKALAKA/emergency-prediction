@@ -66,7 +66,7 @@ public class EmergencyPrediction {
   DefaultListModel listModel = new DefaultListModel();
 
   DynamicDataChart closenessChartFrame = new DynamicDataChart(
-      "Нештатная ситуация на фильтре");
+      "ИСУ ТП УПРАВЛЕНИЯ ХИМ. СТАНЦИЕЙ");
 
   public EmergencyPrediction(final OpcAccessApi opcAccessApi) {
     this.opcAccessApi = opcAccessApi;

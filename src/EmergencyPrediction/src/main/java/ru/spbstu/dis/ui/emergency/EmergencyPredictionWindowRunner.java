@@ -22,15 +22,19 @@ public class EmergencyPredictionWindowRunner {
       // If Nimbus is not available, you can set the GUI to another look and feel.
     }
 
-    JFrame frame = new JFrame("Типы НС");
+    JFrame frame = new JFrame("ШТАТНЫЙ РЕЖИМ РАБОТЫ ИСУ ТП");
 
     JPanel panel = new JPanel(new GridBagLayout());
 GridBagConstraints c =new GridBagConstraints();
 
-    JLabel label = new JLabel("Типы нештатных ситуаций:");
+    JLabel label = new JLabel("Сщстояние системы:");
     label.setHorizontalAlignment(SwingConstants.CENTER);
     c.gridwidth=2;
-    c.fill = GridBagConstraints.HORIZONTAL;
+    c.ipadx = 0;
+    c.ipady = 0;c.weightx = 0.5;c.weighty = 0.0;c.gridwidth = 1;c.anchor = GridBagConstraints
+        .CENTER;
+    c.insets = new Insets(0,0,0,0);
+//    c.fill = GridBagConstraints.HORIZONTAL;
     c.gridx=0;
     c.gridy=0;
     panel.add(label,c);
@@ -41,7 +45,7 @@ GridBagConstraints c =new GridBagConstraints();
     c.gridwidth=1;
     c.gridx=0;
     c.gridy=1;
-    panel.add(button,c);
+    addButtonToPanel(panel, c, button);
     c.gridx=1;
     c.gridy=1;
     DynamicDataChart situationChart = getDynamicDataChart(panel, c);
@@ -50,7 +54,7 @@ GridBagConstraints c =new GridBagConstraints();
     JButton button1 = new JButton();
     button1.setText("Симуляция эксплуатационного засора");
     button1.addActionListener(e -> FilterStationEmergencyPredictionOldFilterBlockage.main(args));
-    panel.add(button1,c);
+    addButtonToPanel(panel, c, button1);
     c.gridx=1;
     c.gridy=2;
     DynamicDataChart situation2Chart = getDynamicDataChart(panel, c);
@@ -59,7 +63,7 @@ GridBagConstraints c =new GridBagConstraints();
     JButton button2 = new JButton();
     button2.setText("Симуляция механического засора");
     button2.addActionListener(e -> FilterStationEmergencyPredictionFoulBlockage.main(args));
-    panel.add(button2,c);
+    addButtonToPanel(panel, c, button2);
     c.gridx=1;
     c.gridy=3;
     DynamicDataChart situation3Chart = getDynamicDataChart(panel, c);
@@ -69,7 +73,7 @@ GridBagConstraints c =new GridBagConstraints();
     button3.setText("Симуляция блокировки входного клапана");
     button3.addActionListener(e -> FilterStationEmergencyPredictionFilterDestructionAfterInnerValve
         .main(args));
-    panel.add(button3,c);
+    addButtonToPanel(panel, c, button3);
     c.gridx=1;
     c.gridy=4;
     DynamicDataChart situation4Chart = getDynamicDataChart(panel, c);
@@ -78,8 +82,8 @@ GridBagConstraints c =new GridBagConstraints();
     JButton button4 = new JButton();
     button4.setText("Симуляция сбоя температурного режима");
     button4.addActionListener(e -> MixingStationEmergencyPredictionTempMode.main(args));
-    panel.add(button4,c);
-   // button4.setEnabled(false);
+    addButtonToPanel(panel, c, button4);
+    // button4.setEnabled(false);
     c.gridx=1;
     c.gridy=5;
     DynamicDataChart situation5Chart = getDynamicDataChart(panel, c);
@@ -88,8 +92,8 @@ GridBagConstraints c =new GridBagConstraints();
     JButton button6 = new JButton();
     button6.setText("Симуляция переполнения дозировочного бака");
     button6.addActionListener(e -> MixingStationEmergencyPredictionWaterOverflow.main(args));
-    panel.add(button6,c);
-   // button6.setEnabled(false);
+    addButtonToPanel(panel, c, button6);
+    // button6.setEnabled(false);
     c.gridx=1;
     c.gridy=6;
     DynamicDataChart situation6Chart = getDynamicDataChart(panel, c);
@@ -98,7 +102,7 @@ GridBagConstraints c =new GridBagConstraints();
     JButton button7 = new JButton();
     button7.setText("Симуляция перегрева реактора");
     button7.addActionListener(e -> ReactorStationEmergencyPredictionTempMode.main(args));
-    panel.add(button7,c);
+    addButtonToPanel(panel, c, button7);
     //button7.setEnabled(false);
     c.gridx=1;
     c.gridy=7;
@@ -108,7 +112,7 @@ GridBagConstraints c =new GridBagConstraints();
     JButton button8 = new JButton();
     button8.setText("Симуляция сбоя системы охлаждения");
     button8.addActionListener(e -> FilterStationEmergencyPredictionFoulBlockage.main(args));
-    panel.add(button8,c);
+    addButtonToPanel(panel, c, button8);
     button8.setEnabled(false);
     c.gridx=1;
     c.gridy=8;
@@ -119,7 +123,7 @@ GridBagConstraints c =new GridBagConstraints();
     button9.setText("Симуляция воздушной пробки");
     button9.addActionListener(e -> FilterStationEmergencyPredictionFoulBlockage.main(args));
     button9.setEnabled(false);
-    panel.add(button9,c);
+    addButtonToPanel(panel, c, button9);
     c.gridx=1;
     c.gridy=9;
     DynamicDataChart situation9Chart = getDynamicDataChart(panel, c);
@@ -129,7 +133,7 @@ GridBagConstraints c =new GridBagConstraints();
     button10.setText("Симуляция неисправности задвижек");
     button10.addActionListener(e -> FilterStationEmergencyPredictionFoulBlockage.main(args));
     button10.setEnabled(false);
-    panel.add(button10,c);
+    addButtonToPanel(panel, c, button10);
     c.gridx=1;
     c.gridy=10;
     DynamicDataChart situation10Chart = getDynamicDataChart(panel, c);
@@ -139,7 +143,7 @@ GridBagConstraints c =new GridBagConstraints();
     button11.setText("Симуляция отказа клапанов (reactor)");
     button11.addActionListener(e -> FilterStationEmergencyPredictionFoulBlockage.main(args));
     button11.setEnabled(false);
-    panel.add(button11,c);
+    addButtonToPanel(panel, c, button11);
     c.gridx=1;
     c.gridy=11;
     DynamicDataChart situation11Chart = getDynamicDataChart(panel, c);
@@ -149,7 +153,7 @@ GridBagConstraints c =new GridBagConstraints();
     button12.setText("Симуляция переполнения бака (mixing)");
     button12.addActionListener(e -> FilterStationEmergencyPredictionFoulBlockage.main(args));
     button12.setEnabled(false);
-    panel.add(button12,c);
+    addButtonToPanel(panel, c, button12);
     c.gridx=1;
     c.gridy=12;
     DynamicDataChart situation12Chart = getDynamicDataChart(panel, c);
@@ -159,7 +163,7 @@ GridBagConstraints c =new GridBagConstraints();
     button13.setText("Симуляция переполнения бака (reactor)");
     button13.addActionListener(e -> FilterStationEmergencyPredictionFoulBlockage.main(args));
     button13.setEnabled(false);
-    panel.add(button13,c);
+    addButtonToPanel(panel, c, button13);
     c.gridx=1;
     c.gridy=13;
     DynamicDataChart situation13Chart = getDynamicDataChart(panel, c);
@@ -169,7 +173,7 @@ GridBagConstraints c =new GridBagConstraints();
     button14.setText("Симуляция блокировки выпускного клапана");
     button14.addActionListener(e -> FilterStationEmergencyPredictionFilterDestructionAfterOuterValve
         .main(args));
-    panel.add(button14,c);
+    addButtonToPanel(panel, c, button14);
     c.gridx=1;
     c.gridy=14;
     DynamicDataChart situation14Chart = getDynamicDataChart(panel, c);
@@ -179,7 +183,7 @@ GridBagConstraints c =new GridBagConstraints();
     button15.setText("Симуляция отказа расходомера");
     button15.addActionListener(e -> FilterStationEmergencyPredictionFoulBlockage.main(args));
     button15.setEnabled(false);
-    panel.add(button15,c);
+    addButtonToPanel(panel, c, button15);
     c.gridx=1;
     c.gridy=15;
     DynamicDataChart situation15Chart = getDynamicDataChart(panel, c);
@@ -189,15 +193,20 @@ GridBagConstraints c =new GridBagConstraints();
     button16.setText("Симуляция нарушения дозирования");
     button16.addActionListener(e -> FilterStationEmergencyPredictionFoulBlockage.main(args));
     button16.setEnabled(false);
-    panel.add(button16,c);
+    addButtonToPanel(panel, c, button16);
     c.gridx=1;
     c.gridy=16;
-    DynamicDataChart situation17Chart = getDynamicDataChart(panel, c);
+    DynamicDataChart situation16Chart = getDynamicDataChart(panel, c);
+    c.gridx=0;
+    c.gridy=17;
     JButton button17 = new JButton();
     button17.setText("Симуляция нарушения движения ленты");
     button17.addActionListener(e -> FilterStationEmergencyPredictionFoulBlockage.main(args));
     button17.setEnabled(false);
-    panel.add(button17,c);
+    addButtonToPanel(panel, c, button17);
+    c.gridx=1;
+    c.gridy=17;
+    DynamicDataChart situation17Chart = getDynamicDataChart(panel, c);
     c.gridx=0;
     c.gridy=18;
 
@@ -205,7 +214,7 @@ GridBagConstraints c =new GridBagConstraints();
     button18.setText("Симуляция отказа детекторов емкости");
     button18.addActionListener(e -> FilterStationEmergencyPredictionFoulBlockage.main(args));
     button18.setEnabled(false);
-    panel.add(button18,c);
+    addButtonToPanel(panel, c, button18);
 
     c.gridx=1;
     c.gridy=18;
@@ -215,7 +224,7 @@ GridBagConstraints c =new GridBagConstraints();
     JButton button5 = new JButton();
     button5.setText("Симуляция неисправности нагревателя");
     button5.addActionListener(e -> FilterStationEmergencyPredictionFoulBlockage.main(args));
-    panel.add(button5,c);
+    addButtonToPanel(panel, c, button5);
     button5.setEnabled(false);
     c.gridx=1;
     c.gridy=19;
@@ -225,9 +234,29 @@ GridBagConstraints c =new GridBagConstraints();
       while (true) {
         charts.forEach(chart -> {
           Random random = new Random();
-          chart.setLastValue(random.nextInt(50)/100d);
-          chart.getSeries().add(new Millisecond(), chart.getLastValue());
 
+          chart.setLastValue(Math.abs(chart.getLastValue() + random.nextInt(10)/100d - random
+              .nextInt(10)
+              /100d));
+          chart.getSeries().add(new Millisecond(), chart.getLastValue());
+          if(chart.getLastValue() > 0.3 &&  chart.getLastValue() < 0.7){
+            XYPlot plot = (XYPlot) chart.getChartPanel().getChart().getPlot();
+            XYLineAndShapeRenderer renderer0 = new XYLineAndShapeRenderer();
+            renderer0.setBaseShapesVisible(false);
+            plot.setRenderer(0, renderer0);
+            plot.getRendererForDataset(plot.getDataset(0)).setSeriesPaint(0, Color.orange);
+            plot.getRenderer().setSeriesPaint(0, Color.orange);
+            plot.getRenderer().setSeriesStroke(0, new BasicStroke(4.0f));
+          }
+          if(chart.getLastValue() > 0.7 &&  chart.getLastValue() < 1d){
+            XYPlot plot = (XYPlot) chart.getChartPanel().getChart().getPlot();
+            XYLineAndShapeRenderer renderer0 = new XYLineAndShapeRenderer();
+            renderer0.setBaseShapesVisible(false);
+            plot.setRenderer(0, renderer0);
+            plot.getRendererForDataset(plot.getDataset(0)).setSeriesPaint(0, Color.red);
+            plot.getRenderer().setSeriesPaint(0, Color.red);
+            plot.getRenderer().setSeriesStroke(0, new BasicStroke(5.0f));
+          }
         });
 
         try {
@@ -248,24 +277,27 @@ GridBagConstraints c =new GridBagConstraints();
 
   }
 
+  private static void addButtonToPanel(final JPanel panel, final GridBagConstraints c,
+      final JButton button2) {
+    c.weightx = 0.5;
+    c.anchor = GridBagConstraints
+        .WEST;
+    panel.add(button2,c);
+  }
+
   private static DynamicDataChart getDynamicDataChart(final JPanel panel,
       final GridBagConstraints c) {
     DynamicDataChart dynamicDataChart = new DynamicDataChart(
         "");
-    dynamicDataChart.getChartPanel().setPreferredSize(new Dimension(80, 60));
+    dynamicDataChart.getChartPanel().setPreferredSize(new Dimension(110, 50));
     panel.add(dynamicDataChart.getChartPanel(),c);
     charts.add(dynamicDataChart);
     XYPlot plot = (XYPlot) dynamicDataChart.getChartPanel().getChart().getPlot();
     XYLineAndShapeRenderer renderer0 = new XYLineAndShapeRenderer();
     renderer0.setBaseShapesVisible(false);
     plot.setRenderer(0, renderer0);
-    Random rand = new Random();
-    float r = rand.nextFloat();
-    float g = rand.nextFloat();
-    float b = rand.nextFloat();
-    Color color = new Color(r,g,b);
-    plot.getRendererForDataset(plot.getDataset(0)).setSeriesPaint(0, color);
-    plot.getRenderer().setSeriesPaint(0, color);
+    plot.getRendererForDataset(plot.getDataset(0)).setSeriesPaint(0, Color.green);
+    plot.getRenderer().setSeriesPaint(0, Color.green);
     plot.getRenderer().setSeriesStroke(0, new BasicStroke(3.0f));
     return dynamicDataChart;
   }
