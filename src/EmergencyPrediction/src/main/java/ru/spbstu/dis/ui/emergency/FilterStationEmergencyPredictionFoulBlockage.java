@@ -1,27 +1,17 @@
 package ru.spbstu.dis.ui.emergency;
 
-import com.google.common.net.HostAndPort;
-import com.typesafe.config.Config;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.time.Millisecond;
 import org.slf4j.LoggerFactory;
-import ru.spbstu.dis.ConfigProvider;
-import ru.spbstu.dis.opc.client.api.OpcClientApiFactory;
 import ru.spbstu.dis.opc.client.api.opc.access.OpcAccessApi;
-import ru.spbstu.dis.opc.client.api.opc.access.Tag;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.font.TextAttribute;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.*;
 
 public class FilterStationEmergencyPredictionFoulBlockage extends EmergencyPrediction{
   private static final org.slf4j.Logger LOGGER = LoggerFactory
@@ -157,10 +147,12 @@ public class FilterStationEmergencyPredictionFoulBlockage extends EmergencyPredi
                     "Рекомендуемое действие=%s",
                 "СРЕДНЯЯ", "Проверка станции", 0.1),
             0.3);
-        opcAccessApi.writeValueForTag(filter_TP_1M7, Boolean.TRUE); //Warning
+        opcAccessApi.writeValueForTag(FILT_Fault_in, !opcAccessApi.readBoolean(FILT_Fault_in)
+            .value); //Warning
       }
       else {
-        opcAccessApi.writeValueForTag(filter_TP_1M7,  Boolean.FALSE); //warning
+        opcAccessApi.writeValueForTag(FILT_Fault_in, Boolean.FALSE); //warning
+        opcAccessApi.writeValueForTag(FILT_Green_in, Boolean.TRUE);
       }
 
 
@@ -219,8 +211,7 @@ public class FilterStationEmergencyPredictionFoulBlockage extends EmergencyPredi
                     "Рекомендуемое действие=%s",
                 "НИЗКАЯ", "Штатный режим", 0.1),
             0.1);
-
-        opcAccessApi.writeValueForTag(filter_TP_1M7,  Boolean.FALSE); //warning
+        opcAccessApi.writeValueForTag(FILT_Fault_in, Boolean.FALSE); //warning
         Thread.sleep(1000);
         return;
       }

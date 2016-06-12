@@ -142,13 +142,12 @@ public class ReactorStationEmergencyPredictionTempMode extends EmergencyPredicti
     while (true) {
       opcAccessApi.writeValueForTag(REAC_3M1, Boolean.TRUE); //heater
 
-      Thread.sleep(5000);
+      Thread.sleep(1000);
       if (filter_fake_risk_value > 0.8d) {
         notifier(String.format("Вероятность НС на реакторе =%s " + "->\n" +
                     "Рекомендуемое действие=%s",
                 "СРЕДНЯЯ", "Проверка станции", 0.1),
             0.3);
-        opcAccessApi.writeValueForTag(filter_TP_1M7, Boolean.TRUE); //Warning
         BufferedImage myPicture = null;
         try {
           myPicture = ImageIO.read(
@@ -157,10 +156,14 @@ public class ReactorStationEmergencyPredictionTempMode extends EmergencyPredicti
         } catch (IOException e) {
           e.printStackTrace();
         }
-      }
-      else {
-        opcAccessApi.writeValueForTag(filter_TP_1M7,  Boolean.FALSE); //warning
-      }
+
+      opcAccessApi.writeValueForTag(REACTOR_Fault_in, !opcAccessApi.readBoolean(FILT_Fault_in)
+          .value); //Warning
+    }
+    else {
+      opcAccessApi.writeValueForTag(REACTOR_Fault_in, Boolean.FALSE); //warning
+      opcAccessApi.writeValueForTag(REACTOR_Green_in, Boolean.TRUE);
+    }
 
 
       if (filter_fake_risk_value > 0.8d) {
@@ -216,7 +219,7 @@ public class ReactorStationEmergencyPredictionTempMode extends EmergencyPredicti
                 "НИЗКАЯ", "Штатный режим", 0.1),
             0.1);
 
-        opcAccessApi.writeValueForTag(filter_TP_1M7,  Boolean.FALSE); //warning
+        opcAccessApi.writeValueForTag(REACTOR_Fault_in,  Boolean.FALSE); //warning
         Thread.sleep(1000);
         return;
       }

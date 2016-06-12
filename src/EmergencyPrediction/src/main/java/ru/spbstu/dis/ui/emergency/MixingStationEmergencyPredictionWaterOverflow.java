@@ -145,6 +145,7 @@ public class MixingStationEmergencyPredictionWaterOverflow extends EmergencyPred
         opcAccessApi.writeValueForTag(FILT_1M6, Boolean.TRUE);
         opcAccessApi.writeValueForTag(filter_open_rev_pump, Boolean.TRUE);
       }
+      Thread.sleep(1000);
 
       if (filter_fake_risk_value > 0.8d) {
         notifier(String.format("Вероятность НС на смешивании =%s " + "->\n" +
@@ -160,10 +161,12 @@ public class MixingStationEmergencyPredictionWaterOverflow extends EmergencyPred
         }
         picLabel.setIcon(new ImageIcon(myPicture));
 
-        opcAccessApi.writeValueForTag(filter_TP_1M7, Boolean.TRUE); //Warning
+        opcAccessApi.writeValueForTag(MIX_Fault_in, !opcAccessApi.readBoolean(FILT_Fault_in)
+            .value); //Warning
       }
       else {
-        opcAccessApi.writeValueForTag(filter_TP_1M7,  Boolean.FALSE); //warning
+        opcAccessApi.writeValueForTag(MIX_Fault_in, Boolean.FALSE); //warning
+        opcAccessApi.writeValueForTag(MIX_Green_in, Boolean.TRUE);
       }
 
 
@@ -229,7 +232,7 @@ public class MixingStationEmergencyPredictionWaterOverflow extends EmergencyPred
         opcAccessApi.writeValueForTag(MIX_2M2, Boolean.TRUE); //mixing pump p202
         Thread.sleep(5000);
         opcAccessApi.writeValueForTag(MIX_2M2, Boolean.FALSE); //mixing pump p202
-        opcAccessApi.writeValueForTag(filter_TP_1M7,  Boolean.FALSE); //warning
+        opcAccessApi.writeValueForTag(MIX_Fault_in, Boolean.FALSE); //warning
         Thread.sleep(1000);
         return;
       }

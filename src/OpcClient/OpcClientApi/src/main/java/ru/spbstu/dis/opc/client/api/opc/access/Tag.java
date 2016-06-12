@@ -43,11 +43,23 @@ public enum Tag {
   REACTOR_ControlPanel_downstream_station_pump_P302_on,
   MIX_TANK_MAN_FLOW_SPEED,
   FILT_ControlPanel_WARNING,
-  FILT_open_rev_valve;
+  FILT_open_rev_valve,
+  FILT_Green_in,
+  FILT_Fault_in,
+  MIX_Green_in,
+  MIX_Fault_in,
+  REACTOR_Green_in,
+  REACTOR_Fault_in;
 
   public static HashMap<Tag, String> TAG_TO_ID_MAPPING = Maps.newHashMap();
 
   static {
+    TAG_TO_ID_MAPPING.put(FILT_Green_in, "FilterConnection/M/Green_in");
+    TAG_TO_ID_MAPPING.put(FILT_Fault_in, "FilterConnection/M/Fault_in");
+    TAG_TO_ID_MAPPING.put(MIX_Green_in, "MixingConnection/M/Green_in");
+    TAG_TO_ID_MAPPING.put(MIX_Fault_in, "MixingConnection/M/Fault_in");
+    TAG_TO_ID_MAPPING.put(REACTOR_Green_in, "ReactorConnection/M/Green_in");
+    TAG_TO_ID_MAPPING.put(REACTOR_Fault_in, "ReactorConnection/M/Fault_in");
     // real OPC server tags
     TAG_TO_ID_MAPPING.put(REACTOR_Temperature1, "ReactorConnection/M/Temp1");//not working
     TAG_TO_ID_MAPPING.put(REACTOR_Temperature2, "ReactorConnection/M/Temp2");//not working

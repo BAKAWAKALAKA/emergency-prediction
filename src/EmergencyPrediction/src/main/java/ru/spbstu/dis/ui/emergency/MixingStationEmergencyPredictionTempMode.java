@@ -146,13 +146,12 @@ public class MixingStationEmergencyPredictionTempMode extends EmergencyPredictio
       opcAccessApi.writeValueForTag(MIX_set_point_man, Float.valueOf(50)); //mixing pump p201
       opcAccessApi.writeValueForTag(MIX_2M2, Boolean.TRUE); //mixing pump p202
 
-      Thread.sleep(5000);
+      Thread.sleep(1000);
       if (filter_fake_risk_value > 0.8d) {
         notifier(String.format("Вероятность НС на станциях =%s " + "->\n" +
                     "Рекомендуемое действие=%s",
                 "СРЕДНЯЯ", "Проверка станций", 0.1),
             0.3);
-        opcAccessApi.writeValueForTag(filter_TP_1M7, Boolean.TRUE); //Warning
         BufferedImage myPicture = null;
         try {
           myPicture = ImageIO.read(
@@ -162,9 +161,12 @@ public class MixingStationEmergencyPredictionTempMode extends EmergencyPredictio
           e.printStackTrace();
         }
         picLabel.setIcon(new ImageIcon(myPicture));
+        opcAccessApi.writeValueForTag(MIX_Fault_in, !opcAccessApi.readBoolean(FILT_Fault_in)
+            .value); //Warning
       }
       else {
-        opcAccessApi.writeValueForTag(filter_TP_1M7,  Boolean.FALSE); //warning
+        opcAccessApi.writeValueForTag(MIX_Fault_in, Boolean.FALSE); //warning
+        opcAccessApi.writeValueForTag(MIX_Green_in, Boolean.TRUE);
       }
 
 
@@ -224,7 +226,7 @@ public class MixingStationEmergencyPredictionTempMode extends EmergencyPredictio
                 "НИЗКАЯ", "Штатный режим", 0.1),
             0.1);
 
-        opcAccessApi.writeValueForTag(filter_TP_1M7,  Boolean.FALSE); //warning
+        opcAccessApi.writeValueForTag(MIX_Fault_in, Boolean.FALSE); //warning
         Thread.sleep(1000);
         return;
       }

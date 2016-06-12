@@ -24,8 +24,8 @@ public class EmergencyPrediction {
 
   ArrayList notifications = new ArrayList();
 
-  static String filter_TP_1M7 = Tag.TAG_TO_ID_MAPPING.get(Tag
-      .FILT_ControlPanel_WARNING);
+  //static String filter_TP_1M7 = Tag.TAG_TO_ID_MAPPING.get(Tag
+  //    .FILT_ControlPanel_WARNING);
 
   static String filter_open_rev_valve = Tag.TAG_TO_ID_MAPPING.get(Tag.FILT_open_rev_valve);//1M45
 
@@ -52,6 +52,13 @@ public class EmergencyPrediction {
                                                                .REACTOR_ControlPanel_mixing_pump_P201_on);
   static String REAC_3M4 = Tag.TAG_TO_ID_MAPPING.get(Tag
                                                          .REACTOR_ControlPanel_Mixing_on);
+
+  static String FILT_Green_in = Tag.TAG_TO_ID_MAPPING.get(Tag.FILT_Green_in);
+  static String FILT_Fault_in = Tag.TAG_TO_ID_MAPPING.get(Tag.FILT_Fault_in);
+  static String MIX_Green_in = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_Green_in);
+  static String MIX_Fault_in = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_Fault_in);
+  static String REACTOR_Green_in = Tag.TAG_TO_ID_MAPPING.get(Tag.REACTOR_Green_in);
+  static String REACTOR_Fault_in = Tag.TAG_TO_ID_MAPPING.get(Tag.REACTOR_Fault_in);
 
   double filter_fake_risk_value = 0d;
 
