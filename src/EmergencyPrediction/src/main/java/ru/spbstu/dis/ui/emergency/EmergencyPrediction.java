@@ -174,6 +174,14 @@ public class EmergencyPrediction {
     }
   }
 
+  public DynamicDataChart getClosenessChartFrame() {
+    return closenessChartFrame;
+  }
+
+  public void setClosenessChartFrame(DynamicDataChart closenessChartFrame) {
+    this.closenessChartFrame = closenessChartFrame;
+  }
+
   void getDataFromOPC()
   throws InterruptedException {
 

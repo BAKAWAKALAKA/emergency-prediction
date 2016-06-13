@@ -44,6 +44,8 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
 
   private double lastValue = 0;
 
+  private boolean emergencyGrowth;
+
   private JList list;
 
   final JPanel content = new JPanel(new FlowLayout());
@@ -258,6 +260,14 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
 
   public void setList(JList list) {
     this.list = list;
+  }
+
+  public boolean isEmergencyGrowth() {
+    return emergencyGrowth;
+  }
+
+  public void setEmergencyGrowth(boolean emergencyGrowth) {
+    this.emergencyGrowth = emergencyGrowth;
   }
 
   public void setPlot(final XYPlot plot) {
