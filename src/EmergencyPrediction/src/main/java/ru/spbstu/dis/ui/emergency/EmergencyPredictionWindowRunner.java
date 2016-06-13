@@ -434,7 +434,7 @@ public class EmergencyPredictionWindowRunner {
                     chart.setLastValue(Math.abs(chart.getLastValue() + random.nextInt(20) / 100d - random
                             .nextInt(10)
                             / 100d));
-                    if(!chart.isEmergencyGrowth() && chart.getLastValue() >=0.2) chart.setLastValue(chart.getLastValue() - random.nextInt(10) / 100d - 0.15);
+                    if(!chart.isEmergencyGrowth() && chart.getLastValue() >=0.1) chart.setLastValue(0.05d + random.nextInt(4) / 100d);
                     else if(chart.isEmergencyGrowth() && chart.getLastValue() >=0.2)chart.setLastValue(chart.getLastValue() );
                     chart.getSeries().add(new Millisecond(), chart.getLastValue());
                     if (chart.getLastValue() > 0.15 && chart.getLastValue() <= 0.20) {
