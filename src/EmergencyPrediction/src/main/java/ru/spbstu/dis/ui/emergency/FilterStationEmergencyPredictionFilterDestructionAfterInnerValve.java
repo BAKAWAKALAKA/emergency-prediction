@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import ru.spbstu.dis.opc.client.api.opc.access.OpcAccessApi;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.font.TextAttribute;
 import java.awt.image.BufferedImage;
@@ -96,13 +97,14 @@ public class FilterStationEmergencyPredictionFilterDestructionAfterInnerValve
       actionsPanel.setBorder(BorderFactory.createCompoundBorder());
       actionsPanel.add(recomActions, BorderLayout.CENTER);
       closenessChartFrame.add(actionsPanel);
-
       final JPanel actionOutput = new JPanel(new FlowLayout());
       JLabel esTypeAction = new JLabel("<html>ОТРАБОТКА НС:<br>Очистка клапана</html>",
           SwingConstants.CENTER);
       Font boldUnderlineBig = new Font("Tachoma", Font.BOLD, 18).deriveFont(fontAttributes);
       esTypeAction.setFont(boldUnderlineBig);
       actionOutput.add(esTypeAction);
+      actionOutput.setBorder(BorderFactory.createMatteBorder(
+              4, 0, 0, 0, Color.black));
       closenessChartFrame.add(actionOutput);
 
       final JPanel statePanel = new JPanel(new FlowLayout());

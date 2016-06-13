@@ -101,6 +101,7 @@ public class FilterStationEmergencyPredictionFilterDestructionAfterOuterValve
       Font boldUnderlineBig = new Font("Tachoma", Font.BOLD, 18).deriveFont(fontAttributes);
       esTypeAction.setFont(boldUnderlineBig);
       actionOutput.add(esTypeAction);
+      actionOutput.setBorder(BorderFactory.createMatteBorder(4, 0, 0, 0, Color.black));
       closenessChartFrame.add(actionOutput);
 
       final JPanel statePanel = new JPanel(new FlowLayout());

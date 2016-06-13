@@ -103,6 +103,7 @@ public class MixingStationEmergencyPredictionTempMode extends EmergencyPredictio
       Font boldUnderlineBig = new Font("Tachoma", Font.BOLD, 22).deriveFont(fontAttributes);
       esTypeAction.setFont(boldUnderlineBig);
       actionOutput.add(esTypeAction);
+      actionOutput.setBorder(BorderFactory.createMatteBorder(4, 0, 0, 0, Color.black));
       closenessChartFrame.add(actionOutput);
 
       final JPanel statePanel = new JPanel(new FlowLayout());
