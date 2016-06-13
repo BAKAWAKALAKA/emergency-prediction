@@ -114,7 +114,7 @@ public class ReactorStationEmergencyPredictionTempMode extends EmergencyPredicti
       BufferedImage myPicture = null;
       try {
         myPicture = ImageIO.read(
-            ReactorStationEmergencyPredictionTempMode.class.getResource("/term_good.jpg"));
+            ReactorStationEmergencyPredictionTempMode.class.getResource("/term_middle.png"));
       } catch (IOException e) {
         e.printStackTrace();
       }
@@ -152,7 +152,7 @@ public class ReactorStationEmergencyPredictionTempMode extends EmergencyPredicti
         try {
           myPicture = ImageIO.read(
               FilterStationEmergencyPredictionOldFilterBlockage.class
-                  .getResource("/term_middle.png"));
+                  .getResource("/term_bad.jpg"));
         } catch (IOException e) {
           e.printStackTrace();
         }
@@ -174,7 +174,7 @@ public class ReactorStationEmergencyPredictionTempMode extends EmergencyPredicti
         try {
           myPicture = ImageIO.read(
               FilterStationEmergencyPredictionOldFilterBlockage.class
-                  .getResource("/term_bad.jpg"));
+                  .getResource("/term_middle.png"));
         } catch (IOException e) {
           e.printStackTrace();
         }

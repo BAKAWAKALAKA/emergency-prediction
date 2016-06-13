@@ -51,7 +51,7 @@ public class MixingStationEmergencyPredictionWaterOverflow extends EmergencyPred
     th.start();
     JLabel esType = new JLabel("<html><div style='text-align: center;'>Переполнение<br>" +
         "дозировочного бака" +
-        " на ст.Mixing)</html>");
+        " на ст.Mixing</html>");
     Map<TextAttribute, Integer> fontAttributes = new HashMap<>();
     fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
     Font boldUnderline = new Font("Tachoma", Font.BOLD, 22).deriveFont(fontAttributes);
@@ -115,7 +115,7 @@ public class MixingStationEmergencyPredictionWaterOverflow extends EmergencyPred
       BufferedImage myPicture = null;
       try {
         myPicture = ImageIO.read(
-            MixingStationEmergencyPredictionWaterOverflow.class.getResource("/water_good.png"));
+            MixingStationEmergencyPredictionWaterOverflow.class.getResource("/water_middle.png"));
       } catch (IOException e) {
         e.printStackTrace();
       }
@@ -155,7 +155,7 @@ public class MixingStationEmergencyPredictionWaterOverflow extends EmergencyPred
         BufferedImage myPicture = null;
         try {
           myPicture = ImageIO.read(MixingStationEmergencyPredictionWaterOverflow
-              .class.getResource("/water_middle.png"));
+              .class.getResource("/water_bad.png"));
         } catch (IOException e) {
           e.printStackTrace();
         }
@@ -181,7 +181,7 @@ public class MixingStationEmergencyPredictionWaterOverflow extends EmergencyPred
         try {
           myPicture = ImageIO.read(
               FilterStationEmergencyPredictionOldFilterBlockage.class
-                  .getResource("/water_bad.png"));
+                  .getResource("/water_middle.png"));
         } catch (IOException e) {
           e.printStackTrace();
         }

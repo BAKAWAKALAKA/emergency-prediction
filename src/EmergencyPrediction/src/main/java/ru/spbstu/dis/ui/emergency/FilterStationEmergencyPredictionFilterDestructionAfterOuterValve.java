@@ -72,8 +72,8 @@ public class FilterStationEmergencyPredictionFilterDestructionAfterOuterValve
     XYLineAndShapeRenderer renderer0 = new XYLineAndShapeRenderer();
     renderer0.setBaseShapesVisible(false);
     plot.setRenderer(0, renderer0);
-    plot.getRendererForDataset(plot.getDataset(0)).setSeriesPaint(0, Color.BLUE);
-    plot.getRenderer().setSeriesPaint(0, Color.BLUE);
+    plot.getRendererForDataset(plot.getDataset(0)).setSeriesPaint(0, Color.RED);
+    plot.getRenderer().setSeriesPaint(0, Color.RED);
     plot.getRenderer().setSeriesStroke(0, new BasicStroke(3.0f));
     SwingUtilities.invokeLater(() -> {
 

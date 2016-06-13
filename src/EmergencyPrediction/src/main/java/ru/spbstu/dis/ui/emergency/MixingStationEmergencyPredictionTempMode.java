@@ -51,7 +51,7 @@ public class MixingStationEmergencyPredictionTempMode extends EmergencyPredictio
     th.start();
     JLabel esType = new JLabel("<html><div style='text-align: center;'>Сбой режима<br>" +
         "температуры" +
-        " на станциях)</html>");
+        " на станциях</html>");
     Map<TextAttribute, Integer> fontAttributes = new HashMap<>();
     fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
     Font boldUnderline = new Font("Tachoma", Font.BOLD, 22).deriveFont(fontAttributes);
@@ -115,7 +115,7 @@ public class MixingStationEmergencyPredictionTempMode extends EmergencyPredictio
       BufferedImage myPicture = null;
       try {
         myPicture = ImageIO.read(
-            MixingStationEmergencyPredictionTempMode.class.getResource("/term_good.jpg"));
+            MixingStationEmergencyPredictionTempMode.class.getResource("/term_middle.png"));
       } catch (IOException e) {
         e.printStackTrace();
       }
@@ -156,7 +156,7 @@ public class MixingStationEmergencyPredictionTempMode extends EmergencyPredictio
         try {
           myPicture = ImageIO.read(
               FilterStationEmergencyPredictionOldFilterBlockage.class
-                  .getResource("/term_middle.png"));
+                  .getResource("/term_bad.jpg"));
         } catch (IOException e) {
           e.printStackTrace();
         }
@@ -178,7 +178,7 @@ public class MixingStationEmergencyPredictionTempMode extends EmergencyPredictio
         try {
           myPicture = ImageIO.read(
               FilterStationEmergencyPredictionOldFilterBlockage.class
-                  .getResource("/term_bad.jpg"));
+                  .getResource("/term_middle.png"));
         } catch (IOException e) {
           e.printStackTrace();
         }
