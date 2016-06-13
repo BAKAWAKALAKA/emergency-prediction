@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import ru.spbstu.dis.opc.client.api.opc.access.OpcAccessApi;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.font.TextAttribute;
 import java.awt.image.BufferedImage;
@@ -146,6 +145,7 @@ public class FilterStationEmergencyPredictionFilterDestructionAfterInnerValve
   void getDataFromOPC()
   throws InterruptedException {
     while (true) {
+      DynamicDataChart.exit.setEnabled(false);
       opcAccessApi.writeValueForTag(filter_p102, Boolean.TRUE); //water filtering
 
       Thread.sleep(1000);
@@ -208,8 +208,10 @@ public class FilterStationEmergencyPredictionFilterDestructionAfterInnerValve
 
         opcAccessApi.writeValueForTag(FILT_Fault_in, Boolean.FALSE); //warning
         Thread.sleep(1000);
+        DynamicDataChart.exit.setEnabled(true);
         return;
       }
     }
+
   }
 }

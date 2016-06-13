@@ -4,31 +4,17 @@ package ru.spbstu.dis.ui.emergency;
  * Created by a.fedorov on 27.03.2016.
  */
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.font.TextAttribute;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-
-import javax.swing.*;
-
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
+import org.jfree.chart.*;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.title.LegendTitle;
-import org.jfree.data.time.Millisecond;
-import org.jfree.data.time.TimeSeries;
-import org.jfree.data.time.TimeSeriesCollection;
+import org.jfree.data.time.*;
 import org.jfree.data.xy.XYDataset;
-import org.jfree.ui.ApplicationFrame;
-import org.jfree.ui.RectangleEdge;
-import org.jfree.ui.RectangleInsets;
-import org.jfree.ui.RefineryUtilities;
+import org.jfree.ui.*;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 
 /**
  * A demonstration application showing a time series chart where you can dynamically add (random)
@@ -49,6 +35,9 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
   private JList list;
 
   final JPanel content = new JPanel(new FlowLayout());
+
+
+  public static JButton exit;
 
   /**
    * Constructs a new demonstration application.
@@ -76,6 +65,7 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
     chart.setAntiAlias(true);
     content.setSize(300, 900);
     setSize(300, 900);
+    exit = new JButton("Exit");
   }
 
   /**
@@ -158,13 +148,13 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
     p.add(scrollPane);
     content.add(p);
 
-    final JButton button = new JButton("Exit");
-    button.setBackground(new Color(223, 203, 201));
-    button.setSize(300, 80);
-    button.setActionCommand("ADD_DATA");
-    button.addActionListener(this);
+
+    exit.setBackground(new Color(223, 203, 201));
+    exit.setSize(300, 80);
+    exit.setActionCommand("ADD_DATA");
+    exit.addActionListener(this);
     final JPanel titlePanel = new JPanel(new FlowLayout());
-    titlePanel.add(button);
+    titlePanel.add(exit);
     content.add(titlePanel);
     setSize(480, 900);
     setPreferredSize(new Dimension(430,900));

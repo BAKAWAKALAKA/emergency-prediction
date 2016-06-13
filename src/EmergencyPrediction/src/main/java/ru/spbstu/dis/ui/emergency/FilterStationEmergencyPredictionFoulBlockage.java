@@ -140,6 +140,7 @@ public class FilterStationEmergencyPredictionFoulBlockage extends EmergencyPredi
   void getDataFromOPC()
   throws InterruptedException {
     while (true) {
+      DynamicDataChart.exit.setEnabled(false);
       opcAccessApi.writeValueForTag(filter_p102, Boolean.TRUE); //water filtering
 
       Thread.sleep(1000);
@@ -214,6 +215,7 @@ public class FilterStationEmergencyPredictionFoulBlockage extends EmergencyPredi
             0.1);
         opcAccessApi.writeValueForTag(FILT_Fault_in, Boolean.FALSE); //warning
         Thread.sleep(1000);
+        DynamicDataChart.exit.setEnabled(true);
         return;
       }
     }

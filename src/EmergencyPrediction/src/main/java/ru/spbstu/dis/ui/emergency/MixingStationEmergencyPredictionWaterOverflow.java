@@ -142,6 +142,7 @@ public class MixingStationEmergencyPredictionWaterOverflow extends EmergencyPred
   void getDataFromOPC()
   throws InterruptedException {
     while (true) {
+      DynamicDataChart.exit.setEnabled(false);
       if(opcAccessApi.readBoolean(MIX_2B2_sensor).value ==Boolean.FALSE) {
         opcAccessApi.writeValueForTag(FILT_1M6, Boolean.TRUE);
         opcAccessApi.writeValueForTag(filter_open_rev_pump, Boolean.TRUE);
@@ -235,6 +236,7 @@ public class MixingStationEmergencyPredictionWaterOverflow extends EmergencyPred
         opcAccessApi.writeValueForTag(MIX_2M2, Boolean.FALSE); //mixing pump p202
         opcAccessApi.writeValueForTag(MIX_Fault_in, Boolean.FALSE); //warning
         Thread.sleep(1000);
+        DynamicDataChart.exit.setEnabled(true);
         return;
       }
     }

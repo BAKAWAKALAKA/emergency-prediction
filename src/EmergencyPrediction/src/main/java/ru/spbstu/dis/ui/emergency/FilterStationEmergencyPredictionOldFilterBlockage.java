@@ -169,6 +169,7 @@ public class FilterStationEmergencyPredictionOldFilterBlockage extends Emergency
   throws InterruptedException {
     //int k=0;
     while (true) {
+      DynamicDataChart.exit.setEnabled(false);
 
       //if(k==0) {
       opcAccessApi.writeValueForTag(filter_p102, Boolean.TRUE);
@@ -221,6 +222,7 @@ public class FilterStationEmergencyPredictionOldFilterBlockage extends Emergency
         progressText.setText("100%");
 
         Thread.sleep(1000);
+        DynamicDataChart.exit.setEnabled(true);
         return;
       }
     }

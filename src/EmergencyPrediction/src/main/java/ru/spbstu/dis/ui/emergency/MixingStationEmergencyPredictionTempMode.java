@@ -142,6 +142,7 @@ public class MixingStationEmergencyPredictionTempMode extends EmergencyPredictio
   void getDataFromOPC()
   throws InterruptedException {
     while (true) {
+      DynamicDataChart.exit.setEnabled(false);
       opcAccessApi.writeValueForTag(MIX_2M3, Boolean.TRUE); //mixing valve 2m3
       opcAccessApi.writeValueForTag(MIX_2M1, Boolean.TRUE); //mixing pump p201
       opcAccessApi.writeValueForTag(MIX_set_point_man, Float.valueOf(50)); //mixing pump p201
@@ -229,6 +230,7 @@ public class MixingStationEmergencyPredictionTempMode extends EmergencyPredictio
 
         opcAccessApi.writeValueForTag(MIX_Fault_in, Boolean.FALSE); //warning
         Thread.sleep(1000);
+        DynamicDataChart.exit.setEnabled(true);
         return;
       }
     }

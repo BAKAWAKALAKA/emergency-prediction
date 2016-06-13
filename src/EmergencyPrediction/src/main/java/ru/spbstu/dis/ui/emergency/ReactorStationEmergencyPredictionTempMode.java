@@ -141,6 +141,8 @@ public class ReactorStationEmergencyPredictionTempMode extends EmergencyPredicti
   void getDataFromOPC()
   throws InterruptedException {
     while (true) {
+
+      DynamicDataChart.exit.setEnabled(false);
       opcAccessApi.writeValueForTag(REAC_3M1, Boolean.TRUE); //heater
 
       Thread.sleep(1000);
@@ -222,6 +224,7 @@ public class ReactorStationEmergencyPredictionTempMode extends EmergencyPredicti
 
         opcAccessApi.writeValueForTag(REACTOR_Fault_in,  Boolean.FALSE); //warning
         Thread.sleep(1000);
+        DynamicDataChart.exit.setEnabled(true);
         return;
       }
     }

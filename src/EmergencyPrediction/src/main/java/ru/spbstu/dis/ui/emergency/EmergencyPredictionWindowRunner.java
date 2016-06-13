@@ -30,7 +30,7 @@ public class EmergencyPredictionWindowRunner {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
-        JLabel label = new JLabel("Сщстояние системы:");
+        JLabel label = new JLabel("Состояние системы:");
         label.setHorizontalAlignment(SwingConstants.CENTER);
         c.gridwidth = 2;
         c.ipadx = 0;
@@ -155,7 +155,7 @@ public class EmergencyPredictionWindowRunner {
         DynamicDataChart situation5Chart = getDynamicDataChart(panel, c);
         waitForEmergency(button4, e -> {
             situation5Chart.setEmergencyGrowth(true);
-            MixingStationEmergencyPredictionTempMode.main(args);
+            //MixingStationEmergencyPredictionTempMode.main(args);
             Thread th = new Thread(() -> {
                 while (situation5Chart.getLastValue() < 0.3d) {
                     try {
