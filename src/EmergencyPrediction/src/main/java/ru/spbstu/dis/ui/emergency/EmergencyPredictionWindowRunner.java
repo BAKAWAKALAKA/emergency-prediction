@@ -7,19 +7,11 @@ import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.time.Millisecond;
 import ru.spbstu.dis.ConfigProvider;
 import ru.spbstu.dis.opc.client.api.OpcClientApiFactory;
-import ru.spbstu.dis.opc.client.api.opc.access.AvailableTags;
-import ru.spbstu.dis.opc.client.api.opc.access.OpcAccessApi;
-import ru.spbstu.dis.opc.client.api.opc.access.Tag;
-import ru.spbstu.dis.opc.client.api.opc.access.TagValueBoolean;
-import ru.spbstu.dis.opc.client.api.opc.access.TagValueFloat;
-
+import ru.spbstu.dis.opc.client.api.opc.access.*;
 import javax.swing.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.util.LinkedList;
-import java.util.Random;
+import java.util.*;
 
 public class EmergencyPredictionWindowRunner   {
     static LinkedList<DynamicDataChart> charts = new LinkedList<DynamicDataChart>();
@@ -58,7 +50,7 @@ public class EmergencyPredictionWindowRunner   {
         GridBagConstraints c = new GridBagConstraints();
 
         JLabel label = new JLabel("ИСУ ТП РАБОТАЕТ В ШТАТНОМ РЕЖИМЕ");
-    
+    label.setFont(new Font("Tachoma", Font.BOLD, 14));
         label.setHorizontalAlignment(SwingConstants.CENTER);
         c.gridwidth = 2;
         c.ipadx = 0;
@@ -362,7 +354,7 @@ public class EmergencyPredictionWindowRunner   {
         c.gridy = 14;
         JButton button14 = new JButton();
         button14.setText("Симуляция блокировки выпускного клапана");
-
+    button14.setEnabled(false);
         addButtonToPanel(panel, c, button14);
         c.gridx = 1;
         c.gridy = 14;
@@ -386,7 +378,7 @@ public class EmergencyPredictionWindowRunner   {
         c.gridx = 0;
         c.gridy = 15;
         JButton button15 = new JButton();
-        button15.setText("Sim");
+        button15.setText("Симуляция сбоя датчика уровня в реакторе");
 
     JLabel lab15= new JLabel();
     lab15.setText("Отказ расходомера");

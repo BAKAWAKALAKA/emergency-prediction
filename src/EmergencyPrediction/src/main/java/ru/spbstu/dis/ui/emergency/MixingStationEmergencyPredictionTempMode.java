@@ -147,7 +147,9 @@ public class MixingStationEmergencyPredictionTempMode extends EmergencyPredictio
       opcAccessApi.writeValueForTag(MIX_2M1, Boolean.TRUE); //mixing pump p201
       opcAccessApi.writeValueForTag(MIX_set_point_man, Float.valueOf(50)); //mixing pump p201
       opcAccessApi.writeValueForTag(MIX_2M2, Boolean.TRUE); //mixing pump p202
-
+      opcAccessApi.writeValueForTag(FILT_Green_in, Boolean.FALSE);
+      opcAccessApi.writeValueForTag(MIX_Green_in, Boolean.FALSE);
+      opcAccessApi.writeValueForTag(REACTOR_Green_in, Boolean.FALSE);
       Thread.sleep(1000);
       if (filter_fake_risk_value > 0.8d) {
         notifier(String.format("Вероятность НС на станциях =%s " + "->\n" +
@@ -167,8 +169,13 @@ public class MixingStationEmergencyPredictionTempMode extends EmergencyPredictio
             .value); //Warning
       }
       else {
-        opcAccessApi.writeValueForTag(MIX_Fault_in, Boolean.FALSE); //warning
+        opcAccessApi.writeValueForTag(FILT_Fault_in, Boolean.FALSE);
+        opcAccessApi.writeValueForTag(MIX_Fault_in, Boolean.FALSE);
+        opcAccessApi.writeValueForTag(REACTOR_Fault_in, Boolean.FALSE);
+
+        opcAccessApi.writeValueForTag(FILT_Green_in, Boolean.TRUE);
         opcAccessApi.writeValueForTag(MIX_Green_in, Boolean.TRUE);
+        opcAccessApi.writeValueForTag(REACTOR_Green_in, Boolean.TRUE);
       }
 
 
@@ -231,6 +238,13 @@ public class MixingStationEmergencyPredictionTempMode extends EmergencyPredictio
         opcAccessApi.writeValueForTag(MIX_Fault_in, Boolean.FALSE); //warning
         Thread.sleep(1000);
         DynamicDataChart.exit.setEnabled(true);
+        opcAccessApi.writeValueForTag(FILT_Green_in, Boolean.TRUE);
+        opcAccessApi.writeValueForTag(MIX_Green_in, Boolean.TRUE);
+        opcAccessApi.writeValueForTag(REACTOR_Green_in, Boolean.TRUE);
+
+        opcAccessApi.writeValueForTag(FILT_Fault_in, Boolean.FALSE);
+        opcAccessApi.writeValueForTag(MIX_Fault_in, Boolean.FALSE);
+        opcAccessApi.writeValueForTag(REACTOR_Fault_in, Boolean.FALSE);
         return;
       }
     }

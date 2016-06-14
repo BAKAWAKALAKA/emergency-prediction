@@ -237,6 +237,9 @@ public class MixingStationEmergencyPredictionWaterOverflow extends EmergencyPred
         opcAccessApi.writeValueForTag(MIX_Fault_in, Boolean.FALSE); //warning
         Thread.sleep(1000);
         DynamicDataChart.exit.setEnabled(true);
+        opcAccessApi.writeValueForTag(FILT_Green_in, Boolean.TRUE);
+        opcAccessApi.writeValueForTag(MIX_Green_in, Boolean.TRUE);
+        opcAccessApi.writeValueForTag(REACTOR_Green_in, Boolean.TRUE);
         return;
       }
     }

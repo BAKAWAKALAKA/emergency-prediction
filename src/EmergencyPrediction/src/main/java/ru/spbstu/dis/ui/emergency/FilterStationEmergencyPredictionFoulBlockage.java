@@ -142,7 +142,7 @@ public class FilterStationEmergencyPredictionFoulBlockage extends EmergencyPredi
     while (true) {
       DynamicDataChart.exit.setEnabled(false);
       opcAccessApi.writeValueForTag(filter_p102, Boolean.TRUE); //water filtering
-
+      opcAccessApi.writeValueForTag(FILT_Green_in, Boolean.FALSE);
       Thread.sleep(1000);
       if (filter_fake_risk_value > 0.8d) {
         notifier(String.format("Вероятность НС на ст.фильтр. =%s " + "->\n" +
@@ -216,6 +216,9 @@ public class FilterStationEmergencyPredictionFoulBlockage extends EmergencyPredi
         opcAccessApi.writeValueForTag(FILT_Fault_in, Boolean.FALSE); //warning
         Thread.sleep(1000);
         DynamicDataChart.exit.setEnabled(true);
+        opcAccessApi.writeValueForTag(FILT_Green_in, Boolean.TRUE);
+        opcAccessApi.writeValueForTag(MIX_Green_in, Boolean.TRUE);
+        opcAccessApi.writeValueForTag(REACTOR_Green_in, Boolean.TRUE);
         return;
       }
     }
