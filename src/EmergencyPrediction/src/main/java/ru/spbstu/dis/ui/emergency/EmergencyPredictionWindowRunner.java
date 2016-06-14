@@ -1,19 +1,46 @@
 package ru.spbstu.dis.ui.emergency;
 
+import com.google.common.net.HostAndPort;
+import com.typesafe.config.Config;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.time.Millisecond;
+import ru.spbstu.dis.ConfigProvider;
+import ru.spbstu.dis.opc.client.api.OpcClientApiFactory;
+import ru.spbstu.dis.opc.client.api.opc.access.AvailableTags;
+import ru.spbstu.dis.opc.client.api.opc.access.OpcAccessApi;
+import ru.spbstu.dis.opc.client.api.opc.access.Tag;
+import ru.spbstu.dis.opc.client.api.opc.access.TagValueBoolean;
+import ru.spbstu.dis.opc.client.api.opc.access.TagValueFloat;
 
 import javax.swing.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
 import java.util.Random;
 
-public class EmergencyPredictionWindowRunner {
+public class EmergencyPredictionWindowRunner   {
     static LinkedList<DynamicDataChart> charts = new LinkedList<DynamicDataChart>();
+  //final OpcAccessApi opcAccessApi;
+  //public EmergencyPredictionWindowRunner(final OpcAccessApi opcAccessApi) {
+    //this.opcAccessApi = opcAccessApi;
+  //}
 
-    public static void main(String[] args) {
+  static OpcAccessApi createOpcApi() {
+    final Config config = new ConfigProvider().get().resolve();
+    final Config opcAccessApiConf = config.getConfig("http.opc.client");
+    final String host = opcAccessApiConf.getString("host");
+    final int port = opcAccessApiConf.getInt("port");
+    final HostAndPort hostAndPort = HostAndPort.fromParts(host, port);
+   // LOGGER.warn("Opc access api uses {} to connect", hostAndPort);
+    return OpcClientApiFactory.createOpcAccessApi(hostAndPort);
+  }
+  static String FILT_Fault_in = Tag.TAG_TO_ID_MAPPING.get(Tag.FILT_Fault_in);
+
+
+  public static void main(String[] args) {
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Windows".equals(info.getName())) {
@@ -30,7 +57,8 @@ public class EmergencyPredictionWindowRunner {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
-        JLabel label = new JLabel("Состояние системы:");
+        JLabel label = new JLabel("ИСУ ТП РАБОТАЕТ В ШТАТНОМ РЕЖИМЕ");
+    
         label.setHorizontalAlignment(SwingConstants.CENTER);
         c.gridwidth = 2;
         c.ipadx = 0;
@@ -75,6 +103,7 @@ public class EmergencyPredictionWindowRunner {
         JButton button1 = new JButton();
         button1.setText("Симуляция эксплуатационного засора");
         addButtonToPanel(panel, c, button1);
+
         c.gridx = 1;
         c.gridy = 2;
         DynamicDataChart situation2Chart = getDynamicDataChart(panel, c);
@@ -357,10 +386,14 @@ public class EmergencyPredictionWindowRunner {
         c.gridx = 0;
         c.gridy = 15;
         JButton button15 = new JButton();
-        button15.setText("Симуляция отказа расходомера");
+        button15.setText("Sim");
+
+    JLabel lab15= new JLabel();
+    lab15.setText("Отказ расходомера");
 
         button15.setEnabled(false);
         addButtonToPanel(panel, c, button15);
+
         c.gridx = 1;
         c.gridy = 15;
         DynamicDataChart situation15Chart = getDynamicDataChart(panel, c);
@@ -482,6 +515,18 @@ public class EmergencyPredictionWindowRunner {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
 
+  /*  final OpcAccessApi opcAccessApi;
+    createOpcApi();
+    final Thread th1 = new Thread(() -> {
+      while (true) {
+        if(opcAccessApi.readBoolean(FILT_Fault_in).value==Boolean.TRUE) {
+          System.out.println("FILT_Fault_in=true");
+        }
+
+      }
+    });
+    th1.start();
+*/
     }
 
     private static void waitForEmergency(JButton button, ActionListener actionListener) {
