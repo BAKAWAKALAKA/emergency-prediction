@@ -165,8 +165,12 @@ public class MixingStationEmergencyPredictionTempMode extends EmergencyPredictio
           e.printStackTrace();
         }
         picLabel.setIcon(new ImageIcon(myPicture));
-        opcAccessApi.writeValueForTag(MIX_Fault_in, !opcAccessApi.readBoolean(FILT_Fault_in)
+        opcAccessApi.writeValueForTag(MIX_Fault_in, !opcAccessApi.readBoolean(MIX_Fault_in)
             .value); //Warning
+        opcAccessApi.writeValueForTag(REACTOR_Fault_in, !opcAccessApi.readBoolean(REACTOR_Fault_in)
+            .value);
+        opcAccessApi.writeValueForTag(FILT_Fault_in, !opcAccessApi.readBoolean(FILT_Fault_in)
+            .value);
       }
       else {
         opcAccessApi.writeValueForTag(FILT_Fault_in, Boolean.FALSE);

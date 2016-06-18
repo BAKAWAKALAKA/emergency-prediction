@@ -163,7 +163,7 @@ public class MixingStationEmergencyPredictionWaterOverflow extends EmergencyPred
         }
         picLabel.setIcon(new ImageIcon(myPicture));
 
-        opcAccessApi.writeValueForTag(MIX_Fault_in, !opcAccessApi.readBoolean(FILT_Fault_in)
+        opcAccessApi.writeValueForTag(MIX_Fault_in, !opcAccessApi.readBoolean(MIX_Fault_in)
             .value); //Warning
       }
       else {

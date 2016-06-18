@@ -160,7 +160,7 @@ public class ReactorStationEmergencyPredictionTempMode extends EmergencyPredicti
           e.printStackTrace();
         }
 
-      opcAccessApi.writeValueForTag(REACTOR_Fault_in, !opcAccessApi.readBoolean(FILT_Fault_in)
+      opcAccessApi.writeValueForTag(REACTOR_Fault_in, !opcAccessApi.readBoolean(REACTOR_Fault_in)
           .value); //Warning
     }
     else {

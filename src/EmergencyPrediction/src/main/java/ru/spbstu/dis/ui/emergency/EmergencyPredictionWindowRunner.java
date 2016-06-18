@@ -354,7 +354,7 @@ public class EmergencyPredictionWindowRunner   {
         c.gridy = 14;
         JButton button14 = new JButton();
         button14.setText("Симуляция блокировки выпускного клапана");
-    button14.setEnabled(false);
+button14.setEnabled(false);
         addButtonToPanel(panel, c, button14);
         c.gridx = 1;
         c.gridy = 14;
