@@ -49,19 +49,19 @@ public class MixingStationEmergencyPredictionWaterOverflow extends EmergencyPred
       }
     });
     th.start();
-    JLabel esType = new JLabel("<html><div style='text-align: center;'>Переполнение<br>" +
-        "дозировочного бака" +
-        " на ст.Mixing</html>");
+    JLabel esType = new JLabel(Messages.getString("MixingStationEmergencyPredictionWaterOverflow.0") + //$NON-NLS-1$
+        Messages.getString("MixingStationEmergencyPredictionWaterOverflow.1") + //$NON-NLS-1$
+        Messages.getString("MixingStationEmergencyPredictionWaterOverflow.2")); //$NON-NLS-1$
     Map<TextAttribute, Integer> fontAttributes = new HashMap<>();
     fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-    Font boldUnderline = new Font("Tachoma", Font.BOLD, 22).deriveFont(fontAttributes);
+    Font boldUnderline = new Font("Tachoma", Font.BOLD, 22).deriveFont(fontAttributes); //$NON-NLS-1$
     esType.setFont(boldUnderline);
     final JPanel titlePanel = new JPanel(new FlowLayout());
     titlePanel.add(esType, BorderLayout.CENTER);
     closenessChartFrame.add(titlePanel, 0);
 
-    esType = new JLabel("Вероятность переполнения:");
-    boldUnderline = new Font("Tachoma", Font.PLAIN, 19).deriveFont(fontAttributes);
+    esType = new JLabel(Messages.getString("MixingStationEmergencyPredictionWaterOverflow.4")); //$NON-NLS-1$
+    boldUnderline = new Font("Tachoma", Font.PLAIN, 19).deriveFont(fontAttributes); //$NON-NLS-1$
     esType.setFont(boldUnderline);
     final JPanel chartPanel = new JPanel(new FlowLayout());
     chartPanel.add(esType, BorderLayout.CENTER);
@@ -80,15 +80,15 @@ public class MixingStationEmergencyPredictionWaterOverflow extends EmergencyPred
     SwingUtilities.invokeLater(() -> {
 
       final JPanel actionRecoms = new JPanel(new FlowLayout());
-      JLabel actionRecommLabel = new JLabel("Рекомендуемые действия");
-      Font boldUnderlineAction = new Font("Tachoma", Font.BOLD, 15).deriveFont(fontAttributes);
+      JLabel actionRecommLabel = new JLabel(Messages.getString("MixingStationEmergencyPredictionWaterOverflow.6")); //$NON-NLS-1$
+      Font boldUnderlineAction = new Font("Tachoma", Font.BOLD, 15).deriveFont(fontAttributes); //$NON-NLS-1$
       actionRecommLabel.setFont(boldUnderlineAction);
       actionRecoms.add(actionRecommLabel);
       closenessChartFrame.add(actionRecoms);
 
-      final String[] actions = {"1. Отключить фильтрацию", "2. Отключить перекачку в бак",
-          "3. Открыть заслонку к главному баку", "4. Увеличить скорость перекачки",
-          "5. Запустить насос к главному баку"};
+      final String[] actions = {Messages.getString("MixingStationEmergencyPredictionWaterOverflow.8"), Messages.getString("MixingStationEmergencyPredictionWaterOverflow.9"), //$NON-NLS-1$ //$NON-NLS-2$
+          Messages.getString("MixingStationEmergencyPredictionWaterOverflow.10"), Messages.getString("MixingStationEmergencyPredictionWaterOverflow.11"), //$NON-NLS-1$ //$NON-NLS-2$
+          Messages.getString("MixingStationEmergencyPredictionWaterOverflow.12")}; //$NON-NLS-1$
       JList recomActions = new JList(actions);
 
       final JPanel actionsPanel = new JPanel(new FlowLayout());
@@ -97,18 +97,18 @@ public class MixingStationEmergencyPredictionWaterOverflow extends EmergencyPred
       closenessChartFrame.add(actionsPanel);
 
       final JPanel actionOutput = new JPanel(new FlowLayout());
-      JLabel esTypeAction = new JLabel("<html><div style='text-align: center;'>ОТРАБОТКА " +
-                                           "НС:<br>Освобождение дозировочного бака</html>",
+      JLabel esTypeAction = new JLabel(Messages.getString("MixingStationEmergencyPredictionWaterOverflow.13") + //$NON-NLS-1$
+                                           Messages.getString("MixingStationEmergencyPredictionWaterOverflow.14"), //$NON-NLS-1$
                                        SwingConstants.CENTER);
-      Font boldUnderlineBig = new Font("Tachoma", Font.BOLD, 22).deriveFont(fontAttributes);
+      Font boldUnderlineBig = new Font("Tachoma", Font.BOLD, 22).deriveFont(fontAttributes); //$NON-NLS-1$
       esTypeAction.setFont(boldUnderlineBig);
       actionOutput.add(esTypeAction);
       actionOutput.setBorder(BorderFactory.createMatteBorder(4, 0, 0, 0, Color.black));
       closenessChartFrame.add(actionOutput);
 
       final JPanel statePanel = new JPanel(new FlowLayout());
-      JLabel stateLbl = new JLabel("Текущее состояние бака:");
-      stateLbl.setFont(new Font("Tachoma", Font.PLAIN, 10));
+      JLabel stateLbl = new JLabel(Messages.getString("MixingStationEmergencyPredictionWaterOverflow.16")); //$NON-NLS-1$
+      stateLbl.setFont(new Font("Tachoma", Font.PLAIN, 10)); //$NON-NLS-1$
       statePanel.add(stateLbl);
       closenessChartFrame.add(statePanel);
 
@@ -116,15 +116,15 @@ public class MixingStationEmergencyPredictionWaterOverflow extends EmergencyPred
       BufferedImage myPicture = null;
       try {
         myPicture = ImageIO.read(
-            MixingStationEmergencyPredictionWaterOverflow.class.getResource("/water_middle.png"));
+            MixingStationEmergencyPredictionWaterOverflow.class.getResource("/water_middle.png")); //$NON-NLS-1$
       } catch (IOException e) {
         e.printStackTrace();
       }
       picLabel = new JLabel(new ImageIcon(myPicture));
       finishedActionsPnl.add(picLabel);
       picLabel.setLayout(new FlowLayout(FlowLayout.LEFT, 2, 2));
-      picLabel.add(new JLabel("         "));
-      picLabel.add(new JLabel("         "));
+      picLabel.add(new JLabel("         ")); //$NON-NLS-1$
+      picLabel.add(new JLabel("         ")); //$NON-NLS-1$
       picLabel.add(progressText);
       actionsFinishedList = new JList(listModel);
       actionsFinishedList.setSize(60, 80);
@@ -150,14 +150,14 @@ public class MixingStationEmergencyPredictionWaterOverflow extends EmergencyPred
       Thread.sleep(1000);
 
       if (filter_fake_risk_value > 0.8d) {
-        notifier(String.format("Вероятность НС на смешивании =%s " + "->\n" +
-                    "Рекомендуемое действие=%s",
-                "СРЕДНЯЯ", "Проверка станций", 0.1),
+        notifier(String.format(Messages.getString("MixingStationEmergencyPredictionWaterOverflow.21") + "->\n" + //$NON-NLS-1$ //$NON-NLS-2$
+                    Messages.getString("MixingStationEmergencyPredictionWaterOverflow.23"), //$NON-NLS-1$
+                Messages.getString("MixingStationEmergencyPredictionWaterOverflow.24"), Messages.getString("MixingStationEmergencyPredictionWaterOverflow.25"), 0.1), //$NON-NLS-1$ //$NON-NLS-2$
             0.3);
         BufferedImage myPicture = null;
         try {
           myPicture = ImageIO.read(MixingStationEmergencyPredictionWaterOverflow
-              .class.getResource("/water_bad.png"));
+              .class.getResource("/water_bad.png")); //$NON-NLS-1$
         } catch (IOException e) {
           e.printStackTrace();
         }
@@ -183,42 +183,42 @@ public class MixingStationEmergencyPredictionWaterOverflow extends EmergencyPred
         try {
           myPicture = ImageIO.read(
               FilterStationEmergencyPredictionOldFilterBlockage.class
-                  .getResource("/water_middle.png"));
+                  .getResource("/water_middle.png")); //$NON-NLS-1$
         } catch (IOException e) {
           e.printStackTrace();
         }
         picLabel.setIcon(new ImageIcon(myPicture));
-        progressText.setText("0%");
-        listModel.addElement("<html>1.Отключить фильтрацию</html>");
-        notifier(String.format("Вероятность НС на смешивании =%s " + "->\n" +
-                                   "Рекомендуемое действие=%s",
-                               "ВЫСОКАЯ", "Сброс выключение фильтрации, " +
-                         "отключение насосов", 0.1),
+        progressText.setText("0%"); //$NON-NLS-1$
+        listModel.addElement(Messages.getString("MixingStationEmergencyPredictionWaterOverflow.29")); //$NON-NLS-1$
+        notifier(String.format(Messages.getString("MixingStationEmergencyPredictionWaterOverflow.30") + "->\n" + //$NON-NLS-1$ //$NON-NLS-2$
+                                   Messages.getString("MixingStationEmergencyPredictionWaterOverflow.32"), //$NON-NLS-1$
+                               Messages.getString("MixingStationEmergencyPredictionWaterOverflow.33"), Messages.getString("MixingStationEmergencyPredictionWaterOverflow.34") + //$NON-NLS-1$ //$NON-NLS-2$
+                         Messages.getString("MixingStationEmergencyPredictionWaterOverflow.35"), 0.1), //$NON-NLS-1$
                  filter_fake_risk_value);
         picLabel.updateUI();
         closenessChartFrame.revalidate();
         closenessChartFrame.repaint();
-        progressText.setText("20%");
+        progressText.setText("20%"); //$NON-NLS-1$
         opcAccessApi.writeValueForTag(FILT_1M6, Boolean.FALSE);
         opcAccessApi.writeValueForTag(filter_open_rev_pump, Boolean.FALSE);
-        listModel.addElement("<html>2.Отключить перекачку в бак</html>");
-        progressText.setText("50%");
+        listModel.addElement(Messages.getString("MixingStationEmergencyPredictionWaterOverflow.37")); //$NON-NLS-1$
+        progressText.setText("50%"); //$NON-NLS-1$
         opcAccessApi.writeValueForTag(MIX_2M3, Boolean.TRUE);
-        listModel.addElement("<html>3.Открыть заслонку<br>к главному баку</html>");
+        listModel.addElement(Messages.getString("MixingStationEmergencyPredictionWaterOverflow.39")); //$NON-NLS-1$
 
         opcAccessApi.writeValueForTag(MIX_set_point_man, Float.valueOf(50)); //mixing pump p201
         // speed
 
-        listModel.addElement("<html>4.Увеличить скорость<br>перекачки</html>");
+        listModel.addElement(Messages.getString("MixingStationEmergencyPredictionWaterOverflow.40")); //$NON-NLS-1$
         opcAccessApi.writeValueForTag(MIX_2M1, Boolean.TRUE);
-        progressText.setText("70%");
-        listModel.addElement("<html>5.Запустить насос<br>к главному баку</html>");
+        progressText.setText("70%"); //$NON-NLS-1$
+        listModel.addElement(Messages.getString("MixingStationEmergencyPredictionWaterOverflow.42")); //$NON-NLS-1$
 
         Thread.sleep(10000);
-        progressText.setText("100%");
+        progressText.setText("100%"); //$NON-NLS-1$
         try {
           myPicture = ImageIO.read(MixingStationEmergencyPredictionWaterOverflow
-              .class.getResource("/water_good.png"));
+              .class.getResource("/water_good.png")); //$NON-NLS-1$
         } catch (IOException e) {
           e.printStackTrace();
         }
@@ -227,9 +227,9 @@ public class MixingStationEmergencyPredictionWaterOverflow extends EmergencyPred
 
         opcAccessApi.writeValueForTag(MIX_2M3, Boolean.FALSE);//2M3
         opcAccessApi.writeValueForTag(MIX_2M1, Boolean.FALSE);//2M1
-        notifier(String.format("Вероятность НС на станциях =%s " + "->\n" +
-                    "Рекомендуемое действие=%s",
-                "НИЗКАЯ", "Штатный режим", 0.1),
+        notifier(String.format(Messages.getString("MixingStationEmergencyPredictionWaterOverflow.45") + "->\n" + //$NON-NLS-1$ //$NON-NLS-2$
+                    Messages.getString("MixingStationEmergencyPredictionWaterOverflow.47"), //$NON-NLS-1$
+                Messages.getString("MixingStationEmergencyPredictionWaterOverflow.48"), Messages.getString("MixingStationEmergencyPredictionWaterOverflow.49"), 0.1), //$NON-NLS-1$ //$NON-NLS-2$
             0.1);
         opcAccessApi.writeValueForTag(MIX_2M2, Boolean.TRUE); //mixing pump p202
         Thread.sleep(5000);

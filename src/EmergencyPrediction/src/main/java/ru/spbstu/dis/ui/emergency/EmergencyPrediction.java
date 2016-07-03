@@ -37,27 +37,41 @@ public class EmergencyPrediction {
 
   static String filter_p102 = Tag.TAG_TO_ID_MAPPING.get(Tag
       .FILT_pump_102_on);
+
   static String MIX_2M3 = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_valve_V201_ToMainTank_on);
+
   static String MIX_2M1 = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_ControlPanel_PumpToMainTank_P201_on);
+
   static String MIX_set_point_man = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_ControlPanel_FLOW_SPEED);
+
   static String MIX_2M2 = Tag.TAG_TO_ID_MAPPING.get(Tag
-                                                        .MIX_ControlPanel_DownstreamStation_pump_P202_on);
+      .MIX_ControlPanel_DownstreamStation_pump_P202_on);
+
   static String REAC_3M2 = Tag.TAG_TO_ID_MAPPING.get(Tag
-                                                        .REACTOR_ControlPanel_downstream_station_pump_P302_on);
+      .REACTOR_ControlPanel_downstream_station_pump_P302_on);
+
   static String FILT_1M6 = Tag.TAG_TO_ID_MAPPING.get(Tag
-                                                         .FILT_ControlPanel_downstream_valve_V103_on);
+      .FILT_ControlPanel_downstream_valve_V103_on);
+
   static String MIX_2B2_sensor = Tag.TAG_TO_ID_MAPPING.get(Tag
-                                                               .MIX_tank_B201_water_top_level_sensor);
+      .MIX_tank_B201_water_top_level_sensor);
+
   static String REAC_3M1 = Tag.TAG_TO_ID_MAPPING.get(Tag
-                                                               .REACTOR_ControlPanel_mixing_pump_P201_on);
+      .REACTOR_ControlPanel_mixing_pump_P201_on);
+
   static String REAC_3M4 = Tag.TAG_TO_ID_MAPPING.get(Tag
-                                                         .REACTOR_ControlPanel_Mixing_on);
+      .REACTOR_ControlPanel_Mixing_on);
 
   static String FILT_Green_in = Tag.TAG_TO_ID_MAPPING.get(Tag.FILT_Green_in);
+
   static String FILT_Fault_in = Tag.TAG_TO_ID_MAPPING.get(Tag.FILT_Fault_in);
+
   static String MIX_Green_in = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_Green_in);
+
   static String MIX_Fault_in = Tag.TAG_TO_ID_MAPPING.get(Tag.MIX_Fault_in);
+
   static String REACTOR_Green_in = Tag.TAG_TO_ID_MAPPING.get(Tag.REACTOR_Green_in);
+
   static String REACTOR_Fault_in = Tag.TAG_TO_ID_MAPPING.get(Tag.REACTOR_Fault_in);
 
   double filter_fake_risk_value = 0d;
@@ -73,7 +87,7 @@ public class EmergencyPrediction {
   DefaultListModel listModel = new DefaultListModel();
 
   DynamicDataChart closenessChartFrame = new DynamicDataChart(
-      "Вероятность возникновения нештатной ситуации");
+      Messages.getString("EmergencyPrediction.0")); //$NON-NLS-1$
 
   public EmergencyPrediction(final OpcAccessApi opcAccessApi) {
     this.opcAccessApi = opcAccessApi;
@@ -81,18 +95,18 @@ public class EmergencyPrediction {
 
   static OpcAccessApi createOpcApi() {
     final Config config = new ConfigProvider().get().resolve();
-    final Config opcAccessApiConf = config.getConfig("http.opc.client");
-    final String host = opcAccessApiConf.getString("host");
-    final int port = opcAccessApiConf.getInt("port");
+    final Config opcAccessApiConf = config.getConfig("http.opc.client"); //$NON-NLS-1$
+    final String host = opcAccessApiConf.getString("host"); //$NON-NLS-1$
+    final int port = opcAccessApiConf.getInt("port"); //$NON-NLS-1$
     final HostAndPort hostAndPort = HostAndPort.fromParts(host, port);
-    LOGGER.warn("Opc access api uses {} to connect", hostAndPort);
+    LOGGER.warn("Opc access api uses {} to connect", hostAndPort); //$NON-NLS-1$
     return OpcClientApiFactory.createOpcAccessApi(hostAndPort);
   }
 
   static void setLookAndFeelType() {
     try {
       for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-        if ("Windows".equals(info.getName())) {
+        if ("Windows".equals(info.getName())) { //$NON-NLS-1$
           UIManager.setLookAndFeel(info.getClassName());
           break;
         }
@@ -103,7 +117,7 @@ public class EmergencyPrediction {
   }
 
   void initMeterChart() {
-    final MeterChart demo = new MeterChart("");
+    final MeterChart demo = new MeterChart(""); //$NON-NLS-1$
 
     Thread th = new Thread(() -> {
       while (true) {
@@ -132,27 +146,35 @@ public class EmergencyPrediction {
       try {
         getDataFromOPC();
       } catch (InterruptedException e) {
-        LOGGER.error("Error during data retrieving", e);
+        LOGGER.error("Error during data retrieving", e); //$NON-NLS-1$
       }
     });
     th.start();
+  }
+
+  void getDataFromOPC()
+  throws InterruptedException {
+
   }
 
   void notifier(String term, double dangerLevel) {
 
     if (dangerLevel > 0.5d) {
       ImageIcon icon = new ImageIcon(
-          FilterStationEmergencyPredictionFoulBlockage.class.getResource("/alarm.png"));
+          FilterStationEmergencyPredictionFoulBlockage.class
+              .getResource("/alarm.png")); //$NON-NLS-1$
       showErrorNotif(term, new Color(249, 78, 30), icon);
     }
     if (dangerLevel > 0.0d && dangerLevel <= 0.3d) {
       ImageIcon icon = new ImageIcon(
-          FilterStationEmergencyPredictionFoulBlockage.class.getResource("/info.png"));
+          FilterStationEmergencyPredictionFoulBlockage.class
+              .getResource("/info.png")); //$NON-NLS-1$
       showErrorNotif(term, new Color(127, 176, 72), icon);
     }
     if (dangerLevel > 0.3d && dangerLevel <= 0.5d) {
       ImageIcon icon = new ImageIcon(
-          FilterStationEmergencyPredictionFoulBlockage.class.getResource("/warning.png"));
+          FilterStationEmergencyPredictionFoulBlockage.class
+              .getResource("/warning.png")); //$NON-NLS-1$
       showErrorNotif(term, new Color(249, 236, 100), icon);
     }
   }
@@ -180,10 +202,5 @@ public class EmergencyPrediction {
 
   public void setClosenessChartFrame(DynamicDataChart closenessChartFrame) {
     this.closenessChartFrame = closenessChartFrame;
-  }
-
-  void getDataFromOPC()
-  throws InterruptedException {
-
   }
 }

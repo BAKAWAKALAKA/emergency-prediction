@@ -36,7 +36,6 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
 
   final JPanel content = new JPanel(new FlowLayout());
 
-
   public static JButton exit;
 
   /**
@@ -52,7 +51,7 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
 
     this.setSeries(new TimeSeries(title, Millisecond.class));
     final TimeSeriesCollection dataset = new TimeSeriesCollection(this.getSeries());
-    final JFreeChart chart = createChart(dataset, "");
+    final JFreeChart chart = createChart(dataset, ""); //$NON-NLS-1$
     chart.setNotify(true);
     chart.setTextAntiAlias(true);
     chart.setBorderVisible(false);
@@ -65,7 +64,7 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
     chart.setAntiAlias(true);
     content.setSize(300, 900);
     setSize(300, 900);
-    exit = new JButton("Exit");
+    exit = new JButton("Exit"); //$NON-NLS-1$
   }
 
   /**
@@ -76,7 +75,7 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
   private JFreeChart createChart(final XYDataset dataset, String valueTitle) {
     final JFreeChart result = ChartFactory.createTimeSeriesChart(
         valueTitle,
-        "Время",
+        Messages.getString("DynamicDataChart.2"), //$NON-NLS-1$
         valueTitle,
         dataset,
         true,
@@ -91,7 +90,7 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
     axis = plot.getRangeAxis();
     axis.setAutoRange(true);
     LegendTitle legend = new LegendTitle(this.plot);
-//    legend.setMargin(new RectangleInsets(1.0, 1.0, 1.0, 1.0));
+    //    legend.setMargin(new RectangleInsets(1.0, 1.0, 1.0, 1.0));
     legend.setBorder(new BlockBorder());
     legend.setBackgroundPaint(Color.white);
     legend.setPosition(RectangleEdge.LEFT);
@@ -138,8 +137,8 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
 
     list.setListData(data);
     JPanel p = new JPanel();
-    p.setLayout(new BoxLayout(p,BoxLayout.Y_AXIS));
-    p.add(new JLabel("Сообщения о близости к НС"));
+    p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+    p.add(new JLabel(Messages.getString("DynamicDataChart.3"))); //$NON-NLS-1$
     JScrollPane scrollPane = new JScrollPane();
     scrollPane.setSize(50, 50);
     list.setFixedCellHeight(20);
@@ -148,17 +147,16 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
     p.add(scrollPane);
     content.add(p);
 
-
     exit.setBackground(new Color(223, 203, 201));
     exit.setSize(300, 80);
-    exit.setActionCommand("ADD_DATA");
+    exit.setActionCommand("ADD_DATA"); //$NON-NLS-1$
     exit.addActionListener(this);
     final JPanel titlePanel = new JPanel(new FlowLayout());
     titlePanel.add(exit);
     content.add(titlePanel);
     setSize(480, 900);
-    setPreferredSize(new Dimension(430,900));
-    setLocation(1030,0);
+    setPreferredSize(new Dimension(430, 900));
+    setLocation(1030, 0);
     setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
   }
 
@@ -167,7 +165,7 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
    * @param e the action event.
    */
   public void actionPerformed(final ActionEvent e) {
-    if (e.getActionCommand().equals("ADD_DATA")) {
+    if (e.getActionCommand().equals("ADD_DATA")) { //$NON-NLS-1$
       this.hide();
     }
   }
@@ -178,14 +176,14 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
    */
   public static void main(final String[] args) {
 
-    final DynamicDataChart demo = new DynamicDataChart("Dynamic Data Demo");
+    final DynamicDataChart demo = new DynamicDataChart("Dynamic Data Demo"); //$NON-NLS-1$
 
     Thread th = new Thread(() -> {
       while (true) {
         final double factor = 0.90 + 0.2 * Math.random();
         demo.setLastValue(demo.getLastValue() * factor);
         final Millisecond now = new Millisecond();
-        System.out.println("Now = " + now.toString());
+        System.out.println("Now = " + now.toString()); //$NON-NLS-1$
         demo.getSeries().add(new Millisecond(), demo.getLastValue());
         try {
           Thread.sleep(1000);
@@ -225,14 +223,14 @@ public class DynamicDataChart extends ApplicationFrame implements ActionListener
 
       if (value != null) {
         if (value.toString().toLowerCase()
-            .contains("низкая")) {
+            .contains(Messages.getString("DynamicDataChart.8"))) { //$NON-NLS-1$
           c.setBackground(new Color(144, 198, 37));
         }
         if (value.toString().toLowerCase()
-            .contains("средняя")) {
+            .contains(Messages.getString("DynamicDataChart.9"))) { //$NON-NLS-1$
           c.setBackground(new Color(244, 246, 29));
         } if (value.toString().toLowerCase()
-            .contains("высокая")) {
+            .contains(Messages.getString("DynamicDataChart.10"))) { //$NON-NLS-1$
           c.setBackground(new Color(246, 100, 8));
         }
       }

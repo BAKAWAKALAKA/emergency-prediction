@@ -52,17 +52,22 @@ public class FilterStationEmergencyPredictionFilterDestructionAfterOuterValve
     });
     th.start();
 
-    JLabel esType = new JLabel("<html><div style='text-align: center;'>Блокировка клапана<br>" + "(выпускного)</html>");
+    JLabel esType = new JLabel(
+        Messages.getString("FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.0")
+            + Messages.getString(
+            "FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.1")); //$NON-NLS-1$ //$NON-NLS-2$
     Map<TextAttribute, Integer> fontAttributes = new HashMap<>();
     fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-    Font boldUnderline = new Font("Tachoma", Font.BOLD, 22).deriveFont(fontAttributes);
+    Font boldUnderline = new Font("Tachoma", Font.BOLD, 22)
+        .deriveFont(fontAttributes); //$NON-NLS-1$
     esType.setFont(boldUnderline);
     final JPanel titlePanel = new JPanel(new FlowLayout());
     titlePanel.add(esType, BorderLayout.CENTER);
     closenessChartFrame.add(titlePanel, 0);
 
-    esType = new JLabel("Вероятность блокировки клапана:");
-    boldUnderline = new Font("Tachoma", Font.PLAIN, 19).deriveFont(fontAttributes);
+    esType = new JLabel(Messages.getString(
+        "FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.3")); //$NON-NLS-1$
+    boldUnderline = new Font("Tachoma", Font.PLAIN, 19).deriveFont(fontAttributes); //$NON-NLS-1$
     esType.setFont(boldUnderline);
     final JPanel chartPanel = new JPanel(new FlowLayout());
     chartPanel.add(esType, BorderLayout.CENTER);
@@ -78,16 +83,26 @@ public class FilterStationEmergencyPredictionFilterDestructionAfterOuterValve
     SwingUtilities.invokeLater(() -> {
 
       final JPanel actionRecoms = new JPanel(new FlowLayout());
-      JLabel actionRecommLabel = new JLabel("Рекомендуемые действия");
-      Font boldUnderlineAction = new Font("Tachoma", Font.BOLD, 15).deriveFont(fontAttributes);
+      JLabel actionRecommLabel = new JLabel(Messages.getString(
+          "FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.5")); //$NON-NLS-1$
+      Font boldUnderlineAction = new Font("Tachoma", Font.BOLD, 15)
+          .deriveFont(fontAttributes); //$NON-NLS-1$
       actionRecommLabel.setFont(boldUnderlineAction);
       actionRecoms.add(actionRecommLabel);
       closenessChartFrame.add(actionRecoms);
 
-      final String[] actions = {"1. Отключить подачу жидкости", "2. Включить продув в обратном " +
-          "направлении",
-          "3. Включить резервный насос", "4. Задать прямое направление течения жидкости",
-          "5. Включить продув в прямом направлении"};
+      final String[] actions = {
+          Messages.getString("FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.7"),
+          Messages.getString("FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.8") +
+              //$NON-NLS-1$ //$NON-NLS-2$
+              Messages
+                  .getString("FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.9"),
+          //$NON-NLS-1$
+          Messages.getString("FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.10"),
+          Messages.getString("FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.11"),
+          //$NON-NLS-1$ //$NON-NLS-2$
+          Messages.getString(
+              "FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.12")}; //$NON-NLS-1$
       JList recomActions = new JList(actions);
 
       final JPanel actionsPanel = new JPanel(new FlowLayout());
@@ -96,17 +111,21 @@ public class FilterStationEmergencyPredictionFilterDestructionAfterOuterValve
       closenessChartFrame.add(actionsPanel);
 
       final JPanel actionOutput = new JPanel(new FlowLayout());
-      JLabel esTypeAction = new JLabel("<html><div style='text-align: center;'>ОТРАБОТКА НС:<br>Очистка клапана</html>",
+      JLabel esTypeAction = new JLabel(
+          Messages.getString("FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.13"),
+          //$NON-NLS-1$
           SwingConstants.CENTER);
-      Font boldUnderlineBig = new Font("Tachoma", Font.BOLD, 18).deriveFont(fontAttributes);
+      Font boldUnderlineBig = new Font("Tachoma", Font.BOLD, 18)
+          .deriveFont(fontAttributes); //$NON-NLS-1$
       esTypeAction.setFont(boldUnderlineBig);
       actionOutput.add(esTypeAction);
       actionOutput.setBorder(BorderFactory.createMatteBorder(4, 0, 0, 0, Color.black));
       closenessChartFrame.add(actionOutput);
 
       final JPanel statePanel = new JPanel(new FlowLayout());
-      JLabel stateLbl = new JLabel("Текущее состояние выпускного клапана:");
-      stateLbl.setFont(new Font("Tachoma", Font.PLAIN, 10));
+      JLabel stateLbl = new JLabel(Messages.getString(
+          "FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.15")); //$NON-NLS-1$
+      stateLbl.setFont(new Font("Tachoma", Font.PLAIN, 10)); //$NON-NLS-1$
       statePanel.add(stateLbl);
       closenessChartFrame.add(statePanel);
 
@@ -114,17 +133,20 @@ public class FilterStationEmergencyPredictionFilterDestructionAfterOuterValve
       BufferedImage myPicture = null;
       try {
         myPicture = ImageIO.read(
-            FilterStationEmergencyPredictionFoulBlockage.class.getResource("/filter_outpu_error.png"));
+            FilterStationEmergencyPredictionFoulBlockage.class.getResource(
+                "/filter_outpu_error.png"));
       } catch (IOException e) {
         e.printStackTrace();
       }
       picLabel = new JLabel(new ImageIcon(myPicture));
       finishedActionsPnl.add(picLabel);
       picLabel.setLayout(new FlowLayout(FlowLayout.LEFT, 2, 2));
-      picLabel.add(new JLabel("<html><br><br><br><br><br><br><br><br><br><br><br><br><br>      " +
-          "    " +
-          "   </html>"));
-      picLabel.add(new JLabel("            "));
+      picLabel.add(new JLabel(
+          Messages.getString("FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.18")
+              + //$NON-NLS-1$
+              "    " + //$NON-NLS-1$
+              "   </html>")); //$NON-NLS-1$
+      picLabel.add(new JLabel("            ")); //$NON-NLS-1$
       picLabel.add(progressText);
       actionsFinishedList = new JList(listModel);
       actionsFinishedList.setSize(60, 80);
@@ -146,14 +168,23 @@ public class FilterStationEmergencyPredictionFilterDestructionAfterOuterValve
       opcAccessApi.writeValueForTag(FILT_Green_in, Boolean.FALSE);
       Thread.sleep(1000);
       if (filter_fake_risk_value > 0.3d) {
-        notifier(String.format("Вероятность НС на ст.фильтр. =%s " + "->\n" +
-                    "Рекомендуемое действие=%s",
-                "СРЕДНЯЯ", "Проверка станции", 0.1),
+        notifier(String.format(Messages.getString(
+                    "FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.22")
+                    + Messages.getString(
+                    "FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.23") +
+                    //$NON-NLS-1$ //$NON-NLS-2$
+                    Messages.getString(
+                        "FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.24"),
+                //$NON-NLS-1$
+                Messages.getString(
+                    "FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.25"), Messages
+                    .getString(
+                        "FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.26"),
+                0.1), //$NON-NLS-1$ //$NON-NLS-2$
             0.3);
         opcAccessApi.writeValueForTag(FILT_Fault_in, !opcAccessApi.readBoolean(FILT_Fault_in)
             .value); //Warning
-      }
-      else {
+      } else {
         opcAccessApi.writeValueForTag(FILT_Fault_in, Boolean.FALSE); //warning
         opcAccessApi.writeValueForTag(FILT_Green_in, Boolean.TRUE);
       }
@@ -162,46 +193,70 @@ public class FilterStationEmergencyPredictionFilterDestructionAfterOuterValve
         filter_fake_active_flag = false;
         opcAccessApi.writeValueForTag(filter_p102, Boolean.FALSE); //water filtering
 
-        progressText.setText("0%");
-        listModel.addElement("<html>1.Отключить подачу<br> жидкости</html>");
-        notifier(String.format("Вероятность НС на ст.фильтр. =%s " + "->\n" +
-                    "Рекомендуемое действие=%s",
-                "ВЫСОКАЯ", "Сброс давления в фильтре, отключение насосов", 0.1),
+        progressText.setText("0%"); //$NON-NLS-1$
+        listModel.addElement(Messages.getString(
+            "FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.28")); //$NON-NLS-1$
+        notifier(String.format(Messages.getString(
+                    "FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.29") + "->\n"
+                    + //$NON-NLS-1$ //$NON-NLS-2$
+                    Messages.getString(
+                        "FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.31"),
+                //$NON-NLS-1$
+                Messages.getString(
+                    "FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.32"), Messages
+                    .getString(
+                        "FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.33"),
+                0.1), //$NON-NLS-1$ //$NON-NLS-2$
             filter_fake_risk_value);
         picLabel.updateUI();
         closenessChartFrame.revalidate();
         closenessChartFrame.repaint();
-        progressText.setText("20%");
+        progressText.setText(Messages.getString(
+            "FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.34")); //$NON-NLS-1$
 
         opcAccessApi.writeValueForTag(filter_open_rev_valve, Boolean.TRUE);
         opcAccessApi.writeValueForTag(filter_p101, Boolean.TRUE);
         Thread.sleep(5000);
-        listModel.addElement("<html>2.Включить продув<br>в обратном<br>направлении</html>");
-        progressText.setText("50%");
+        listModel.addElement(Messages.getString(
+            "FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.35")); //$NON-NLS-1$
+        progressText.setText(Messages.getString(
+            "FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.36")); //$NON-NLS-1$
         opcAccessApi.writeValueForTag(filter_p101, Boolean.FALSE); //turn off blowing
         opcAccessApi.writeValueForTag(filter_open_rev_pump, Boolean.TRUE);
         Thread.sleep(10000);
-        listModel.addElement("<html>3. Включить резервный<br>насос</html>");
+        listModel.addElement(Messages.getString(
+            "FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.37")); //$NON-NLS-1$
         opcAccessApi.writeValueForTag(filter_open_rev_pump, Boolean.FALSE);
         opcAccessApi.writeValueForTag(filter_open_rev_valve, Boolean.FALSE);
         Thread.sleep(2000);
-        listModel.addElement("<html>4.Задать прямое<br>направление течения<br>жидкости</html>");
+        listModel.addElement(Messages.getString(
+            "FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.38")); //$NON-NLS-1$
 
-        progressText.setText("70%");
+        progressText.setText("70%"); //$NON-NLS-1$
         opcAccessApi.writeValueForTag(filter_p101, Boolean.TRUE);
         Thread.sleep(5000);
         opcAccessApi.writeValueForTag(filter_p101, Boolean.FALSE);
-        listModel.addElement("<html>5. Включить продув в<br>прямом направлении</html>");
+        listModel.addElement(Messages.getString(
+            "FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.40")); //$NON-NLS-1$
 
         opcAccessApi.writeValueForTag(filter_p102, Boolean.TRUE);
 
         Thread.sleep(5000);
-        progressText.setText("100%");
+        progressText.setText(Messages.getString(
+            "FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.41")); //$NON-NLS-1$
 
         opcAccessApi.writeValueForTag(filter_p102, Boolean.FALSE);
-        notifier(String.format("Вероятность НС на ст.фильтр. =%s " + "->\n" +
-                    "Рекомендуемое действие=%s",
-                "НИЗКАЯ", "Штатный режим", 0.1),
+        notifier(String.format(Messages.getString(
+                    "FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.42") + "->\n"
+                    + //$NON-NLS-1$ //$NON-NLS-2$
+                    Messages.getString(
+                        "FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.44"),
+                //$NON-NLS-1$
+                Messages.getString(
+                    "FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.45"), Messages
+                    .getString(
+                        "FilterStationEmergencyPredictionFilterDestructionAfterOuterValve.46"),
+                0.1), //$NON-NLS-1$ //$NON-NLS-2$
             0.1);
 
         opcAccessApi.writeValueForTag(FILT_Fault_in, Boolean.FALSE); //warning

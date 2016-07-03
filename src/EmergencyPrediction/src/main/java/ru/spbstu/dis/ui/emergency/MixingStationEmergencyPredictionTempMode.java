@@ -49,19 +49,19 @@ public class MixingStationEmergencyPredictionTempMode extends EmergencyPredictio
       }
     });
     th.start();
-    JLabel esType = new JLabel("<html><div style='text-align: center;'>Сбой режима<br>" +
-        "температуры" +
-        " на станциях</html>");
+    JLabel esType = new JLabel(Messages.getString("MixingStationEmergencyPredictionTempMode.0") + //$NON-NLS-1$
+        Messages.getString("MixingStationEmergencyPredictionTempMode.1") + //$NON-NLS-1$
+        Messages.getString("MixingStationEmergencyPredictionTempMode.2")); //$NON-NLS-1$
     Map<TextAttribute, Integer> fontAttributes = new HashMap<>();
     fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-    Font boldUnderline = new Font("Tachoma", Font.BOLD, 22).deriveFont(fontAttributes);
+    Font boldUnderline = new Font("Tachoma", Font.BOLD, 22).deriveFont(fontAttributes); //$NON-NLS-1$
     esType.setFont(boldUnderline);
     final JPanel titlePanel = new JPanel(new FlowLayout());
     titlePanel.add(esType, BorderLayout.CENTER);
     closenessChartFrame.add(titlePanel, 0);
 
-    esType = new JLabel("Вероятность сбоя температурного режима:");
-    boldUnderline = new Font("Tachoma", Font.PLAIN, 19).deriveFont(fontAttributes);
+    esType = new JLabel(Messages.getString("MixingStationEmergencyPredictionTempMode.4")); //$NON-NLS-1$
+    boldUnderline = new Font("Tachoma", Font.PLAIN, 19).deriveFont(fontAttributes); //$NON-NLS-1$
     esType.setFont(boldUnderline);
     final JPanel chartPanel = new JPanel(new FlowLayout());
     chartPanel.add(esType, BorderLayout.CENTER);
@@ -80,15 +80,15 @@ public class MixingStationEmergencyPredictionTempMode extends EmergencyPredictio
     SwingUtilities.invokeLater(() -> {
 
       final JPanel actionRecoms = new JPanel(new FlowLayout());
-      JLabel actionRecommLabel = new JLabel("Рекомендуемые действия");
-      Font boldUnderlineAction = new Font("Tachoma", Font.BOLD, 15).deriveFont(fontAttributes);
+      JLabel actionRecommLabel = new JLabel(Messages.getString("MixingStationEmergencyPredictionTempMode.6")); //$NON-NLS-1$
+      Font boldUnderlineAction = new Font("Tachoma", Font.BOLD, 15).deriveFont(fontAttributes); //$NON-NLS-1$
       actionRecommLabel.setFont(boldUnderlineAction);
       actionRecoms.add(actionRecommLabel);
       closenessChartFrame.add(actionRecoms);
 
-      final String[] actions = {"1. Отключить фильтрацию", "2. Отключить смешивание",
-          "3. Отключить соседние станции", "4. Включить циркуляцию в реакторе",
-          "5. Включить циркуляцию в фильтре"};
+      final String[] actions = {Messages.getString("MixingStationEmergencyPredictionTempMode.8"), Messages.getString("MixingStationEmergencyPredictionTempMode.9"), //$NON-NLS-1$ //$NON-NLS-2$
+          Messages.getString("MixingStationEmergencyPredictionTempMode.10"), Messages.getString("MixingStationEmergencyPredictionTempMode.11"), //$NON-NLS-1$ //$NON-NLS-2$
+          Messages.getString("MixingStationEmergencyPredictionTempMode.12")}; //$NON-NLS-1$
       JList recomActions = new JList(actions);
 
       final JPanel actionsPanel = new JPanel(new FlowLayout());
@@ -97,18 +97,18 @@ public class MixingStationEmergencyPredictionTempMode extends EmergencyPredictio
       closenessChartFrame.add(actionsPanel);
 
       final JPanel actionOutput = new JPanel(new FlowLayout());
-      JLabel esTypeAction = new JLabel("<html><div style='text-align: center;'>ОТРАБОТКА " +
-                                           "НС:<br>Охлаждение оборудования</html>",
+      JLabel esTypeAction = new JLabel(Messages.getString("MixingStationEmergencyPredictionTempMode.13") + //$NON-NLS-1$
+                                           Messages.getString("MixingStationEmergencyPredictionTempMode.14"), //$NON-NLS-1$
                                        SwingConstants.CENTER);
-      Font boldUnderlineBig = new Font("Tachoma", Font.BOLD, 22).deriveFont(fontAttributes);
+      Font boldUnderlineBig = new Font("Tachoma", Font.BOLD, 22).deriveFont(fontAttributes); //$NON-NLS-1$
       esTypeAction.setFont(boldUnderlineBig);
       actionOutput.add(esTypeAction);
       actionOutput.setBorder(BorderFactory.createMatteBorder(4, 0, 0, 0, Color.black));
       closenessChartFrame.add(actionOutput);
 
       final JPanel statePanel = new JPanel(new FlowLayout());
-      JLabel stateLbl = new JLabel("Текущее состояние оборудования:");
-      stateLbl.setFont(new Font("Tachoma", Font.PLAIN, 10));
+      JLabel stateLbl = new JLabel(Messages.getString("MixingStationEmergencyPredictionTempMode.16")); //$NON-NLS-1$
+      stateLbl.setFont(new Font("Tachoma", Font.PLAIN, 10)); //$NON-NLS-1$
       statePanel.add(stateLbl);
       closenessChartFrame.add(statePanel);
 
@@ -116,15 +116,15 @@ public class MixingStationEmergencyPredictionTempMode extends EmergencyPredictio
       BufferedImage myPicture = null;
       try {
         myPicture = ImageIO.read(
-            MixingStationEmergencyPredictionTempMode.class.getResource("/term_middle.png"));
+            MixingStationEmergencyPredictionTempMode.class.getResource("/term_middle.png")); //$NON-NLS-1$
       } catch (IOException e) {
         e.printStackTrace();
       }
       picLabel = new JLabel(new ImageIcon(myPicture));
       finishedActionsPnl.add(picLabel);
       picLabel.setLayout(new FlowLayout(FlowLayout.LEFT, 2, 2));
-      picLabel.add(new JLabel("             "));
-      picLabel.add(new JLabel("             "));
+      picLabel.add(new JLabel("             ")); //$NON-NLS-1$
+      picLabel.add(new JLabel("             ")); //$NON-NLS-1$
       picLabel.add(progressText);
       actionsFinishedList = new JList(listModel);
       actionsFinishedList.setSize(60, 80);
@@ -152,15 +152,15 @@ public class MixingStationEmergencyPredictionTempMode extends EmergencyPredictio
       opcAccessApi.writeValueForTag(REACTOR_Green_in, Boolean.FALSE);
       Thread.sleep(1000);
       if (filter_fake_risk_value > 0.8d) {
-        notifier(String.format("Вероятность НС на станциях =%s " + "->\n" +
-                    "Рекомендуемое действие=%s",
-                "СРЕДНЯЯ", "Проверка станций", 0.1),
+        notifier(String.format(Messages.getString("MixingStationEmergencyPredictionTempMode.21") + "->\n" + //$NON-NLS-1$ //$NON-NLS-2$
+                    Messages.getString("MixingStationEmergencyPredictionTempMode.23"), //$NON-NLS-1$
+                Messages.getString("MixingStationEmergencyPredictionTempMode.24"), Messages.getString("MixingStationEmergencyPredictionTempMode.25"), 0.1), //$NON-NLS-1$ //$NON-NLS-2$
             0.3);
         BufferedImage myPicture = null;
         try {
           myPicture = ImageIO.read(
               FilterStationEmergencyPredictionOldFilterBlockage.class
-                  .getResource("/term_bad.jpg"));
+                  .getResource("/term_bad.jpg")); //$NON-NLS-1$
         } catch (IOException e) {
           e.printStackTrace();
         }
@@ -191,41 +191,41 @@ public class MixingStationEmergencyPredictionTempMode extends EmergencyPredictio
         try {
           myPicture = ImageIO.read(
               FilterStationEmergencyPredictionOldFilterBlockage.class
-                  .getResource("/term_middle.png"));
+                  .getResource("/term_middle.png")); //$NON-NLS-1$
         } catch (IOException e) {
           e.printStackTrace();
         }
         picLabel.setIcon(new ImageIcon(myPicture));
-        progressText.setText("0%");
-        listModel.addElement("<html>1.Отключить фильтрацию</html>");
-        notifier(String.format("Вероятность НС на станциях =%s " + "->\n" +
-                                   "Рекомендуемое действие=%s",
-                               "ВЫСОКАЯ", "Сброс давления в фильтре, отключение насосов", 0.1),
+        progressText.setText("0%"); //$NON-NLS-1$
+        listModel.addElement(Messages.getString("MixingStationEmergencyPredictionTempMode.29")); //$NON-NLS-1$
+        notifier(String.format(Messages.getString("MixingStationEmergencyPredictionTempMode.30") + "->\n" + //$NON-NLS-1$ //$NON-NLS-2$
+                                   Messages.getString("MixingStationEmergencyPredictionTempMode.32"), //$NON-NLS-1$
+                               Messages.getString("MixingStationEmergencyPredictionTempMode.33"), Messages.getString("MixingStationEmergencyPredictionTempMode.34"), 0.1), //$NON-NLS-1$ //$NON-NLS-2$
                  filter_fake_risk_value);
         picLabel.updateUI();
         closenessChartFrame.revalidate();
         closenessChartFrame.repaint();
-        progressText.setText("20%");
+        progressText.setText("20%"); //$NON-NLS-1$
         opcAccessApi.writeValueForTag(MIX_2M1, Boolean.FALSE); //mixing pump p201
-        listModel.addElement("<html>2.Отключить смешивание</html>");
-        progressText.setText("50%");
+        listModel.addElement(Messages.getString("MixingStationEmergencyPredictionTempMode.36")); //$NON-NLS-1$
+        progressText.setText("50%"); //$NON-NLS-1$
 
         opcAccessApi.writeValueForTag(MIX_2M2, Boolean.FALSE); //mixing pump p202
-        listModel.addElement("<html>3.Открыть соседние<br>станции</html>");
+        listModel.addElement(Messages.getString("MixingStationEmergencyPredictionTempMode.38")); //$NON-NLS-1$
         opcAccessApi.writeValueForTag(REAC_3M2, Boolean.TRUE);//3M3
 
-        listModel.addElement("<html>4.Включить циркуляцию<br>в реакторе</html>");
+        listModel.addElement(Messages.getString("MixingStationEmergencyPredictionTempMode.39")); //$NON-NLS-1$
         opcAccessApi.writeValueForTag(FILT_1M6, Boolean.FALSE);
         opcAccessApi.writeValueForTag(filter_open_rev_valve, Boolean.FALSE);
         opcAccessApi.writeValueForTag(filter_open_rev_pump, Boolean.TRUE);//1M3
-        progressText.setText("70%");
-        listModel.addElement("<html>5.Включить циркуляцию<br>в фильтре</html>");
+        progressText.setText("70%"); //$NON-NLS-1$
+        listModel.addElement(Messages.getString("MixingStationEmergencyPredictionTempMode.41")); //$NON-NLS-1$
 
         Thread.sleep(10000);
-        progressText.setText("100%");
+        progressText.setText("100%"); //$NON-NLS-1$
         try {
           myPicture = ImageIO.read(MixingStationEmergencyPredictionTempMode
-              .class.getResource("/term_good.jpg"));
+              .class.getResource("/term_good.jpg")); //$NON-NLS-1$
         } catch (IOException e) {
           e.printStackTrace();
         }
@@ -234,9 +234,9 @@ public class MixingStationEmergencyPredictionTempMode extends EmergencyPredictio
 
         opcAccessApi.writeValueForTag(REAC_3M2, Boolean.FALSE);//3M3
         opcAccessApi.writeValueForTag(filter_open_rev_pump, Boolean.FALSE);//1M3
-        notifier(String.format("Вероятность НС на станциях =%s " + "->\n" +
-                    "Рекомендуемое действие=%s",
-                "НИЗКАЯ", "Штатный режим", 0.1),
+        notifier(String.format(Messages.getString("MixingStationEmergencyPredictionTempMode.44") + "->\n" + //$NON-NLS-1$ //$NON-NLS-2$
+                    Messages.getString("MixingStationEmergencyPredictionTempMode.46"), //$NON-NLS-1$
+                Messages.getString("MixingStationEmergencyPredictionTempMode.47"), Messages.getString("MixingStationEmergencyPredictionTempMode.48"), 0.1), //$NON-NLS-1$ //$NON-NLS-2$
             0.1);
 
         opcAccessApi.writeValueForTag(MIX_Fault_in, Boolean.FALSE); //warning

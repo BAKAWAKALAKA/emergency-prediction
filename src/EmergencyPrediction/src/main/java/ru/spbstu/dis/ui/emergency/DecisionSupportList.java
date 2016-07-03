@@ -30,7 +30,7 @@ public class DecisionSupportList {
   public DecisionSupportList(final String title) {
 
     //        setContentPane(panel);
-    frame = new JFrame("Панель контроля нештатных ситуаций");
+    frame = new JFrame(Messages.getString("DecisionSupportList.0")); //$NON-NLS-1$
     list = new JList();
     list.setCellRenderer(new WhiteYellowCellRenderer());
     Object[] data = new Object[10];
@@ -38,7 +38,7 @@ public class DecisionSupportList {
     list.setListData(data);
     JPanel p = new JPanel(new GridLayout(2,1));
     JPanel messagesPanel = new JPanel(new FlowLayout());
-    messagesPanel.add(new JLabel("Сообщения о близости к НС"));
+    messagesPanel.add(new JLabel(Messages.getString("DecisionSupportList.1"))); //$NON-NLS-1$
     JScrollPane scrollPane = new JScrollPane();
     scrollPane.setSize(900, 500);
     list.setFixedCellHeight(50);
@@ -64,14 +64,14 @@ public class DecisionSupportList {
 
       if (value != null) {
         if (value.toString().toLowerCase()
-            .contains("низкая")) {
+            .contains(Messages.getString("DecisionSupportList.2"))) { //$NON-NLS-1$
           c.setBackground(new Color(144, 198, 37));
         }
         if (value.toString().toLowerCase()
-            .contains("средняя")) {
+            .contains(Messages.getString("DecisionSupportList.3"))) { //$NON-NLS-1$
           c.setBackground(new Color(244, 246, 29));
         } if (value.toString().toLowerCase()
-            .contains("высокая")) {
+            .contains(Messages.getString("DecisionSupportList.4"))) { //$NON-NLS-1$
           c.setBackground(new Color(246, 100, 8));
         }
       }
@@ -105,7 +105,7 @@ public class DecisionSupportList {
   private JFreeChart createChart(final XYDataset dataset, String valueTitle) {
     final JFreeChart result = ChartFactory.createTimeSeriesChart(
         valueTitle,
-        "Время",
+        Messages.getString("DecisionSupportList.5"), //$NON-NLS-1$
         valueTitle,
         dataset,
         true,
@@ -151,7 +151,7 @@ public class DecisionSupportList {
    */
   public static void main(final String[] args) {
 
-    final DecisionSupportList demo = new DecisionSupportList("Combined XY Plot Demo 5");
+    final DecisionSupportList demo = new DecisionSupportList("Combined XY Plot Demo 5"); //$NON-NLS-1$
     //        demo.pack();
     //        RefineryUtilities.centerFrameOnScreen(demo);
     //        demo.setVisible(true);

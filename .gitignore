@@ -74,3 +74,10 @@ crashlytics-build.properties
 hs_err_pid*
 
 data.csv
+
+
+# eclipse
+/output/
+/.metadata/
+*.classpath
+*.project

@@ -34,11 +34,11 @@ public class MeterChart extends ApplicationFrame {
     dataset = new DefaultValueDataset(value);
     MeterPlot meterplot = new MeterPlot(dataset);
     meterplot.setRange(new Range(0.0D, 1D));
-    meterplot.addInterval(new MeterInterval("Низкая", new Range(0.0D,0.3D),
+    meterplot.addInterval(new MeterInterval(Messages.getString("MeterChart.0"), new Range(0.0D,0.3D), //$NON-NLS-1$
         Color.green, new BasicStroke(2.0F),new Color(0, 255, 0, 64) ));
-    meterplot.addInterval(new MeterInterval("Средняя", new Range(0.3D, 0.7D),
+    meterplot.addInterval(new MeterInterval(Messages.getString("MeterChart.1"), new Range(0.3D, 0.7D), //$NON-NLS-1$
         Color.yellow, new BasicStroke(2.0F), new Color(255, 255, 0, 64)));
-    meterplot.addInterval(new MeterInterval("Высокая", new Range(0.7D, 1D),
+    meterplot.addInterval(new MeterInterval(Messages.getString("MeterChart.2"), new Range(0.7D, 1D), //$NON-NLS-1$
         Color.red, new BasicStroke(2.0F),new Color(255, 0, 0, 128) ));
 
     meterplot.setNeedlePaint(Color.darkGray);
@@ -47,13 +47,13 @@ public class MeterChart extends ApplicationFrame {
     meterplot.setDialShape(DialShape.CHORD);
     meterplot.setMeterAngle(180);
     meterplot.setTickLabelsVisible(true);
-    meterplot.setTickLabelFont(new Font("Tachoma", 1, 12));
+    meterplot.setTickLabelFont(new Font("Tachoma", 1, 12)); //$NON-NLS-1$
     meterplot.setTickLabelPaint(Color.black);
     meterplot.setTickSize(5D);
     meterplot.setTickPaint(Color.gray);
     meterplot.setValuePaint(Color.black);
-    meterplot.setValueFont(new Font("Tachoma", 1, 12));
-    meterplot.setUnits("Вероятность");
+    meterplot.setValueFont(new Font("Tachoma", 1, 12)); //$NON-NLS-1$
+    meterplot.setUnits(Messages.getString("MeterChart.5")); //$NON-NLS-1$
     JFreeChart jfreechart = new JFreeChart(title,
         JFreeChart.DEFAULT_TITLE_FONT, meterplot, true);
     // OPTIONAL CUSTOMISATION COMPLETED.
@@ -81,7 +81,7 @@ public class MeterChart extends ApplicationFrame {
    */
   public static void main(final String[] args) {
 
-    final MeterChart demo = new MeterChart("Thermometer Demo 2");
+    final MeterChart demo = new MeterChart("Thermometer Demo 2"); //$NON-NLS-1$
     demo.pack();
     demo.setVisible(true);
   }
